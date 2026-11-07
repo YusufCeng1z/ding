@@ -24,7 +24,7 @@
   ],
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts --clean",
-    "test": "node --test src/",
+    "test": "node --test \"src/**/*.test.ts\"",
     "typecheck": "tsc -p ."
   },
   "homepage": "https://ding.yusufcengiz.dev",

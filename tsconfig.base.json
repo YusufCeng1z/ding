@@ -10,6 +10,10 @@
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
+    "paths": {
+      "@yusufceng1z/ding": ["./packages/core/src/index.ts"],
+      "@yusufceng1z/ding-react": ["./packages/react/src/index.tsx"]
+    }
   }
 }
