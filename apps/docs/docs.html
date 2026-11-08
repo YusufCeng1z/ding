@@ -36,6 +36,7 @@
           <nav aria-label="On this page">
             <a href="#install">Install</a>
             <a href="#setup">Setup</a>
+            <a href="#nextjs" data-for="react">Next.js</a>
             <a href="#show">Show a toast</a>
             <a href="#update">Update in place</a>
             <a href="#actions">Actions</a>
@@ -83,6 +84,16 @@ export default function App() {
             <pre data-for="vanilla"><code>import { mountToaster } from '@yusufceng1z/ding';
 
 const unmount = mountToaster({ position: 'top-center' });</code></pre>
+            <h3 data-for="react" id="nextjs">Next.js</h3>
+            <p data-for="react"><code>Toaster</code> uses hooks, so in the App Router it goes in a client component. Create <code>components/toaster.tsx</code>:</p>
+            <pre data-for="react"><code>"use client";
+
+import { Toaster } from '@yusufceng1z/ding-react';
+
+export function AppToaster() {
+  return &lt;Toaster position="top-center" theme="system" /&gt;;
+}</code></pre>
+            <p data-for="react">Render it once in <code>app/layout.tsx</code>, which can stay a server component. Call <code>toast</code> from client components only. The <a href="/nextjs-toast/">Next.js guide</a> covers the layout and server actions. With the Pages Router, render <code>&lt;Toaster /&gt;</code> in <code>pages/_app.tsx</code>, no wrapper needed.</p>
           </section>
 
           <section id="show">

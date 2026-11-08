@@ -68,6 +68,8 @@ export default function App() {
 }
 ```
 
+In the Next.js App Router, render `Toaster` from a client component (`"use client"`). See the [Next.js guide](https://ding.yusufcengiz.dev/nextjs-toast/).
+
 **Svelte 5**
 
 ```svelte
