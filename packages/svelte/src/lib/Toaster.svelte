@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { toast, injectStyles, bindToast, onToastKey, ICONS, type Position, type Theme } from '@yusufceng1z/ding';
+  import { toast, injectStyles, bindToast, onToastKey, ICONS, type Position, type Theme, type ToastLabels } from '@yusufceng1z/ding';
 
-  let { position, theme }: { position?: Position; theme?: Theme } = $props();
+  let { position, theme, labels }: { position?: Position; theme?: Theme; labels?: Partial<ToastLabels> } = $props();
 
   let state = $state(toast.getState());
 
@@ -11,6 +11,8 @@
     return toast.subscribe(() => (state = toast.getState()));
   });
   $effect(() => toast.configure({ position, theme }));
+  // Read the strings so the effect tracks them, not the object identity.
+  $effect(() => toast.configure({ labels: { region: labels?.region, dismiss: labels?.dismiss } }));
 
   function bind(node: HTMLElement, id: string) {
     return { destroy: bindToast(node, id) };
@@ -22,7 +24,7 @@
 <div
   class="tst-viewport"
   role="region"
-  aria-label="Notifications"
+  aria-label={state.labels.region}
   data-position={state.position}
   data-theme={state.theme}
   onpointerenter={() => toast.pause()}
@@ -78,7 +80,7 @@
             </button>
           {/if}
           {#if t.duration === 0 && t.type !== 'loading' && !t.secondary}
-            <button type="button" class="tst-close" aria-label="Dismiss notification" tabindex={t.phase === 'open' ? 0 : -1} onclick={() => toast.dismiss(t.id)}>
+            <button type="button" class="tst-close" aria-label={state.labels.dismiss} tabindex={t.phase === 'open' ? 0 : -1} onclick={() => toast.dismiss(t.id)}>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
             </button>
           {/if}

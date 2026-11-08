@@ -1,10 +1,13 @@
 import { useEffect, useRef, useSyncExternalStore, type CSSProperties } from 'react';
-import { toast, injectStyles, bindToast, onToastKey, ICONS, type Position, type Theme, type ToastItem } from '@yusufceng1z/ding';
+import {
+  toast, injectStyles, bindToast, onToastKey, ICONS,
+  type Position, type Theme, type ToastItem, type ToastLabels,
+} from '@yusufceng1z/ding';
 
 export { toast };
-export type { Position, Theme };
+export type { Position, Theme, ToastLabels };
 
-function Item({ t, i }: { t: ToastItem; i: number }) {
+function Item({ t, i, labels }: { t: ToastItem; i: number; labels: ToastLabels }) {
   const slot = useRef<HTMLDivElement>(null);
   useEffect(() => (slot.current ? bindToast(slot.current, t.id) : undefined), [t.id]);
   const sticky = t.duration === 0 && t.type !== 'loading' && !t.secondary;
@@ -59,7 +62,7 @@ function Item({ t, i }: { t: ToastItem; i: number }) {
             </button>
           )}
           {sticky && (
-            <button type="button" className="tst-close" aria-label="Dismiss notification" tabIndex={t.phase === 'open' ? 0 : -1} onClick={() => toast.dismiss(t.id)}>
+            <button type="button" className="tst-close" aria-label={labels.dismiss} tabIndex={t.phase === 'open' ? 0 : -1} onClick={() => toast.dismiss(t.id)}>
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M6 6l12 12M18 6L6 18" />
               </svg>
@@ -71,10 +74,14 @@ function Item({ t, i }: { t: ToastItem; i: number }) {
   );
 }
 
-export function Toaster({ position, theme }: { position?: Position; theme?: Theme }) {
+export function Toaster({ position, theme, labels }: { position?: Position; theme?: Theme; labels?: Partial<ToastLabels> }) {
   const state = useSyncExternalStore(toast.subscribe, toast.getState, toast.getState);
   useEffect(() => injectStyles(), []);
   useEffect(() => toast.configure({ position, theme }), [position, theme]);
+  // Keyed on the strings, not the object, so an inline `labels={{ ... }}` does not reconfigure every render.
+  const region = labels?.region;
+  const dismiss = labels?.dismiss;
+  useEffect(() => toast.configure({ labels: { region, dismiss } }), [region, dismiss]);
   useEffect(() => {
     document.addEventListener('keydown', onToastKey);
     return () => document.removeEventListener('keydown', onToastKey);
@@ -84,7 +91,7 @@ export function Toaster({ position, theme }: { position?: Position; theme?: Them
     <div
       className="tst-viewport"
       role="region"
-      aria-label="Notifications"
+      aria-label={state.labels.region}
       data-position={state.position}
       data-theme={state.theme}
       onPointerEnter={() => toast.pause()}
@@ -99,7 +106,7 @@ export function Toaster({ position, theme }: { position?: Position; theme?: Them
         {state.alert}
       </div>
       {state.toasts.map((t, idx) => (
-        <Item key={t.id} t={t} i={n - 1 - idx} />
+        <Item key={t.id} t={t} i={n - 1 - idx} labels={state.labels} />
       ))}
     </div>
   );

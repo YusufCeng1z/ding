@@ -1,5 +1,5 @@
 import type {
-  Position, PromiseMessages, Theme, ToastItem, ToasterState, ToastOptions, ToastPatch, ToastType,
+  Position, PromiseMessages, Theme, ToastItem, ToastLabels, ToasterState, ToastOptions, ToastPatch, ToastType,
 } from './types';
 import { chime } from './sound.ts';
 
@@ -28,8 +28,13 @@ interface Entry {
   paused: boolean;
 }
 
+const DEFAULT_LABELS: ToastLabels = { region: 'Notifications', dismiss: 'Dismiss notification' };
+
+const definedOnly = <T extends object>(o: T): Partial<T> =>
+  Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined)) as Partial<T>;
+
 export function createToaster() {
-  let state: ToasterState = { toasts: [], position: 'top-center', theme: 'system', status: '', alert: '' };
+  let state: ToasterState = { toasts: [], position: 'top-center', theme: 'system', labels: DEFAULT_LABELS, status: '', alert: '' };
   let flip = false;
   const subs = new Set<() => void>();
   const entries = new Map<string, Entry>();
@@ -222,10 +227,23 @@ export function createToaster() {
     dismiss,
     pause,
     resume,
-    configure(c: { position?: Position; theme?: Theme; sound?: boolean | ((type: ToastType) => void); volume?: number }) {
+    configure(c: {
+      position?: Position;
+      theme?: Theme;
+      /** Partial: keys you leave out keep their current value. */
+      labels?: Partial<ToastLabels>;
+      sound?: boolean | ((type: ToastType) => void);
+      volume?: number;
+    }) {
       if (c.sound !== undefined) sound = c.sound;
       if (c.volume !== undefined) volume = c.volume;
-      state = { ...state, ...(c.position && { position: c.position }), ...(c.theme && { theme: c.theme }) };
+      state = {
+        ...state,
+        ...(c.position && { position: c.position }),
+        ...(c.theme && { theme: c.theme }),
+        // undefined keys are skipped so `{ region: undefined }` keeps the current label
+        ...(c.labels && { labels: { ...state.labels, ...definedOnly(c.labels) } }),
+      };
       emit();
     },
     subscribe(fn: () => void) {

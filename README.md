@@ -178,6 +178,21 @@ toast.configure({ sound: (type) => mySounds.play(type) });
 - Respects `prefers-reduced-motion`.
 - Mirrors automatically on right-to-left pages.
 
+### Labels
+
+The notifications region and the close button have English accessible names by default. Pass your own strings to localize them; keys you leave out keep their default.
+
+```ts
+toast.configure({
+  labels: {
+    region: 'Notifications',
+    dismiss: 'Fermer la notification',
+  },
+});
+```
+
+`<Toaster labels={{ dismiss: 'Fermer la notification' }} />` does the same in React and Svelte, and `mountToaster({ labels })` in plain DOM.
+
 ## Packages
 
 | Package | Description |

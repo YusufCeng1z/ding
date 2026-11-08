@@ -2,7 +2,7 @@ import { toast } from './store';
 import { injectStyles } from './styles';
 import { bindToast } from './bind';
 import { ICONS } from './icons';
-import type { Position, Theme, ToastItem } from './types';
+import type { Position, Theme, ToastItem, ToastLabels } from './types';
 
 /** Shared keyboard handling for every adapter: Escape dismisses, Alt+T moves focus into the toast. */
 export function onToastKey(e: KeyboardEvent): void {
@@ -32,13 +32,12 @@ const svg = (cls: string, paths: readonly string[]) => {
 };
 
 /** Framework-free renderer. Returns an unmount function. */
-export function mountToaster(opts: { position?: Position; theme?: Theme } = {}): () => void {
+export function mountToaster(opts: { position?: Position; theme?: Theme; labels?: Partial<ToastLabels> } = {}): () => void {
   if (typeof document === 'undefined') return () => {}; // server render: nothing to mount
   injectStyles();
   toast.configure(opts);
   const vp = el('div', 'tst-viewport', document.body);
   vp.setAttribute('role', 'region');
-  vp.setAttribute('aria-label', 'Notifications');
   const status = el('div', 'tst-sr', vp);
   status.setAttribute('role', 'status');
   const alert = el('div', 'tst-sr', vp);
@@ -61,6 +60,7 @@ export function mountToaster(opts: { position?: Position; theme?: Theme } = {}):
     const s = toast.getState();
     vp.dataset.position = s.position;
     vp.dataset.theme = s.theme;
+    vp.setAttribute('aria-label', s.labels.region);
     status.textContent = s.status;
     alert.textContent = s.alert;
     const live = new Set(s.toasts.map((t) => t.id));
@@ -141,10 +141,10 @@ export function mountToaster(opts: { position?: Position; theme?: Theme } = {}):
         if (!close) {
           close = el('button', 'tst-close', body);
           close.type = 'button';
-          close.setAttribute('aria-label', 'Dismiss notification');
           close.append(svg('', ['M6 6l12 12M18 6L6 18']));
           close.onclick = () => toast.dismiss(t.id);
         }
+        close.setAttribute('aria-label', s.labels.dismiss);
         close.tabIndex = t.phase === 'open' ? 0 : -1;
       }
       // bind only once the markup exists: the motion code measures the body on its first frame

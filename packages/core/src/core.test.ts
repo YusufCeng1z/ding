@@ -132,3 +132,14 @@ test('sound is off by default; a custom function hears every new status, not pro
   assert.deepEqual(heard, ['success', 'error']);
   mock.timers.reset();
 });
+
+test('labels default to English, configure() overrides them key by key', () => {
+  const t = createToaster();
+  assert.deepEqual(t.getState().labels, { region: 'Notifications', dismiss: 'Dismiss notification' });
+  t.configure({ labels: { dismiss: 'Fermer la notification' } });
+  assert.deepEqual(t.getState().labels, { region: 'Notifications', dismiss: 'Fermer la notification' });
+  t.configure({ labels: { region: 'Notifications système', dismiss: undefined } });
+  assert.deepEqual(t.getState().labels, { region: 'Notifications système', dismiss: 'Fermer la notification' });
+  t.configure({ theme: 'dark' });
+  assert.equal(t.getState().labels.region, 'Notifications système', 'other options leave labels alone');
+});

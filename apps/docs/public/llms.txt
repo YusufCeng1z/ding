@@ -25,7 +25,7 @@ All calls return the toast id. Import `toast` from the package.
 - `toast.promise(promise, { loading, success, error })` morphs one toast from loading to the result
 - `toast.update(id, patch)` changes a live toast in place. A patch may set title, description, type, duration, progress, action, secondary, meta, image. `null` removes action, secondary, meta, image and progress.
 - `toast.dismiss(id?)` closes one toast, or all
-- `toast.configure({ position, theme, sound, volume })`
+- `toast.configure({ position, theme, labels, sound, volume })`. `labels: { region, dismiss }` sets the accessible names of the region and the close button (English by default)
 
 Options: `description`, `action { label, onClick }`, `secondary { label, onClick }`, `image` (avatar URL), `meta` (small trailing text), `progress` (0 to 1), `duration` (ms, 0 stays until dismissed), `id`.
 

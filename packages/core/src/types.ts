@@ -5,6 +5,13 @@ export type Position =
   | 'top-center' | 'top-left' | 'top-right'
   | 'bottom-center' | 'bottom-left' | 'bottom-right';
 export type Theme = 'system' | 'light' | 'dark';
+/** Accessible names read by screen readers. Pass your own strings to localize them. */
+export interface ToastLabels {
+  /** Name of the notifications region. Default `Notifications` */
+  region: string;
+  /** Name of the close button on sticky toasts. Default `Dismiss notification` */
+  dismiss: string;
+}
 
 export interface ToastAction {
   label: string;
@@ -61,6 +68,7 @@ export interface ToasterState {
   toasts: ToastItem[];
   position: Position;
   theme: Theme;
+  labels: ToastLabels;
   /** text for the persistent polite live region (role=status) */
   status: string;
   /** text for the persistent assertive live region (role=alert) */
