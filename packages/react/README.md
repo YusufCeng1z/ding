@@ -25,7 +25,7 @@ export default function App() {
 }
 ```
 
-In the Next.js App Router, render `Toaster` from a client component (`"use client"`). See the [Next.js guide](https://ding.yusufcengiz.dev/nextjs-toast/).
+Works in the Next.js App Router as is: the package ships `"use client"`, so `Toaster` can go straight into `app/layout.tsx`. See the [Next.js guide](https://ding.yusufcengiz.dev/nextjs-toast/).
 
 Options, actions, progress, sound and accessibility are covered in the [docs](https://ding.yusufcengiz.dev/docs.html).
 
