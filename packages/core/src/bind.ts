@@ -138,14 +138,16 @@ function watchMotion(slot: HTMLElement, id: string, t: Toaster): () => void {
 
   // New text: the old line rolls up and out, the new one rolls in. Width springs on its own via the observer.
   const copy = body?.querySelector<HTMLElement>('.tst-copy');
-  let snap = copy ? { html: copy.innerHTML, w: copy.offsetWidth } : undefined;
+  const titleOf = () => copy?.querySelector('.tst-title')?.innerHTML;
+  let snap = copy ? { html: copy.innerHTML, w: copy.offsetWidth, title: titleOf() } : undefined;
   let ghost: HTMLElement | undefined;
   let lastRoll = 0;
   const mo = new MutationObserver(() => {
     if (!copy || !body) return;
     const prev = snap;
-    snap = { html: copy.innerHTML, w: copy.offsetWidth };
-    if (!prev || prev.html === snap.html || phase !== 'open' || reduced()) return;
+    snap = { html: copy.innerHTML, w: copy.offsetWidth, title: titleOf() };
+    // a ticking description under a steady title (download %) swaps in place; rolling it would make the title flicker
+    if (!prev || prev.html === snap.html || prev.title === snap.title || phase !== 'open' || reduced()) return;
     // fast tickers (progress %) would stay blurred forever: roll at most every 450ms, swap instantly in between
     if (performance.now() - lastRoll < 450) return;
     lastRoll = performance.now();
