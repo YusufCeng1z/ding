@@ -17,6 +17,7 @@
   ],
   "scripts": {
     "build": "svelte-package -i src/lib -o dist",
+    "test": "vitest run",
     "typecheck": "svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
@@ -27,8 +28,13 @@
   },
   "devDependencies": {
     "@sveltejs/package": "^3.0.2",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "@testing-library/svelte": "^5.4.2",
+    "happy-dom": "^21.0.4",
     "svelte": "^5.0.0",
-    "svelte-check": "^4.7.8"
+    "svelte-check": "^4.7.8",
+    "typescript": "^6.0.3",
+    "vitest": "^5.1.0"
   },
   "description": "Svelte 5 renderer for Ding spring-physics toasts.",
   "homepage": "https://ding.yusufcengiz.dev",
