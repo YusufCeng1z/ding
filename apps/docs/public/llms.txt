@@ -14,7 +14,7 @@
 Render the toaster once, near the root.
 
 - React: `import { Toaster, toast } from '@yusufceng1z/ding-react'` then `<Toaster position="top-center" theme="system" />`
-- React with the Next.js App Router: `Toaster` uses hooks, so render it from a client component that starts with `"use client"`, then render that component once in `app/layout.tsx`. Call `toast` from client components only. Guide: /nextjs-toast/
+- React with the Next.js App Router: the package ships `"use client"`, so render `Toaster` directly in `app/layout.tsx` (a server component is fine). Call `toast` from client components only. Guide: /nextjs-toast/
 - Svelte 5: `import { Toaster, toast } from '@yusufceng1z/ding-svelte'` then `<Toaster position="top-center" theme="system" />`
 - Vanilla: `import { mountToaster, toast } from '@yusufceng1z/ding'` then `const unmount = mountToaster({ position, theme })`
 

@@ -86,15 +86,20 @@ export default function App() {
 
 const unmount = mountToaster({ position: 'top-center' });</code></pre>
             <h3 data-for="react" id="nextjs">Next.js</h3>
-            <p data-for="react"><code>Toaster</code> uses hooks, so in the App Router it goes in a client component. Create <code>components/toaster.tsx</code>:</p>
-            <pre data-for="react"><code>"use client";
+            <p data-for="react">The package is marked <code>"use client"</code>, so <code>Toaster</code> goes straight into <code>app/layout.tsx</code>, which stays a server component:</p>
+            <pre data-for="react"><code>import { Toaster } from '@yusufceng1z/ding-react';
 
-import { Toaster } from '@yusufceng1z/ding-react';
-
-export function AppToaster() {
-  return &lt;Toaster position="top-center" theme="system" /&gt;;
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    &lt;html lang="en"&gt;
+      &lt;body&gt;
+        {children}
+        &lt;Toaster position="top-center" theme="system" /&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
+  );
 }</code></pre>
-            <p data-for="react">Render it once in <code>app/layout.tsx</code>, which can stay a server component. Call <code>toast</code> from client components only. The <a href="/nextjs-toast/">Next.js guide</a> covers the layout and server actions. With the Pages Router, render <code>&lt;Toaster /&gt;</code> in <code>pages/_app.tsx</code>, no wrapper needed.</p>
+            <p data-for="react">Call <code>toast</code> from client components only. The <a href="/nextjs-toast/">Next.js guide</a> covers server actions. With the Pages Router, render <code>&lt;Toaster /&gt;</code> in <code>pages/_app.tsx</code>.</p>
           </section>
 
           <section id="show">

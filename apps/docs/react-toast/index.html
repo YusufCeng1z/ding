@@ -78,7 +78,7 @@
       });</code></pre>
       <p>An action button can return a patch, which is how <a href="/undo-toast/">undo toasts</a> confirm that the undo worked.</p>
       <h2>Next.js and shadcn/ui</h2>
-      <p><code>Toaster</code> uses hooks, so in the App Router it has to live in a client component. The <a href="/nextjs-toast/">Next.js setup</a> shows the layout. If the project uses shadcn/ui, there is also a <a href="/shadcn-toast/">one-command install</a>.</p>
+      <p>The package is marked <code>"use client"</code>, so in the Next.js App Router <code>Toaster</code> can go straight into a server layout. The <a href="/nextjs-toast/">Next.js setup</a> shows how. If the project uses shadcn/ui, there is also a <a href="/shadcn-toast/">one-command install</a>.</p>
       <h2>Timing</h2>
       <p>Plain toasts close after 5 seconds. Errors, loading toasts and toasts with a button stay until the user dismisses them, because those are the ones people must not miss. Hovering or focusing a toast pauses the timer.</p>
       <p>I wrote Ding because I wanted a toast that does not pile up. If that sounds like what you need, a star on <a href="https://github.com/YusufCeng1z/ding">GitHub</a> helps others find it.</p>
