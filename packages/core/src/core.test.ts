@@ -2,6 +2,7 @@ import { test, mock } from 'node:test';
 import assert from 'node:assert/strict';
 import { springEasing } from './spring.ts';
 import { createToaster, TIMING } from './store.ts';
+import { injectStyles } from './styles.ts';
 
 test('spring easing starts at 0, ends at 1, finite duration', () => {
   const { easing, duration } = springEasing({ stiffness: 260, damping: 17 });
@@ -142,4 +143,18 @@ test('labels default to English, configure() overrides them key by key', () => {
   assert.deepEqual(t.getState().labels, { region: 'Notifications système', dismiss: 'Fermer la notification' });
   t.configure({ theme: 'dark' });
   assert.equal(t.getState().labels.region, 'Notifications système', 'other options leave labels alone');
+});
+
+test('injectStyles sets the CSP nonce on the style element, and only once', () => {
+  const added: { nonce?: string; attrs: Record<string, string> }[] = [];
+  const doc = {
+    querySelector: () => (added.length ? added[0] : null),
+    createElement: () => ({ attrs: {} as Record<string, string>, setAttribute(k: string, v: string) { this.attrs[k] = v; } }),
+    head: { prepend: (el: { nonce?: string; attrs: Record<string, string> }) => added.push(el) },
+  } as unknown as Document;
+  injectStyles(doc, { nonce: 'abc123' });
+  injectStyles(doc, { nonce: 'other' });
+  assert.equal(added.length, 1);
+  assert.equal(added[0]?.nonce, 'abc123');
+  assert.equal('data-toast' in (added[0]?.attrs ?? {}), true);
 });

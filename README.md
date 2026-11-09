@@ -195,6 +195,20 @@ toast.configure({
 
 `<Toaster labels={{ dismiss: 'Fermer la notification' }} />` does the same in React and Svelte, and `mountToaster({ labels })` in plain DOM.
 
+### Content Security Policy
+
+Styles are injected as one `<style>` element. If your CSP blocks inline styles, pass the page's nonce:
+
+```tsx
+<Toaster nonce={nonce} />  {/* React, Svelte */}
+```
+
+```ts
+mountToaster({ nonce }); // plain DOM
+```
+
+Per-toast values are set through the DOM, which CSP allows, so only the stylesheet needs the nonce.
+
 ## Packages
 
 | Package | Description |

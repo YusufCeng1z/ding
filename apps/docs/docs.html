@@ -167,6 +167,12 @@ toast.dismiss(id);  // one toast
 toast.dismiss();    // all</code></pre>
             <p>Position, theme and labels can also be set as props on the toaster. The toast follows reading direction, so right-to-left pages mirror automatically.</p>
             <p><code>labels</code> sets the names screen readers announce for the notifications region (<code>region</code>) and the close button (<code>dismiss</code>). Keys you leave out keep their English default, so a non-English page only needs to translate what it uses.</p>
+            <h3 id="csp">Content Security Policy</h3>
+            <p>Styles are injected as one <code>&lt;style&gt;</code> element. If your CSP blocks inline styles (<code>style-src</code> without <code>'unsafe-inline'</code>), pass the page's nonce. Per-toast values are set through the DOM, which CSP allows, so the stylesheet is the only thing that needs it.</p>
+            <pre data-for="react"><code>&lt;Toaster nonce={nonce} /&gt;</code></pre>
+            <pre data-for="svelte"><code>&lt;Toaster nonce={nonce} /&gt;</code></pre>
+            <pre data-for="vanilla"><code>mountToaster({ nonce });</code></pre>
+            <p data-for="react">In Next.js, read the nonce your proxy sets with <code>(await headers()).get('x-nonce')</code> in a server component and pass it down.</p>
           </section>
 
           <section id="sound">

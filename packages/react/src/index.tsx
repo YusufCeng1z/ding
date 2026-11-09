@@ -74,9 +74,20 @@ function Item({ t, i, labels }: { t: ToastItem; i: number; labels: ToastLabels }
   );
 }
 
-export function Toaster({ position, theme, labels }: { position?: Position; theme?: Theme; labels?: Partial<ToastLabels> }) {
+export function Toaster({
+  position,
+  theme,
+  labels,
+  nonce,
+}: {
+  position?: Position;
+  theme?: Theme;
+  labels?: Partial<ToastLabels>;
+  /** CSP nonce for the injected stylesheet. */
+  nonce?: string;
+}) {
   const state = useSyncExternalStore(toast.subscribe, toast.getState, toast.getState);
-  useEffect(() => injectStyles(), []);
+  useEffect(() => injectStyles(document, { nonce }), [nonce]);
   useEffect(() => toast.configure({ position, theme }), [position, theme]);
   // Keyed on the strings, not the object, so an inline `labels={{ ... }}` does not reconfigure every render.
   const region = labels?.region;

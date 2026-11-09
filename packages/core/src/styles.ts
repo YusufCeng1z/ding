@@ -1,4 +1,4 @@
-import { springEasing, type SpringConfig } from './spring';
+import { springEasing, type SpringConfig } from './spring.ts';
 
 type Springs = { enter: SpringConfig; morph: SpringConfig; stack: SpringConfig };
 const configs: Springs = {
@@ -151,11 +151,15 @@ transition-property:background-color,scale;transition-duration:.15s;transition-t
 `;
 }
 
-/** Idempotent; call from the adapter on the client. */
-export function injectStyles(doc: Document = document): void {
+/**
+ * Idempotent; call from the adapter on the client.
+ * Pass `nonce` when the page has a Content Security Policy that blocks inline styles.
+ */
+export function injectStyles(doc: Document = document, opts: { nonce?: string } = {}): void {
   if (doc.querySelector('style[data-toast]')) return;
   const el = doc.createElement('style');
   el.setAttribute('data-toast', '');
+  if (opts.nonce) el.nonce = opts.nonce;
   el.textContent = buildCss();
   doc.head.prepend(el);
 }
