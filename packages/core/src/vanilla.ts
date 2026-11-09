@@ -40,10 +40,13 @@ const svg = (cls: string, paths: readonly string[]) => {
 };
 
 /** Framework-free renderer. Returns an unmount function. */
-export function mountToaster(opts: { position?: Position; theme?: Theme; labels?: Partial<ToastLabels> } = {}): () => void {
+export function mountToaster(
+  opts: { position?: Position; theme?: Theme; labels?: Partial<ToastLabels>; nonce?: string } = {},
+): () => void {
   if (typeof document === 'undefined') return () => {}; // server render: nothing to mount
-  injectStyles();
-  toast.configure(opts);
+  const { nonce, ...config } = opts;
+  injectStyles(document, { nonce });
+  toast.configure(config);
   const vp = el('div', 'tst-viewport', document.body);
   vp.setAttribute('role', 'region');
   const status = el('div', 'tst-sr', vp);

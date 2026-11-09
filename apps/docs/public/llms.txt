@@ -17,6 +17,7 @@ Render the toaster once, near the root.
 - React with the Next.js App Router: the package ships `"use client"`, so render `Toaster` directly in `app/layout.tsx` (a server component is fine). Call `toast` from client components only. Guide: /nextjs-toast/
 - Svelte 5: `import { Toaster, toast } from '@yusufceng1z/ding-svelte'` then `<Toaster position="top-center" theme="system" />`
 - Vanilla: `import { mountToaster, toast } from '@yusufceng1z/ding'` then `const unmount = mountToaster({ position, theme })`
+- Strict CSP (`style-src` without `'unsafe-inline'`): pass the page's nonce, `<Toaster nonce={nonce} />` or `mountToaster({ nonce })`. Only the injected stylesheet needs it
 
 ## API
 

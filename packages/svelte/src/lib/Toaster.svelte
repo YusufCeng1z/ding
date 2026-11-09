@@ -1,12 +1,23 @@
 <script lang="ts">
   import { toast, injectStyles, bindToast, onToastKey, ICONS, type Position, type Theme, type ToastLabels } from '@yusufceng1z/ding';
 
-  let { position, theme, labels }: { position?: Position; theme?: Theme; labels?: Partial<ToastLabels> } = $props();
+  let {
+    position,
+    theme,
+    labels,
+    nonce,
+  }: {
+    position?: Position;
+    theme?: Theme;
+    labels?: Partial<ToastLabels>;
+    /** CSP nonce for the injected stylesheet. */
+    nonce?: string;
+  } = $props();
 
   let state = $state(toast.getState());
 
+  $effect(() => injectStyles(document, { nonce }));
   $effect(() => {
-    injectStyles();
     state = toast.getState();
     return toast.subscribe(() => (state = toast.getState()));
   });
