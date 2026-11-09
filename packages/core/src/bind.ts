@@ -139,15 +139,17 @@ function watchMotion(slot: HTMLElement, id: string, t: Toaster): () => void {
   // New text: the old line rolls up and out, the new one rolls in. Width springs on its own via the observer.
   const copy = body?.querySelector<HTMLElement>('.tst-copy');
   const titleOf = () => copy?.querySelector('.tst-title')?.innerHTML;
-  let snap = copy ? { html: copy.innerHTML, w: copy.offsetWidth, title: titleOf() } : undefined;
+  const kind = () => `${pill.dataset.type}|${!!pill.querySelector('.tst-progress')}`;
+  let snap = copy ? { html: copy.innerHTML, w: copy.offsetWidth, title: titleOf(), kind: kind() } : undefined;
   let ghost: HTMLElement | undefined;
   let lastRoll = 0;
   const mo = new MutationObserver(() => {
     if (!copy || !body) return;
     const prev = snap;
-    snap = { html: copy.innerHTML, w: copy.offsetWidth, title: titleOf() };
-    // a ticking description under a steady title (download %) swaps in place; rolling it would make the title flicker
-    if (!prev || prev.html === snap.html || prev.title === snap.title || phase !== 'open' || reduced()) return;
+    snap = { html: copy.innerHTML, w: copy.offsetWidth, title: titleOf(), kind: kind() };
+    // a ticking description under a steady title (download %) swaps in place; rolling it would make the title flicker.
+    // Same for a progress toast that keeps its type: only a real change (loading -> done) rolls.
+    if (!prev || prev.html === snap.html || prev.title === snap.title || (prev.kind === snap.kind && snap.kind.endsWith('true')) || phase !== 'open' || reduced()) return;
     // fast tickers (progress %) would stay blurred forever: roll at most every 450ms, swap instantly in between
     if (performance.now() - lastRoll < 450) return;
     lastRoll = performance.now();
