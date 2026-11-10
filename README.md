@@ -179,6 +179,31 @@ toast.dismiss(id); // one toast
 toast.dismiss();   // all
 ```
 
+## Styling
+
+Colors and corner radius are CSS variables. Set them in your own stylesheet and they apply to every toast, in any framework:
+
+```css
+.tst-viewport {
+  --tst-radius: 8px;
+  --tst-bg: #1e3a8a;
+  --tst-fg: #fff;
+  --tst-success: #16a34a;
+}
+```
+
+| Variable | Default | Controls |
+| --- | --- | --- |
+| `--tst-radius` | `22px` | Corner radius. The default makes a pill |
+| `--tst-bg` | `light-dark(#fff, #0c0c0d)` | Background |
+| `--tst-fg` | `light-dark(#0f0f13, #fafafa)` | Text |
+| `--tst-success` | `light-dark(#12a36b, #4ade80)` | Success icon |
+| `--tst-error` | `light-dark(#e5484d, #f87171)` | Error icon |
+| `--tst-warning` | `light-dark(#c77d00, #fbbf24)` | Warning icon |
+| `--tst-info` | `light-dark(#2f7de1, #60a5fa)` | Info icon |
+
+The defaults follow the theme through `light-dark()`. A single value applies to both themes. To keep them apart, write your own: `--tst-bg: light-dark(#fff, #111)`.
+
 ## Sound
 
 Off by default. With `sound: true` each status plays its own soft tone: success rises, error falls, warning double-taps, info is a single note. Loading is silent and progress updates never make a sound. Browsers keep audio locked until a click or key press.

@@ -37,6 +37,10 @@ Options: `description`, `action { label, onClick }`, `secondary { label, onClick
 
 Positions: top-left, top-center, top-right, bottom-left, bottom-center, bottom-right. Themes: system, light, dark.
 
+## Styling
+
+Colors and corner radius are CSS variables. Set them in your own stylesheet on `.tst-viewport`: `--tst-radius` (default 22px), `--tst-bg`, `--tst-fg`, `--tst-success`, `--tst-error`, `--tst-warning`, `--tst-info`. The color defaults use `light-dark()`, so a single value applies to both themes. Example: `.tst-viewport { --tst-radius: 8px; --tst-bg: #1e3a8a; --tst-fg: #fff; }`
+
 ## Sound
 
 Off by default. `toast.configure({ sound: true, volume: 0.5 })` plays a soft built-in mallet tone per status, no audio files (success rises, error falls, warning double-taps, info is one note). Volume is 0 to 1. Loading is silent. Browsers keep audio locked until a click or key press, so the first sound must follow one.

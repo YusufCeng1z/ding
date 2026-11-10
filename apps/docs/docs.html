@@ -43,6 +43,7 @@
             <a href="#actions">Actions</a>
             <a href="#options">Options</a>
             <a href="#configure">Configure</a>
+            <a href="#styling">Styling</a>
             <a href="#sound">Sound</a>
             <a href="#a11y">Accessibility</a>
           </nav>
@@ -199,6 +200,30 @@ toast.dismiss();    // all</code></pre>
             <pre data-for="vue"><code>&lt;Toaster :nonce="nonce" /&gt;</code></pre>
             <pre data-for="vanilla"><code>mountToaster({ nonce });</code></pre>
             <p data-for="react">In Next.js, read the nonce your proxy sets with <code>(await headers()).get('x-nonce')</code> in a server component and pass it down.</p>
+          </section>
+
+          <section id="styling">
+            <h2>Styling</h2>
+            <p>Colors and corner radius are CSS variables. Set them in your own stylesheet and they apply to every toast, whatever framework you use.</p>
+            <pre><code>.tst-viewport {
+  --tst-radius: 8px;
+  --tst-bg: #1e3a8a;
+  --tst-fg: #fff;
+  --tst-success: #16a34a;
+}</code></pre>
+            <table>
+              <thead><tr><th>Variable</th><th>Default</th><th>Controls</th></tr></thead>
+              <tbody>
+                <tr><td><code>--tst-radius</code></td><td><code>22px</code></td><td>Corner radius. The default makes a pill</td></tr>
+                <tr><td><code>--tst-bg</code></td><td><code>light-dark(#fff, #0c0c0d)</code></td><td>Background</td></tr>
+                <tr><td><code>--tst-fg</code></td><td><code>light-dark(#0f0f13, #fafafa)</code></td><td>Text</td></tr>
+                <tr><td><code>--tst-success</code></td><td><code>light-dark(#12a36b, #4ade80)</code></td><td>Success icon</td></tr>
+                <tr><td><code>--tst-error</code></td><td><code>light-dark(#e5484d, #f87171)</code></td><td>Error icon</td></tr>
+                <tr><td><code>--tst-warning</code></td><td><code>light-dark(#c77d00, #fbbf24)</code></td><td>Warning icon</td></tr>
+                <tr><td><code>--tst-info</code></td><td><code>light-dark(#2f7de1, #60a5fa)</code></td><td>Info icon</td></tr>
+              </tbody>
+            </table>
+            <p>The defaults follow the theme through <code>light-dark()</code>. A single value applies to both themes. To keep them apart, write your own: <code>--tst-bg: light-dark(#fff, #111)</code>.</p>
           </section>
 
           <section id="sound">
