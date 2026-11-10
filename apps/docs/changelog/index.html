@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>What's new in Ding 0.0.3: labels, bigger buttons, safer Esc</title>
-    <meta name="description" content="Ding 0.0.3 lets you translate the screen reader labels, makes toast buttons easier to hit, lets the keyboard reach every toast, and stops Esc from closing toasts while you work in a dialog or text field." />
+    <title>What's new in Ding 0.0.4: Vue, Next.js without a wrapper, CSP nonce</title>
+    <meta name="description" content="Ding 0.0.4 adds a Vue 3 and Nuxt package, works in Next.js server layouts without a wrapper, supports a CSP nonce, and stops progress toasts from flickering." />
     <link rel="canonical" href="https://ding.yusufcengiz.dev/changelog/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="/changelog.css" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Ding" />
-    <meta property="og:title" content="What's new in Ding 0.0.3" />
-    <meta property="og:description" content="Translatable screen reader labels, bigger click areas, keyboard access to every toast and a safer Esc key." />
+    <meta property="og:title" content="What's new in Ding 0.0.4" />
+    <meta property="og:description" content="A Vue 3 and Nuxt package, Next.js server layouts without a wrapper, a CSP nonce and calmer progress toasts." />
     <meta property="og:url" content="https://ding.yusufcengiz.dev/changelog/" />
     <meta property="og:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -22,11 +22,11 @@
       {
         "@context": "https://schema.org",
         "@type": "TechArticle",
-        "headline": "What's new in Ding 0.0.3",
-        "description": "Translatable screen reader labels, bigger click areas, keyboard access to every toast and a safer Esc key.",
+        "headline": "What's new in Ding 0.0.4",
+        "description": "A Vue 3 and Nuxt package, Next.js server layouts without a wrapper, a CSP nonce and calmer progress toasts.",
         "url": "https://ding.yusufcengiz.dev/changelog/",
-        "datePublished": "2026-11-08",
-        "dateModified": "2026-11-08",
+        "datePublished": "2026-11-10",
+        "dateModified": "2026-11-10",
         "author": { "@type": "Person", "name": "Yusuf Cengiz", "url": "https://yusufcengiz.dev" },
         "about": { "@type": "SoftwareSourceCode", "name": "Ding", "codeRepository": "https://github.com/YusufCeng1z/ding" }
       }
@@ -40,91 +40,87 @@
       <a href="https://github.com/YusufCeng1z/ding">GitHub</a>
     </nav>
     <main>
-      <h1>What's new in Ding 0.0.3</h1>
-      <p class="version">Accessibility and polish. No breaking changes.</p>
-      <p class="lead">Every change below has a live demo. Switch between <b>Before</b> and <b>After</b> to feel the difference.</p>
+      <h1>What's new in Ding 0.0.4</h1>
+      <p class="version">A Vue package, Next.js and CSP support, and calmer toasts. No breaking changes.</p>
+      <p class="lead">Most of this release came from people using Ding. The two fixes have live demos below, so you can try them yourself.</p>
       <pre><code>npm i @yusufceng1z/ding@latest</code></pre>
 
-      <div class="modes" role="group" aria-label="Compare">
-        <span>Compare:</span>
-        <button type="button" data-mode="before" aria-pressed="false">Before</button>
-        <button type="button" data-mode="after" aria-pressed="true">After</button>
-      </div>
+      <section class="entry" aria-labelledby="vue">
+        <h2 id="vue">Vue 3 and Nuxt <span class="tag">New</span></h2>
+        <p>There is a new package, <code>@yusufceng1z/ding-vue</code>. It has the same props as the React and Svelte ones: <code>position</code>, <code>theme</code>, <code>labels</code> and <code>nonce</code>.</p>
+        <pre><code>npm i @yusufceng1z/ding-vue</code></pre>
+        <pre><code>&lt;script setup&gt;
+import { Toaster, toast } from '@yusufceng1z/ding-vue';
+&lt;/script&gt;
 
-      <section class="entry" aria-labelledby="labels">
-        <h2 id="labels">Translate the screen reader labels <span class="tag">New</span></h2>
-        <p>Two names were hard-coded in English: the notifications region and the close button. On a page in another language, a screen reader read the toast in that language and these two controls in English. Now you pass your own strings. Keys you leave out keep the English default.</p>
-        <pre><code>toast.configure({
-  labels: { region: 'Bildirimler', dismiss: 'Bildirimi kapat' },
-});</code></pre>
-        <p>React and Svelte take the same thing as a prop: <code>&lt;Toaster labels={{ dismiss: 'Fermer' }} /&gt;</code>. Plain DOM takes it in <code>mountToaster({ labels })</code>.</p>
-        <div class="demo" role="group" aria-label="Labels demo">
-          <p>These names are invisible on the page, only a screen reader says them. Pick a language to see what it would read.</p>
+&lt;template&gt;
+  &lt;Toaster position="top-center" theme="system" /&gt;
+  &lt;button @click="toast.success('Saved')"&gt;Save&lt;/button&gt;
+&lt;/template&gt;</code></pre>
+        <p><code>Toaster</code> draws nothing where you put it and starts after the page has loaded, so server rendering is safe. In Nuxt, put it in <code>app.vue</code> and call <code>toast</code> from client code, like a click handler. We ran it in Vue with Vite and in Nuxt 4, in development and in a production build.</p>
+        <p class="credit">Asked for by <a href="https://github.com/reslear">reslear</a> in <a href="https://github.com/YusufCeng1z/ding/issues/7">issue 7</a>.</p>
+      </section>
+
+      <section class="entry" aria-labelledby="next">
+        <h2 id="next">Next.js without a wrapper</h2>
+        <p>The React build now starts with <code>"use client"</code>. Until now, importing <code>Toaster</code> in a server layout failed, so you needed your own client component around it. You don't any more.</p>
+        <pre><code>// app/layout.tsx, a server component
+import { Toaster } from '@yusufceng1z/ding-react';
+
+export default function RootLayout({ children }) {
+  return (
+    &lt;html lang="en"&gt;
+      &lt;body&gt;
+        &lt;Toaster /&gt;
+        {children}
+      &lt;/body&gt;
+    &lt;/html&gt;
+  );
+}</code></pre>
+        <p>Call <code>toast</code> from client components only. See the <a href="/nextjs-toast/">Next.js guide</a>.</p>
+        <p class="credit">Suggested and built by <a href="https://github.com/tcisse">Amidou Cissé</a>, see <a href="https://github.com/YusufCeng1z/ding/pull/10">pull request 10</a>.</p>
+      </section>
+
+      <section class="entry" aria-labelledby="csp">
+        <h2 id="csp">Works with a strict CSP</h2>
+        <p>Ding puts its styles in one <code>&lt;style&gt;</code> element. If your <code>style-src</code> blocks inline styles, give it your page's nonce. Only that element needs it, because the per-toast values are set through the DOM, which CSP allows.</p>
+        <pre><code>&lt;Toaster nonce={nonce} /&gt;     {/* React, Svelte */}
+&lt;Toaster :nonce="nonce" /&gt;    &lt;!-- Vue --&gt;
+
+mountToaster({ nonce });        // plain DOM</code></pre>
+        <p class="credit">Suggested and built by <a href="https://github.com/tcisse">Amidou Cissé</a>, see <a href="https://github.com/YusufCeng1z/ding/pull/11">pull request 11</a>.</p>
+      </section>
+
+      <section class="entry" aria-labelledby="flicker">
+        <h2 id="flicker">Progress toasts don't flicker <span class="tag">Fixed</span></h2>
+        <p>When a toast changed its own text while it ran, like a download with a moving percentage, the text animation played again on every update and the title looked like it was shaking. Now the animation only plays when the title really becomes something new, such as "Download complete".</p>
+        <div class="demo" role="group" aria-label="Progress demo">
+          <p>Watch the title while the numbers change. It should stay still until the end.</p>
           <div class="row">
-            <button type="button" data-lang="en" aria-pressed="false">English</button>
-            <button type="button" data-lang="tr" aria-pressed="false">Türkçe</button>
-            <button type="button" data-lang="fr" aria-pressed="false">Français</button>
+            <button type="button" id="runDownload">Download</button>
+            <button type="button" id="runUpload">Upload</button>
           </div>
-          <pre class="out" id="labelsOut" role="status">region:  -
-close:   -</pre>
         </div>
-        <p class="credit">Suggested and built by <a href="https://github.com/tcisse">Amidou Cissé</a>, see <a href="https://github.com/YusufCeng1z/ding/pull/3">pull request 3</a>.</p>
+        <p class="credit">Reported by <a href="https://github.com/MathiasWP">MathiasWP</a> in <a href="https://github.com/YusufCeng1z/ding/issues/5">issue 5</a>. A screen recording from <a href="https://github.com/IsaacHatilima">IsaacHatilima</a> helped find it.</p>
       </section>
 
-      <section class="entry" aria-labelledby="hit">
-        <h2 id="hit">Bigger click areas</h2>
-        <p>Buttons keep their look but the area that counts as a click grew from 30 to 44 pixels tall, so a thumb that lands slightly above or below still hits. Neighbouring buttons never overlap.</p>
-        <div class="demo" role="group" aria-label="Click area demo">
-          <p>Show the click areas, open the toast, then click just above or below Retry.</p>
+      <section class="entry" aria-labelledby="order">
+        <h2 id="order">The close button stays last <span class="tag">Fixed</span></h2>
+        <p>In the plain DOM renderer, which Vue and Nuxt use, an error toast has a close button. If it then turned into a toast with an action, like Undo, the close button ended up in front of the action. It now stays at the end. React and Svelte were not affected.</p>
+        <div class="demo" role="group" aria-label="Button order demo">
+          <p>Open the error, then press Undo. The buttons should read Undo, then close.</p>
           <div class="row">
-            <button type="button" id="showHit" aria-pressed="false">Show click areas</button>
-            <button type="button" id="openHit">Open toast with buttons</button>
+            <button type="button" id="openErr">1. Open an error</button>
+            <button type="button" id="openUndo">2. Then Undo</button>
           </div>
-          <pre class="out" id="hitOut" role="status">No clicks yet</pre>
+          <pre class="out" id="orderOut" role="status">Buttons: -</pre>
         </div>
-      </section>
-
-      <section class="entry" aria-labelledby="altt">
-        <h2 id="altt">Alt + T reaches every toast</h2>
-        <p>Alt + T moves focus into the toast, which also pauses its timer. Before, it only worked when the toast had a button. A plain "Saved" toast could not be reached by keyboard and disappeared after five seconds. Now focus lands on the toast itself, with a ring inside it.</p>
-        <div class="demo" role="group" aria-label="Alt T demo">
-          <p>Open the toast, then press Alt + T within five seconds. It only works in the <b>After</b> mode, because the old code is gone.</p>
-          <div class="row"><button type="button" id="openPlain">Open a plain toast</button></div>
-          <pre class="out" id="focusOut" role="status">Focus: not on a toast</pre>
-        </div>
-      </section>
-
-      <section class="entry" aria-labelledby="esc">
-        <h2 id="esc">Esc no longer closes toasts behind your back</h2>
-        <p>Esc dismisses toasts, but it used to do that even while you pressed Esc to close a dialog, a menu or to clear a text field. Now it leaves the toast alone when focus is in one of those. Press Esc anywhere else and it still dismisses.</p>
-        <div class="demo" role="group" aria-label="Esc demo">
-          <p>Open a toast that stays. Click into the field or open the dialog, then press Esc.</p>
-          <div class="row">
-            <button type="button" id="openSticky">Open a toast that stays</button>
-            <button type="button" id="openDlg">Open a dialog</button>
-          </div>
-          <div class="row"><input type="text" id="field" aria-label="Test field" placeholder="Click here, then press Esc" /></div>
-          <pre class="out" id="escOut" role="status">Toasts on screen: 0</pre>
-        </div>
-        <dialog id="dlg" aria-label="Test dialog">
-          <p>Press Esc. The toast should stay.</p>
-          <div class="demo" style="padding:0;border:0;background:none"><button type="button" onclick="document.getElementById('dlg').close()">Close dialog</button></div>
-        </dialog>
-      </section>
-
-      <section class="entry" aria-labelledby="polish">
-        <h2 id="polish">Smaller fixes</h2>
-        <ul>
-          <li><b>Centered icon.</b> The status icon sat one pixel low next to the text. It is now centered in the pill.</li>
-          <li><b>Even padding.</b> A toast without buttons had about 29 pixels of space after the text and 12 before the icon. The right side is now about 15, so the pill looks balanced.</li>
-          <li><b>Safari drag.</b> Dragging a toast no longer highlights its text in Safari.</li>
-          <li><b>Page styles can't push buttons around.</b> A site-wide <code>button { margin }</code> rule used to shift the close button. The toast now resets its own button margins.</li>
-        </ul>
       </section>
 
       <section class="entry" aria-labelledby="dev">
         <h2 id="dev">For contributors</h2>
-        <p>A fresh clone now installs, type-checks, tests and builds, and a GitHub Actions workflow runs the same steps on every pull request. Running the tests needs Node 22.18 or newer. The packages themselves still support Node 18 and up. Thanks to <a href="https://github.com/tcisse">Amidou Cissé</a> for <a href="https://github.com/YusufCeng1z/ding/pull/1">pull request 1</a>.</p>
+        <p>The React, Svelte, Vue and plain DOM renderers now each have render tests, and CI runs them on every pull request. Thanks to <a href="https://github.com/tcisse">Amidou Cissé</a> for <a href="https://github.com/YusufCeng1z/ding/pull/13">pull request 13</a> and the three before it.</p>
+        <p><a href="/changelog/0-0-3/">What's new in 0.0.3</a></p>
       </section>
 
       <footer>Ding is made by <a href="https://yusufcengiz.dev">Yusuf Cengiz</a>. MIT licensed, <a href="https://github.com/YusufCeng1z/ding">source on GitHub</a>.</footer>
