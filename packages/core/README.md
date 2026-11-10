@@ -2,7 +2,7 @@
 
 Toasts with real spring physics. One toast that morphs in place. No dependencies, no stylesheet.
 
-This is the core: springs, timers, store, sound and a plain DOM renderer. For React or Svelte, use [`@yusufceng1z/ding-react`](https://www.npmjs.com/package/@yusufceng1z/ding-react) or [`@yusufceng1z/ding-svelte`](https://www.npmjs.com/package/@yusufceng1z/ding-svelte).
+This is the core: springs, timers, store, sound and a plain DOM renderer. For React, Svelte or Vue, use [`@yusufceng1z/ding-react`](https://www.npmjs.com/package/@yusufceng1z/ding-react), [`@yusufceng1z/ding-svelte`](https://www.npmjs.com/package/@yusufceng1z/ding-svelte) or [`@yusufceng1z/ding-vue`](https://www.npmjs.com/package/@yusufceng1z/ding-vue).
 
 ## Install
 

@@ -1,0 +1,64 @@
+{
+  "name": "@yusufceng1z/ding-vue",
+  "version": "0.0.4",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@yusufceng1z/ding": "workspace:*"
+  },
+  "peerDependencies": {
+    "vue": "^3.3.0"
+  },
+  "devDependencies": {
+    "@vue/test-utils": "^2.4.6",
+    "happy-dom": "^21.0.4",
+    "vue": "^3.5.0",
+    "vitest": "^5.1.0"
+  },
+  "description": "Vue 3 renderer for Ding spring-physics toasts.",
+  "homepage": "https://ding.yusufcengiz.dev",
+  "bugs": {
+    "url": "https://github.com/YusufCeng1z/ding/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YusufCeng1z/ding.git",
+    "directory": "packages/vue"
+  },
+  "keywords": [
+    "toast",
+    "notification",
+    "spring",
+    "animation",
+    "vue",
+    "nuxt"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "author": "Yusuf Cengiz"
+}

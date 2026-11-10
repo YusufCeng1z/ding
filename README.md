@@ -9,7 +9,7 @@
 
 <p align="center">
   Toasts with real spring physics.<br />
-  One toast that morphs in place. No dependencies. React, Svelte or plain DOM.
+  One toast that morphs in place. No dependencies. React, Svelte, Vue or plain DOM.
 </p>
 
 <p align="center">
@@ -38,6 +38,7 @@
 ```bash
 npm i @yusufceng1z/ding-react    # React 18+
 npm i @yusufceng1z/ding-svelte   # Svelte 5
+npm i @yusufceng1z/ding-vue      # Vue 3 and Nuxt
 npm i @yusufceng1z/ding          # plain DOM
 ```
 
@@ -80,6 +81,21 @@ Works in the Next.js App Router as is: the package ships `"use client"`, so `Toa
 <Toaster position="top-center" theme="system" />
 <button onclick={() => toast.success('Saved')}>Save</button>
 ```
+
+**Vue 3**
+
+```vue
+<script setup>
+import { Toaster, toast } from '@yusufceng1z/ding-vue';
+</script>
+
+<template>
+  <Toaster position="top-center" theme="system" />
+  <button @click="toast.success('Saved')">Save</button>
+</template>
+```
+
+`Toaster` renders nothing in place and mounts in `onMounted`, so server rendering is safe. In Nuxt, put it in `app.vue` and call `toast` from client code.
 
 **Plain DOM**
 
@@ -193,14 +209,14 @@ toast.configure({
 });
 ```
 
-`<Toaster labels={{ dismiss: 'Fermer la notification' }} />` does the same in React and Svelte, and `mountToaster({ labels })` in plain DOM.
+`<Toaster labels={{ dismiss: 'Fermer la notification' }} />` does the same in React, Svelte and Vue, and `mountToaster({ labels })` in plain DOM.
 
 ### Content Security Policy
 
 Styles are injected as one `<style>` element. If your CSP blocks inline styles, pass the page's nonce:
 
 ```tsx
-<Toaster nonce={nonce} />  {/* React, Svelte */}
+<Toaster nonce={nonce} />  {/* React, Svelte, Vue (:nonce="nonce") */}
 ```
 
 ```ts
@@ -216,6 +232,7 @@ Per-toast values are set through the DOM, which CSP allows, so only the styleshe
 | [`@yusufceng1z/ding`](packages/core) | Springs, timers, store, sound and the plain DOM renderer |
 | [`@yusufceng1z/ding-react`](packages/react) | React renderer |
 | [`@yusufceng1z/ding-svelte`](packages/svelte) | Svelte 5 renderer |
+| [`@yusufceng1z/ding-vue`](packages/vue) | Vue 3 renderer |
 
 The core owns all behavior. The framework packages only render.
 
