@@ -64,6 +64,16 @@ describe('React Toaster', () => {
     expect(toast.getState().toasts.find((t) => t.id === id)?.phase).toBe('closing');
   });
 
+  it('sizes its icons itself, so they stay small when the stylesheet is blocked', () => {
+    const { container } = render(<Toaster />);
+    act(() => void toast.error('Boom', { duration: 0 }));
+    const size = (sel: string) => [container.querySelector(sel)?.getAttribute('width'), container.querySelector(sel)?.getAttribute('height')];
+    expect(size('.tst-svg')).toEqual(['22', '22']);
+    expect(size('.tst-close svg')).toEqual(['12', '12']);
+    act(() => void toast.info('Photo', { image: 'data:image/gif;base64,R0lGODlhAQABAAAAACw=' }));
+    expect(size('.tst-media')).toEqual(['28', '28']);
+  });
+
   it('puts the nonce on the injected stylesheet', () => {
     render(<Toaster nonce="abc123" />);
     const style = document.querySelector<HTMLStyleElement>('style[data-toast]');

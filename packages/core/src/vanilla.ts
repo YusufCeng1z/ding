@@ -25,8 +25,11 @@ const el = <K extends keyof HTMLElementTagNameMap>(tag: K, cls: string, parent?:
   parent?.append(n);
   return n;
 };
-const svg = (cls: string, paths: readonly string[]) => {
+// width and height are a fallback for when the stylesheet is blocked (a wrong CSP nonce): without them an SVG fills its container
+const svg = (cls: string, paths: readonly string[], size: number) => {
   const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  s.setAttribute('width', String(size));
+  s.setAttribute('height', String(size));
   s.setAttribute('viewBox', '0 0 24 24');
   s.setAttribute('aria-hidden', 'true');
   s.setAttribute('class', cls);
@@ -91,8 +94,8 @@ export function mountToaster(
       if (n.type !== iconKey) {
         card.querySelector('.tst-icon')?.remove();
         const icon = el('div', 'tst-icon');
-        if (t.image) Object.assign(el('img', 'tst-media', icon), { src: t.image, alt: '' });
-        else el('div', 'tst-badge', icon).append(svg('tst-svg', ICONS[t.type]));
+        if (t.image) Object.assign(el('img', 'tst-media', icon), { src: t.image, alt: '', width: 28, height: 28 });
+        else el('div', 'tst-badge', icon).append(svg('tst-svg', ICONS[t.type], 22));
         card.prepend(icon);
         n.type = iconKey;
       }
@@ -154,7 +157,7 @@ export function mountToaster(
         if (!close) {
           close = el('button', 'tst-close', body);
           close.type = 'button';
-          close.append(svg('', ['M6 6l12 12M18 6L6 18']));
+          close.append(svg('', ['M6 6l12 12M18 6L6 18'], 12));
           close.onclick = () => toast.dismiss(t.id);
         }
         close.setAttribute('aria-label', s.labels.dismiss);

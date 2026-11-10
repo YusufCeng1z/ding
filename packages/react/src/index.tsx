@@ -24,10 +24,10 @@ function Item({ t, i, labels }: { t: ToastItem; i: number; labels: ToastLabels }
         {t.progress !== undefined && <div className="tst-progress" style={{ '--pg': t.progress } as CSSProperties} />}
         <div className="tst-icon">
           {t.image ? (
-            <img className="tst-media" src={t.image} alt="" />
+            <img className="tst-media" src={t.image} alt="" width={28} height={28} />
           ) : (
             <div className="tst-badge">
-              <svg className="tst-svg" viewBox="0 0 24 24" aria-hidden="true">
+              <svg className="tst-svg" viewBox="0 0 24 24" width={22} height={22} aria-hidden="true">
                 {ICONS[t.type].map((d) => (
                   <path key={d} d={d} pathLength={1} />
                 ))}
@@ -63,7 +63,7 @@ function Item({ t, i, labels }: { t: ToastItem; i: number; labels: ToastLabels }
           )}
           {sticky && (
             <button type="button" className="tst-close" aria-label={labels.dismiss} tabIndex={t.phase === 'open' ? 0 : -1} onClick={() => toast.dismiss(t.id)}>
-              <svg viewBox="0 0 24 24" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width={12} height={12} aria-hidden="true">
                 <path d="M6 6l12 12M18 6L6 18" />
               </svg>
             </button>
