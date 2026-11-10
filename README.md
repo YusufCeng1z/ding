@@ -28,6 +28,7 @@
 - **Real springs.** Size, shape and text move on a spring solver, so interrupting an animation keeps its momentum.
 - **No stylesheet.** Styles are injected from JavaScript. Nothing to import.
 - **Light, dark and system themes**, six positions, right-to-left support.
+- **Easy to restyle.** Colors and corner radius are [CSS variables](#styling).
 - **Rich content.** Description, avatar, buttons, progress bar, a countdown line, small trailing text.
 - **Accessible by default.** Persistent live regions, keyboard dismiss, `prefers-reduced-motion`.
 - **Optional sound.** A soft built-in tone per status, or plug in your own.
