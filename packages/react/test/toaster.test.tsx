@@ -1,18 +1,22 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, fireEvent, render } from '@testing-library/react';
 import { Toaster, toast } from '../src/index.tsx';
 
-// The store is a module singleton: clear toasts and restore defaults between tests.
+beforeEach(() => void vi.useFakeTimers());
+
+// The store is a module singleton: remove every toast (they leave on timers) and restore defaults between tests.
 afterEach(() => {
   cleanup();
   act(() => {
     toast.dismiss();
+    vi.advanceTimersByTime(1000);
     toast.configure({
       position: 'top-center',
       theme: 'system',
       labels: { region: 'Notifications', dismiss: 'Dismiss notification' },
     });
   });
+  vi.useRealTimers();
   document.querySelector('style[data-toast]')?.remove();
 });
 
@@ -57,7 +61,7 @@ describe('React Toaster', () => {
     const close = container.querySelector<HTMLButtonElement>('.tst-close');
     expect(close).not.toBeNull();
     act(() => fireEvent.click(close!));
-    expect(toast.getState().toasts.find((t) => t.id === id)?.phase ?? 'removed').not.toBe('open');
+    expect(toast.getState().toasts.find((t) => t.id === id)?.phase).toBe('closing');
   });
 
   it('puts the nonce on the injected stylesheet', () => {
