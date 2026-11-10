@@ -24,7 +24,7 @@ const RUN: Record<string, () => void> = {
 };
 
 // framework switcher: one choice drives every code sample, and is remembered
-const FW = ['React', 'Svelte', 'Vanilla'];
+const FW = ['React', 'Svelte', 'Vue', 'Vanilla'];
 let saved = 'react';
 try {
   saved = localStorage.getItem('ding-fw') ?? saved;
