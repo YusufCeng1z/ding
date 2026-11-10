@@ -1,12 +1,16 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render } from '@testing-library/svelte';
 import { flushSync } from 'svelte';
 import { Toaster, toast } from '../src/lib/index.ts';
 
-// The store is a module singleton: clear toasts and restore defaults between tests.
+beforeEach(() => void vi.useFakeTimers());
+
+// The store is a module singleton: remove every toast (they leave on timers) and restore defaults between tests.
 afterEach(() => {
   cleanup();
   toast.dismiss();
+  vi.advanceTimersByTime(1000);
+  vi.useRealTimers();
   toast.configure({
     position: 'top-center',
     theme: 'system',
@@ -59,7 +63,7 @@ describe('Svelte Toaster', () => {
     const close = container.querySelector<HTMLButtonElement>('.tst-close');
     expect(close).not.toBeNull();
     await fireEvent.click(close!);
-    expect(toast.getState().toasts.find((t) => t.id === id)?.phase ?? 'removed').not.toBe('open');
+    expect(toast.getState().toasts.find((t) => t.id === id)?.phase).toBe('closing');
   });
 
   it('puts the nonce on the injected stylesheet', () => {
