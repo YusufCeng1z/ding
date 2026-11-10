@@ -1,11 +1,12 @@
 # Ding
 
-> Spring-physics toast notifications for React, Svelte 5 and plain DOM. Zero dependencies. Styles are injected from JS, so there is no stylesheet to import. Human docs: /docs.html. Release notes with live demos: /changelog/
+> Spring-physics toast notifications for React, Svelte 5, Vue 3 and plain DOM. Zero dependencies. Styles are injected from JS, so there is no stylesheet to import. Human docs: /docs.html. Release notes with live demos: /changelog/
 
 ## Install
 
 - React: `npm i @yusufceng1z/ding-react`
 - Svelte 5: `npm i @yusufceng1z/ding-svelte`
+- Vue 3 / Nuxt: `npm i @yusufceng1z/ding-vue`
 - Vanilla: `npm i @yusufceng1z/ding`
 - shadcn/ui (React): `npx shadcn@latest add @ding/ding`
 
@@ -16,8 +17,9 @@ Render the toaster once, near the root.
 - React: `import { Toaster, toast } from '@yusufceng1z/ding-react'` then `<Toaster position="top-center" theme="system" />`
 - React with the Next.js App Router: the package ships `"use client"`, so render `Toaster` directly in `app/layout.tsx` (a server component is fine). Call `toast` from client components only. Guide: /nextjs-toast/
 - Svelte 5: `import { Toaster, toast } from '@yusufceng1z/ding-svelte'` then `<Toaster position="top-center" theme="system" />`
+- Vue 3: `import { Toaster, toast } from '@yusufceng1z/ding-vue'` then `<Toaster position="top-center" theme="system" />`. In Nuxt render it in `app.vue`; it renders nothing on the server
 - Vanilla: `import { mountToaster, toast } from '@yusufceng1z/ding'` then `const unmount = mountToaster({ position, theme })`
-- Strict CSP (`style-src` without `'unsafe-inline'`): pass the page's nonce, `<Toaster nonce={nonce} />` or `mountToaster({ nonce })`. Only the injected stylesheet needs it
+- Strict CSP (`style-src` without `'unsafe-inline'`): pass the page's nonce, `<Toaster nonce={nonce} />` (Vue: `:nonce="nonce"`) or `mountToaster({ nonce })`. Only the injected stylesheet needs it
 
 ## API
 
