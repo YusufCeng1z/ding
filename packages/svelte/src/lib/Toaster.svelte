@@ -59,10 +59,10 @@
         {#if t.progress !== undefined}<div class="tst-progress" style:--pg={t.progress}></div>{/if}
         <div class="tst-icon">
           {#if t.image}
-            <img class="tst-media" src={t.image} alt="" />
+            <img class="tst-media" src={t.image} alt="" width="28" height="28" />
           {:else}
             <div class="tst-badge">
-              <svg class="tst-svg" viewBox="0 0 24 24" aria-hidden="true">
+              <svg class="tst-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
                 {#each ICONS[t.type] as d (d)}
                   <path {d} pathLength="1" />
                 {/each}
@@ -92,7 +92,7 @@
           {/if}
           {#if t.duration === 0 && t.type !== 'loading' && !t.secondary}
             <button type="button" class="tst-close" aria-label={state.labels.dismiss} tabindex={t.phase === 'open' ? 0 : -1} onclick={() => toast.dismiss(t.id)}>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+              <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
             </button>
           {/if}
         </div>
