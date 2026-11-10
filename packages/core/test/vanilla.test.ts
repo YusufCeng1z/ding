@@ -63,6 +63,23 @@ describe('mountToaster', () => {
     expect(toast.getState().toasts.find((t) => t.id === id)?.phase).toBe('closing');
   });
 
+  it('keeps the close button last when a sticky toast morphs into one with an action', () => {
+    mount();
+    toast.error('Payment failed', { description: 'Card declined' }); // sticky: gets a close button first
+    toast.success('Message deleted', { action: { label: 'Undo', onClick: () => ({ type: 'info', title: 'Restored' }) } });
+    const body = document.querySelector('.tst-body')!;
+    const kinds = [...body.querySelectorAll('button')].map((b) => b.className.replace('tst-', ''));
+    expect(kinds).toEqual(['action', 'close']);
+  });
+
+  it('puts the secondary button before the action, also when morphing from a sticky toast', () => {
+    mount();
+    toast.error('Boom'); // leaves a close button behind while the new buttons are added
+    toast.info('Update ready', { action: { label: 'Reload', onClick() {} }, secondary: { label: 'Later', onClick() {} } });
+    const kinds = [...document.querySelectorAll('.tst-body button')].map((b) => b.textContent || 'close');
+    expect(kinds).toEqual(['Later', 'Reload']);
+  });
+
   it('puts the nonce on the injected stylesheet', () => {
     mount({ nonce: 'abc123' });
     const style = document.querySelector<HTMLStyleElement>('style[data-toast]');
