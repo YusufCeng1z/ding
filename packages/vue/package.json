@@ -59,6 +59,9 @@
   "engines": {
     "node": ">=18"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "MIT",
   "author": "Yusuf Cengiz"
 }
