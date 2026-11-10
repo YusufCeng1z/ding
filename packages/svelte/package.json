@@ -1,6 +1,6 @@
 {
   "name": "@yusufceng1z/ding-svelte",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
   "sideEffects": false,
   "svelte": "./dist/index.js",
