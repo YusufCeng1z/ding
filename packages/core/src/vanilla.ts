@@ -130,7 +130,7 @@ export function mountToaster(
           sec = el('button', 'tst-action tst-secondary');
           sec.type = 'button';
           sec.onclick = () => toast.act(t.id, 'secondary');
-          body.insertBefore(sec, body.querySelector('.tst-action'));
+          body.insertBefore(sec, body.querySelector('.tst-action, .tst-close'));
         }
         sec.textContent = t.secondary.label;
         sec.tabIndex = t.phase === 'open' ? 0 : -1;
@@ -139,8 +139,9 @@ export function mountToaster(
       if (!t.action) act?.remove();
       else {
         if (!act) {
-          act = el('button', 'tst-action', body);
+          act = el('button', 'tst-action');
           act.type = 'button';
+          body.insertBefore(act, body.querySelector('.tst-close')); // a close button left from a sticky toast stays last
           act.onclick = () => toast.act(t.id);
         }
         act.textContent = t.action.label;
