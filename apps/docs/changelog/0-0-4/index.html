@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>What's new in Ding 0.0.4: Vue, Next.js without a wrapper, CSP nonce</title>
+    <meta name="description" content="Ding 0.0.4 adds a Vue 3 and Nuxt package, works in Next.js server layouts without a wrapper, supports a CSP nonce, and stops progress toasts from flickering." />
+    <link rel="canonical" href="https://ding.yusufcengiz.dev/changelog/0-0-4/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="stylesheet" href="/page.css" />
+    <link rel="stylesheet" href="/changelog.css" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Ding" />
+    <meta property="og:title" content="What's new in Ding 0.0.4" />
+    <meta property="og:description" content="A Vue 3 and Nuxt package, Next.js server layouts without a wrapper, a CSP nonce and calmer progress toasts." />
+    <meta property="og:url" content="https://ding.yusufcengiz.dev/changelog/0-0-4/" />
+    <meta property="og:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "What's new in Ding 0.0.4",
+        "description": "A Vue 3 and Nuxt package, Next.js server layouts without a wrapper, a CSP nonce and calmer progress toasts.",
+        "url": "https://ding.yusufcengiz.dev/changelog/0-0-4/",
+        "datePublished": "2026-11-10",
+        "dateModified": "2026-11-10",
+        "author": { "@type": "Person", "name": "Yusuf Cengiz", "url": "https://yusufcengiz.dev" },
+        "about": { "@type": "SoftwareSourceCode", "name": "Ding", "codeRepository": "https://github.com/YusufCeng1z/ding" }
+      }
+    </script>
+  </head>
+  <body>
+    <nav aria-label="Site">
+      <a href="/">Ding</a>
+      <a href="/docs.html">Docs</a>
+      <a href="/changelog/">What's new</a>
+      <a href="https://github.com/YusufCeng1z/ding">GitHub</a>
+    </nav>
+    <main>
+      <h1>What's new in Ding 0.0.4</h1>
+      <p class="version">A Vue package, Next.js and CSP support, and calmer toasts. No breaking changes.</p>
+      <p class="lead">Most of this release came from people using Ding. The two fixes have live demos below, so you can try them yourself.</p>
+      <pre><code>npm i @yusufceng1z/ding@latest</code></pre>
+
+      <section class="entry" aria-labelledby="vue">
+        <h2 id="vue">Vue 3 and Nuxt <span class="tag">New</span></h2>
+        <p>There is a new package, <code>@yusufceng1z/ding-vue</code>. It has the same props as the React and Svelte ones: <code>position</code>, <code>theme</code>, <code>labels</code> and <code>nonce</code>.</p>
+        <pre><code>npm i @yusufceng1z/ding-vue</code></pre>
+        <pre><code>&lt;script setup&gt;
+import { Toaster, toast } from '@yusufceng1z/ding-vue';
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;Toaster position="top-center" theme="system" /&gt;
+  &lt;button @click="toast.success('Saved')"&gt;Save&lt;/button&gt;
+&lt;/template&gt;</code></pre>
+        <p><code>Toaster</code> draws nothing where you put it and starts after the page has loaded, so server rendering is safe. In Nuxt, put it in <code>app.vue</code> and call <code>toast</code> from client code, like a click handler. We ran it in Vue with Vite and in Nuxt 4, in development and in a production build.</p>
+        <p class="credit">Asked for by <a href="https://github.com/reslear">reslear</a> in <a href="https://github.com/YusufCeng1z/ding/issues/7">issue 7</a>.</p>
+      </section>
+
+      <section class="entry" aria-labelledby="next">
+        <h2 id="next">Next.js without a wrapper</h2>
+        <p>The React build now starts with <code>"use client"</code>. Until now, importing <code>Toaster</code> in a server layout failed, so you needed your own client component around it. You don't any more.</p>
+        <pre><code>// app/layout.tsx, a server component
+import { Toaster } from '@yusufceng1z/ding-react';
+
+export default function RootLayout({ children }) {
+  return (
+    &lt;html lang="en"&gt;
+      &lt;body&gt;
+        &lt;Toaster /&gt;
+        {children}
+      &lt;/body&gt;
+    &lt;/html&gt;
+  );
+}</code></pre>
+        <p>Call <code>toast</code> from client components only. See the <a href="/nextjs-toast/">Next.js guide</a>.</p>
+        <p class="credit">Suggested and built by <a href="https://github.com/tcisse">Amidou Cissé</a>, see <a href="https://github.com/YusufCeng1z/ding/pull/10">pull request 10</a>.</p>
+      </section>
+
+      <section class="entry" aria-labelledby="csp">
+        <h2 id="csp">Works with a strict CSP</h2>
+        <p>Ding puts its styles in one <code>&lt;style&gt;</code> element. If your <code>style-src</code> blocks inline styles, give it your page's nonce. Only that element needs it, because the per-toast values are set through the DOM, which CSP allows.</p>
+        <pre><code>&lt;Toaster nonce={nonce} /&gt;     {/* React, Svelte */}
+&lt;Toaster :nonce="nonce" /&gt;    &lt;!-- Vue --&gt;
+
+mountToaster({ nonce });        // plain DOM</code></pre>
+        <p class="credit">Suggested and built by <a href="https://github.com/tcisse">Amidou Cissé</a>, see <a href="https://github.com/YusufCeng1z/ding/pull/11">pull request 11</a>.</p>
+      </section>
+
+      <section class="entry" aria-labelledby="flicker">
+        <h2 id="flicker">Progress toasts don't flicker <span class="tag">Fixed</span></h2>
+        <p>When a toast changed its own text while it ran, like a download with a moving percentage, the text animation played again on every update and the title looked like it was shaking. Now the animation only plays when the title really becomes something new, such as "Download complete".</p>
+        <div class="demo" role="group" aria-label="Progress demo">
+          <p>Watch the title while the numbers change. It should stay still until the end.</p>
+          <div class="row">
+            <button type="button" id="runDownload">Download</button>
+            <button type="button" id="runUpload">Upload</button>
+          </div>
+        </div>
+        <p class="credit">Reported by <a href="https://github.com/MathiasWP">MathiasWP</a> in <a href="https://github.com/YusufCeng1z/ding/issues/5">issue 5</a>. A screen recording from <a href="https://github.com/IsaacHatilima">IsaacHatilima</a> helped find it.</p>
+      </section>
+
+      <section class="entry" aria-labelledby="order">
+        <h2 id="order">The close button stays last <span class="tag">Fixed</span></h2>
+        <p>In the plain DOM renderer, which Vue and Nuxt use, an error toast has a close button. If it then turned into a toast with an action, like Undo, the close button ended up in front of the action. It now stays at the end. React and Svelte were not affected.</p>
+        <div class="demo" role="group" aria-label="Button order demo">
+          <p>Open the error, then press Undo. The buttons should read Undo, then close.</p>
+          <div class="row">
+            <button type="button" id="openErr">1. Open an error</button>
+            <button type="button" id="openUndo">2. Then Undo</button>
+          </div>
+          <pre class="out" id="orderOut" role="status">Buttons: -</pre>
+        </div>
+      </section>
+
+      <section class="entry" aria-labelledby="dev">
+        <h2 id="dev">For contributors</h2>
+        <p>The React, Svelte, Vue and plain DOM renderers now each have render tests, and CI runs them on every pull request. Thanks to <a href="https://github.com/tcisse">Amidou Cissé</a> for <a href="https://github.com/YusufCeng1z/ding/pull/13">pull request 13</a> and the three before it.</p>
+        <p><a href="/changelog/0-0-3/">What's new in 0.0.3</a></p>
+      </section>
+
+      <footer>Ding is made by <a href="https://yusufcengiz.dev">Yusuf Cengiz</a>. MIT licensed, <a href="https://github.com/YusufCeng1z/ding">source on GitHub</a>.</footer>
+    </main>
+    <script type="module" src="/src/changelog-0-0-4.ts"></script>
+  </body>
+</html>
