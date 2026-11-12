@@ -33,30 +33,44 @@
 
       <div class="shell">
         <aside class="side">
-          <div class="fwpick"><span class="lbl">Framework</span><div id="fw"></div></div>
-          <nav aria-label="On this page">
-            <a href="#install">Install</a>
-            <a href="#setup">Setup</a>
-            <a href="#nextjs" data-for="react">Next.js</a>
-            <a href="#show">Show a toast</a>
-            <a href="#update">Update in place</a>
-            <a href="#actions">Actions</a>
-            <a href="#options">Options</a>
-            <a href="#configure">Configure</a>
-            <a href="#styling">Styling</a>
-            <a href="#sound">Sound</a>
-            <a href="#a11y">Accessibility</a>
+          <button class="toc-toggle" type="button" aria-expanded="false" aria-controls="docs-toc" hidden>
+            On this page <span aria-hidden="true"></span>
+          </button>
+          <nav id="docs-toc" aria-label="On this page">
+            <div class="toc-group">
+              <span class="toc-label">Get started</span>
+              <a href="#install">Install</a>
+              <a href="#setup">Your first toast</a>
+              <a href="#nextjs" data-for="react">Next.js</a>
+              <a href="#nuxt" data-for="vue">Nuxt</a>
+              <a href="#show">Show a toast</a>
+            </div>
+            <div class="toc-group">
+              <span class="toc-label">Examples</span>
+              <a href="#update">Update in place</a>
+              <a href="#actions">Actions</a>
+            </div>
+            <div class="toc-group">
+              <span class="toc-label">Reference</span>
+              <a href="#options">Options</a>
+              <a href="#configure">Configure</a>
+              <a href="#csp">Content Security Policy</a>
+              <a href="#styling">Styling</a>
+              <a href="#sound">Sound</a>
+              <a href="#a11y">Accessibility</a>
+            </div>
           </nav>
         </aside>
 
         <main id="main">
-          <div class="hero">
-            <h1>Docs</h1>
-            <p class="tag">Press <b>Run</b> on any example to see the real toast. Prefer plain text? <a href="/llms.txt">llms.txt</a></p>
+          <div class="docs-intro">
+            <h1>Documentation</h1>
+            <p>Install Ding, mount a toaster, and show your first notification.</p>
           </div>
 
           <section id="install">
-            <h2>Install</h2>
+            <h2>Install Ding</h2>
+            <div class="fwpick"><span class="lbl">Choose your framework</span><div id="fw"></div></div>
             <p>There is no stylesheet to import: styles are injected from JavaScript.</p>
             <pre data-for="react"><code>npm i @yusufceng1z/ding-react</code></pre>
             <p data-for="react">Using shadcn/ui? This installs the package and adds a <code>ding-toaster.tsx</code> wrapper:</p>
@@ -67,34 +81,43 @@
           </section>
 
           <section id="setup">
-            <h2>Setup</h2>
-            <p>Render the toaster once, near the root of your app.</p>
-            <pre data-for="react"><code>import { Toaster } from '@yusufceng1z/ding-react';
+            <h2>Your first toast</h2>
+            <p>Add this example to your app after installing Ding. Mount the toaster once near the root, then click <b>Save</b> to show a notification.</p>
+            <pre data-for="react"><code>import { Toaster, toast } from '@yusufceng1z/ding-react';
 
 export default function App() {
   return (
     &lt;&gt;
-      &lt;Toaster position="top-center" theme="system" /&gt;
-      {/* your app */}
+      &lt;Toaster /&gt;
+      &lt;button onClick={() =&gt; toast.success('Saved')}&gt;Save&lt;/button&gt;
     &lt;/&gt;
   );
 }</code></pre>
             <pre data-for="svelte"><code>&lt;script&gt;
-  import { Toaster } from '@yusufceng1z/ding-svelte';
+  import { Toaster, toast } from '@yusufceng1z/ding-svelte';
 &lt;/script&gt;
 
-&lt;Toaster position="top-center" theme="system" /&gt;</code></pre>
+&lt;Toaster /&gt;
+&lt;button onclick={() =&gt; toast.success('Saved')}&gt;Save&lt;/button&gt;</code></pre>
             <pre data-for="vue"><code>&lt;script setup&gt;
-import { Toaster } from '@yusufceng1z/ding-vue';
+import { Toaster, toast } from '@yusufceng1z/ding-vue';
 &lt;/script&gt;
 
 &lt;template&gt;
-  &lt;Toaster position="top-center" theme="system" /&gt;
-  &lt;!-- your app --&gt;
+  &lt;Toaster /&gt;
+  &lt;button @click="toast.success('Saved')"&gt;Save&lt;/button&gt;
 &lt;/template&gt;</code></pre>
-            <pre data-for="vanilla"><code>import { mountToaster } from '@yusufceng1z/ding';
+            <pre data-for="vanilla"><code>&lt;!-- index.html in a Vite app --&gt;
+&lt;button id="save"&gt;Save&lt;/button&gt;
 
-const unmount = mountToaster({ position: 'top-center' });</code></pre>
+&lt;script type="module"&gt;
+  import { mountToaster, toast } from '@yusufceng1z/ding';
+
+  mountToaster();
+  document.querySelector('#save').addEventListener('click', () =&gt; {
+    toast.success('Saved');
+  });
+&lt;/script&gt;</code></pre>
             <h3 data-for="vue" id="nuxt">Nuxt</h3>
             <p data-for="vue"><code>Toaster</code> draws nothing in place and starts after the page has loaded, so server rendering is safe. Put it in <code>app.vue</code> and call <code>toast</code> from client code, like a click handler or <code>onMounted</code>:</p>
             <pre data-for="vue"><code>&lt;!-- app.vue --&gt;
@@ -125,7 +148,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           <section id="show">
             <h2>Show a toast</h2>
-            <p>Import <code>toast</code> from the same package and call it from anywhere. Every call returns the toast id. <code>toast.loading(title)</code> works the same and stays until you update or dismiss it.</p>
+            <p>Import <code>toast</code> from the same package and call it from anywhere. Calls like <code>toast.success()</code> and <code>toast.loading()</code> return a toast ID you can pass to <code>toast.update()</code> or <code>toast.dismiss()</code>. <code>toast.loading(title)</code> works the same and stays until you update or dismiss it.</p>
             <pre data-run="show"><code>import { toast } from '<span data-for="react">@yusufceng1z/ding-react</span><span data-for="svelte">@yusufceng1z/ding-svelte</span><span data-for="vue">@yusufceng1z/ding-vue</span><span data-for="vanilla">@yusufceng1z/ding</span>';
 
 toast.success('Saved');
@@ -137,7 +160,7 @@ toast.info('New version available');</code></pre>
 
           <section id="update">
             <h2>Update in place</h2>
-            <p>Wrap a promise and one toast moves from loading to the result:</p>
+            <p>Wrap a promise to move a toast from loading to the result. <code>toast.promise()</code> returns that same promise, so you can <code>await</code> it to get the result or catch a rejection.</p>
             <pre data-run="promise"><code>toast.promise(save(), {
   loading: 'Saving…',
   success: 'Saved',
@@ -246,7 +269,7 @@ toast.dismiss();    // all</code></pre>
         </main>
       </div>
 
-      <footer>Made by <a href="https://yusufcengiz.dev">yusufcengiz.dev</a></footer>
+      <footer><a href="/llms.txt">Plain text</a> · Made by <a href="https://yusufcengiz.dev">yusufcengiz.dev</a></footer>
     </div>
   </body>
 </html>
