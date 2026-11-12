@@ -1,6 +1,6 @@
 {
   "name": "@yusufceng1z/ding",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Framework-agnostic toast engine: spring solver, timers, state machine.",
   "type": "module",
   "sideEffects": false,
