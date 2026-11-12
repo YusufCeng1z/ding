@@ -106,7 +106,7 @@ opacity:calc(var(--tp)*1.5 - .25);filter:blur(calc((1 - var(--tp))*10px));transf
 .tst-viewport:hover .tst-timer,.tst-viewport:has(:focus-visible) .tst-timer{animation-play-state:paused}
 .tst-viewport:dir(rtl) .tst-timer{transform-origin:right}
 .tst-ghost{position:absolute;inset-inline-start:0;top:0;pointer-events:none}
-.tst-progress{position:absolute;inset:auto 0 0 0;height:3px;background:color-mix(in srgb,var(--tst-fg) 14%,transparent);opacity:var(--tp);pointer-events:none}
+.tst-progress{position:absolute;inset:auto 0 0 0;height:3px;background:color-mix(in srgb,var(--on) 14%,transparent);opacity:var(--tp);pointer-events:none}
 .tst-progress::after{content:'';position:absolute;inset:0;background:var(--c);transform-origin:left;transform:scaleX(var(--pg,0));transition:transform .3s cubic-bezier(.2,0,0,1)}
 .tst-desc{margin-top:3px;font-size:13px;font-weight:450;opacity:.65}
 .tst[data-phase=open] .tst-desc{animation:tst-in-up var(--tst-pop-dur) var(--tst-pop) .1s both}
@@ -115,17 +115,17 @@ opacity:calc(var(--tp)*1.5 - .25);filter:blur(calc((1 - var(--tp))*10px));transf
 .tst-action,.tst-close{position:relative;flex:none;margin:0;border:0;color:inherit;font:inherit;cursor:pointer;background:transparent;
 opacity:calc(var(--ap)*1.3 - .15);transform:scale(calc(.85 + var(--ap)*.15));
 transition-property:background-color,scale;transition-duration:.15s;transition-timing-function:ease-out}
-.tst-action{height:30px;padding:0 14px;border-radius:999px;font-size:13px;font-weight:600;background:var(--tst-fg);color:var(--tst-bg)}
-.tst-secondary{background:transparent;color:color-mix(in srgb,var(--tst-fg) 65%,transparent);padding:0 10px}
+.tst-action{height:30px;padding:0 14px;border-radius:999px;font-size:13px;font-weight:600;background:var(--on);color:var(--fill)}
+.tst-secondary{background:transparent;color:color-mix(in srgb,var(--on) 65%,transparent);padding:0 10px}
 .tst-close{width:30px;height:30px;padding:0;border-radius:50%;display:grid;place-items:center}
 /* 30px look, 44px target: taller hit area, narrow enough sideways that neighbours (8px apart) never overlap */
 .tst-action::before,.tst-close::before{content:'';position:absolute;inset:-7px -3px}
 .tst-slot:focus-visible{outline:none}
-.tst-slot:focus-visible .tst{outline:2px solid var(--tst-fg);outline-offset:-5px}
+.tst-slot:focus-visible .tst{outline:2px solid var(--on);outline-offset:-5px}
 .tst-close svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
-@media (hover:hover){.tst-action:hover{background:color-mix(in srgb,var(--tst-fg) 82%,var(--tst-bg))}.tst-secondary:hover,.tst-close:hover{background:color-mix(in srgb,var(--tst-fg) 10%,transparent);color:var(--tst-fg)}}
+@media (hover:hover){.tst-action:hover{background:color-mix(in srgb,var(--on) 82%,var(--fill))}.tst-secondary:hover,.tst-close:hover{background:color-mix(in srgb,var(--on) 10%,transparent);color:var(--on)}}
 .tst-action:not(:disabled):active,.tst-close:not(:disabled):active{scale:.96}
-.tst-action:focus-visible,.tst-close:focus-visible{outline:2px solid var(--tst-fg);outline-offset:2px}
+.tst-action:focus-visible,.tst-close:focus-visible{outline:2px solid var(--on);outline-offset:2px}
 
 @keyframes tst-out{to{transform:translateY(calc(var(--tst-dir)*12px)) scale(.92);opacity:0;filter:blur(4px)}}
 @keyframes tst-swap{from{opacity:0;scale:.25;filter:blur(4px)}}
