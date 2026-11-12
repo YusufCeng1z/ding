@@ -17,7 +17,12 @@ function watchMotion(slot: HTMLElement, id: string, t: Toaster): () => void {
   const SIZE = parseFloat(cs.getPropertyValue('--tst-size')) || 44;
   const dir = Number(cs.getPropertyValue('--tst-dir')) || -1;
   const Y0 = dir * (SIZE + (parseFloat(cs.getPropertyValue('--tst-pad')) || 16) + 24);
-  const maxR = parseFloat(cs.getPropertyValue('--tst-radius')) || 24;
+  let maxR = 24; // re-read each frame so a changed --tst-radius shows up on an open toast
+  const readR = () => {
+    const v = parseFloat(cs.getPropertyValue('--tst-radius'));
+    return (maxR = Number.isNaN(v) ? 24 : v); // 0 is a valid radius: square corners
+  };
+  readR();
   const num = (name: string, d: number) => {
     const v = parseFloat(cs.getPropertyValue(name));
     return Number.isNaN(v) ? d : v;
@@ -44,7 +49,7 @@ function watchMotion(slot: HTMLElement, id: string, t: Toaster): () => void {
     const k = s0 + (1 - s0) * e;
     pill.style.width = `${w.x}px`;
     pill.style.height = `${h.x}px`;
-    pill.style.setProperty('--r', `${Math.min(h.x / 2, maxR)}px`);
+    pill.style.setProperty('--r', `${Math.min(h.x / 2, readR())}px`);
     pill.style.translate = `${x.x}px ${y.x}px`;
     pill.style.scale = `${k * (1 - stretch * 0.7) * (1 + squash * 0.5)} ${k * (1 + stretch) * (1 - squash)}`;
     pill.style.opacity = String(clamp(e * 2));
