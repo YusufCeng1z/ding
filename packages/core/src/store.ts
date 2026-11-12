@@ -1,5 +1,5 @@
 import type {
-  Position, PromiseMessages, SpringSettings, Theme, ToastIcons, ToastItem, ToastLabels, ToasterState, ToastOptions, ToastPatch, ToastType,
+  HeldMode, Position, PromiseMessages, SpringSettings, Theme, ToastIcons, ToastItem, ToastLabels, ToasterState, ToastOptions, ToastPatch, ToastType,
 } from './types';
 import { chime } from './sound.ts';
 import { setIcons } from './icons.ts';
@@ -46,6 +46,11 @@ export function createToaster() {
   let volume = 0.5;
   // One toast at a time: a new call morphs the live toast instead of stacking. Each caller keeps its own id,
   // but only the newest caller may update the shared toast, so a stale loading->success can't hijack it.
+  // What happens when a toast that stays (an error, a button) is on screen and another call comes in:
+  // 'list' keeps it and opens the new toast in its own slot, 'queue' makes the new one wait, 'replace' morphs it (old behavior).
+  let held: HeldMode = 'list';
+  let releasing = false; // flush() is showing a waiting toast: it must not wait again
+  const pending: { id: string; type: ToastType; title: string; opts: ToastOptions; holds: boolean }[] = [];
   const live = new Map<string, string>(); // caller id -> toast id
   const owner = new Map<string, string>(); // toast id -> newest caller id
 
@@ -87,7 +92,20 @@ export function createToaster() {
       }
     }
     const id = opts.id ?? `toast-${++counter}`;
-    const cur = state.toasts.filter((t) => t.phase === 'enter' || t.phase === 'open').at(-1);
+    const open = state.toasts.filter((t) => t.phase === 'enter' || t.phase === 'open');
+    const holds = (opts.duration ?? autoDuration(type, !!(opts.action || opts.secondary))) === 0;
+    const isHeld = (t: ToastItem) => entries.get(t.id)?.base === 0 && t.type !== 'loading';
+    if (held === 'queue' && !releasing && (open.some(isHeld) || pending.length)) {
+      // a real queue: everything waits its turn, in order, and is shown once the toast before it is gone
+      pending.push({ id, type, title, opts, holds });
+      return id;
+    }
+    let cur = open.at(-1);
+    if (held === 'list') {
+      // a held toast keeps its own slot. A quick toast reuses the newest quick slot, or opens one next to the held ones.
+      if (!holds) cur = open.filter((t) => !isHeld(t)).at(-1);
+      else if (cur && isHeld(cur)) cur = undefined;
+    }
     if (cur) {
       live.set(id, cur.id);
       owner.set(cur.id, id);
@@ -115,7 +133,30 @@ export function createToaster() {
     return id;
   }
 
+  /** queue mode: when the screen is clear, show the next waiting toast. */
+  function flush() {
+    if (pending.length && !state.toasts.some((t) => t.phase === 'enter' || t.phase === 'open')) {
+      const next = pending.shift()!;
+      releasing = true;
+      show(next.type, next.title, { ...next.opts, id: next.id });
+      releasing = false;
+    }
+  }
+
   function update(callerId: string, p: ToastPatch) {
+    const wait = pending.find((x) => x.id === callerId);
+    if (wait) {
+      // still waiting (queue mode): the patch goes into the toast that will be shown
+      const o = wait.opts as Record<string, unknown>;
+      for (const [k, v] of Object.entries(p)) {
+        if (v === undefined) continue;
+        if (k === 'type') wait.type = v as ToastType;
+        else if (k === 'title') wait.title = v as string;
+        else o[k] = v ?? undefined;
+      }
+      wait.holds = (wait.opts.duration ?? autoDuration(wait.type, !!(wait.opts.action || wait.opts.secondary))) === 0;
+      return;
+    }
     const id = live.get(callerId) ?? callerId;
     if (owner.get(id) === callerId) apply(id, p);
   }
@@ -166,7 +207,9 @@ export function createToaster() {
 
   /** immediate: skip the text-erase/shrink step (used after a drag-away) */
   function dismiss(id?: string, opts: { immediate?: boolean } = {}) {
-    if (id === undefined) return state.toasts.forEach((t) => dismiss(t.id, opts));
+    if (id === undefined) return (pending.length = 0, state.toasts.forEach((t) => dismiss(t.id, opts)));
+    const waiting = pending.findIndex((x) => x.id === id);
+    if (waiting >= 0) return void pending.splice(waiting, 1);
     id = live.get(id) ?? id;
     const t = find(id);
     const e = entries.get(id);
@@ -180,6 +223,7 @@ export function createToaster() {
         owner.delete(id);
         live.forEach((v, k) => v === id && live.delete(k));
         setToasts(state.toasts.filter((x) => x.id !== id));
+        flush();
       }, TIMING.exit);
     };
     if (opts.immediate) return leave();
@@ -241,8 +285,16 @@ export function createToaster() {
       springs?: SpringSettings;
       /** Replace status icons. Applies to toasts shown afterwards. */
       icons?: ToastIcons;
+      /**
+       * A toast that stays until closed (an error, a button, `duration: 0`) is on screen and another toast is shown.
+       * `'list'` (default): the held toast keeps its place and the new one opens in its own slot.
+       * `'queue'`: new toasts wait in line and are shown one after another once the held toast is gone.
+       * `'replace'`: the new toast takes over the held one, which is lost.
+       */
+      held?: HeldMode;
     }) {
       if (c.springs) setSprings(c.springs);
+      if (c.held) held = c.held;
       if (c.icons) setIcons(c.icons);
       if (c.sound !== undefined) sound = c.sound;
       if (c.volume !== undefined) volume = c.volume;

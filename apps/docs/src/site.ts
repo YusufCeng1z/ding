@@ -152,7 +152,7 @@ const link = (href: string, text: string, cls = '') => h('a', { href, className:
 
 export function mountSite(root: HTMLElement, _adapter?: string) {
   (window as unknown as { toast: typeof toast }).toast = toast; // for console experiments
-  toast.configure({ theme: 'dark', sound: true });
+  toast.configure({ theme: 'dark', sound: true, held: 'replace' });
 
   // top bar
   const gh = link(GITHUB, '', 'gh');

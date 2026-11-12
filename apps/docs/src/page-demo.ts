@@ -1,7 +1,7 @@
 import { mountToaster, toast } from '@yusufceng1z/ding';
 
 // Live demo for the keyword pages: buttons fire the real toast.
-mountToaster({ position: 'top-center', theme: 'system' });
+mountToaster({ position: 'top-center', theme: 'system', held: 'replace' });
 
 const RUN: Record<string, () => void> = {
   success: () => void toast.success('Saved'),
