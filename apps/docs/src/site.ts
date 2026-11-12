@@ -1,6 +1,7 @@
 import './site.css';
 import { toast, chime } from '@yusufceng1z/ding';
 import { MASCOT } from './mascot';
+import { LOOKS, DEFAULT, restyle, type Look } from './looks';
 
 const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
@@ -156,7 +157,7 @@ export function mountSite(root: HTMLElement, _adapter?: string) {
   // top bar
   const gh = link(GITHUB, '', 'gh');
   gh.innerHTML = `${GH_ICON}<span>Star on GitHub</span>`;
-  const bar = h('div', { className: 'bar' }, h('nav', { className: 'nav', ariaLabel: 'Site' }, link('/docs.html', 'Docs', 'navlink'), link('/changelog/', 'What\'s new', 'navlink'), gh));
+  const bar = h('div', { className: 'bar' }, h('nav', { className: 'nav', ariaLabel: 'Site' }, link('/docs.html', 'Docs', 'navlink'), link('/playground/', 'Playground', 'navlink'), link('/changelog/', 'What\'s new', 'navlink'), gh));
 
   // install: pick a framework, copy the command
   let fw: keyof typeof INSTALL = 'React';
@@ -277,6 +278,23 @@ export function mountSite(root: HTMLElement, _adapter?: string) {
       return b;
     }))),
   );
+  // styles: each button restyles every toast on the page with plain CSS variables
+  const SHOWN = ['Default', 'Filled'];
+  let look: Look = DEFAULT;
+  const lookBtns = Object.entries(LOOKS).filter(([n]) => SHOWN.includes(n)).map(([name, next]) => {
+    const b = h('button', { type: 'button', textContent: name });
+    pressed(b, name === 'Default');
+    b.onclick = () => {
+      lookBtns.forEach(([, x]) => pressed(x, x === b));
+      const prev = look;
+      look = next;
+      restyle(prev, next, () => void toast.success('Changes saved', { id: 'look', description: `${name} style`, action: { label: 'Undo', onClick: () => undefined }, duration: 4000 }));
+    };
+    return [name, b] as const;
+  });
+  const more = link('/playground/', 'Build your own →', 'quiet');
+  const styles = h('section', { className: 'group' }, h('h2', { textContent: 'Styles' }), h('div', { className: 'row' }, ...lookBtns.map(([, b]) => b), more));
+  groups.splice(groups.length - 1, 0, styles);
   const foot = h('footer', {}, 'Made by ', link('https://yusufcengiz.dev', 'yusufcengiz.dev'));
   root.replaceChildren(h('div', { className: 'page' }, h('a', { className: 'skip', href: '#main', textContent: 'Skip to demos' }), bar, h('main', { id: 'main' }, hero, settings, ...groups), foot));
 }

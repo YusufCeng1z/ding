@@ -106,3 +106,6 @@ footer a{color:var(--ink);text-underline-offset:3px}
 @keyframes m-swing{0%{rotate:0}18%{rotate:-18deg}38%{rotate:14deg}56%{rotate:-9deg}74%{rotate:5deg}90%{rotate:-2deg}100%{rotate:0}}
 @keyframes m-dings{0%{opacity:0;scale:.5;translate:-8px 8px}30%{opacity:1;scale:1.15;translate:3px -3px}100%{opacity:1;scale:1;translate:0 0}}
 @keyframes m-dust{0%{opacity:0;scale:.4}40%{opacity:1;scale:1.2}100%{opacity:1;scale:1}}
+.group .row button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.row{align-items:center}
+@media (max-width:520px){.nav{gap:2px}.navlink{padding:8px}.gh{padding:8px 10px}.gh span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
