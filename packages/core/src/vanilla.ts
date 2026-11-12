@@ -86,6 +86,7 @@ export function mountToaster(
       const i = s.toasts.length - 1 - idx;
       n.slot.style.setProperty('--tst-i', String(i));
       const card = n.slot.firstElementChild as HTMLElement;
+      card.className = t.className ? `tst ${t.className}` : 'tst';
       card.dataset.phase = t.phase;
       card.dataset.type = t.type;
       card.style.setProperty('--tst-life', `${t.duration}ms`);

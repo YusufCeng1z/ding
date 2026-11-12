@@ -1,3 +1,5 @@
+import type { SpringConfig } from './spring.ts';
+
 export type ToastType = 'success' | 'error' | 'warning' | 'info' | 'loading';
 /** enter: shape only · open: pill expanded · closing: text erased, pill shrinking · exit: shape leaves */
 export type Phase = 'enter' | 'open' | 'closing' | 'exit';
@@ -32,6 +34,8 @@ export interface ToastOptions {
   duration?: number;
   /** 0–1. Draws a thin bar inside the pill. */
   progress?: number;
+  /** Extra class on the toast element (`.tst`), for styling one toast. Style it as `.tst.your-class`. */
+  className?: string;
 }
 export interface ToastPatch {
   title?: string;
@@ -47,6 +51,8 @@ export interface ToastPatch {
   meta?: string | null;
   /** null returns to the status icon */
   image?: string | null;
+  /** null removes it */
+  className?: string | null;
 }
 export interface ToastItem {
   id: string;
@@ -63,7 +69,19 @@ export interface ToastItem {
   progress?: number;
   /** identical toasts fired again collapse into one with a counter */
   count: number;
+  className?: string;
 }
+/** Spring settings for the three motions. Leave a motion out to keep its current spring. */
+export interface SpringSettings {
+  /** arrival of the toast */
+  enter?: SpringConfig;
+  /** the pill opening and morphing */
+  morph?: SpringConfig;
+  /** shuffling and fold/unfold */
+  stack?: SpringConfig;
+}
+/** Status icons as lists of SVG path `d` strings on a 24×24 grid, drawn as strokes. */
+export type ToastIcons = Partial<Record<ToastType, string[]>>;
 export interface ToasterState {
   toasts: ToastItem[];
   position: Position;

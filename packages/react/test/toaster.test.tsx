@@ -87,4 +87,10 @@ describe('React Toaster', () => {
       act(() => void toast.loading('Uploading', { progress: 0.4 }));
     }).not.toThrow();
   });
+
+  it('adds a per-toast className to the toast element', () => {
+    const { container } = render(<Toaster />);
+    act(() => void toast.success('Saved', { className: 'mine' }));
+    expect(container.querySelector('.tst.mine')).not.toBeNull();
+  });
 });

@@ -1,7 +1,9 @@
 import type {
-  Position, PromiseMessages, Theme, ToastItem, ToastLabels, ToasterState, ToastOptions, ToastPatch, ToastType,
+  Position, PromiseMessages, SpringSettings, Theme, ToastIcons, ToastItem, ToastLabels, ToasterState, ToastOptions, ToastPatch, ToastType,
 } from './types';
 import { chime } from './sound.ts';
+import { setIcons } from './icons.ts';
+import { setSprings } from './styles.ts';
 
 export const TIMING = {
   /** shape arrives, then the pill opens */
@@ -76,7 +78,7 @@ export function createToaster() {
   }
 
   function show(type: ToastType, title: string, opts: ToastOptions = {}): string {
-    if (opts.id === undefined && !opts.action && !opts.secondary && !opts.image && !opts.meta) {
+    if (opts.id === undefined && !opts.action && !opts.secondary && !opts.image && !opts.meta && !opts.className) {
       // only a repeat of the newest toast collapses; an older identical one stays separate
       const dup = state.toasts.at(-1);
       if (dup && dup.type === type && dup.title === title && dup.description === opts.description && (dup.phase === 'enter' || dup.phase === 'open')) {
@@ -91,7 +93,7 @@ export function createToaster() {
       owner.set(cur.id, id);
       patch(cur.id, { count: 1 });
       apply(cur.id, {
-        type, title, description: opts.description ?? '', action: opts.action ?? null, secondary: opts.secondary ?? null, meta: opts.meta ?? null, image: opts.image ?? null,
+        type, title, description: opts.description ?? '', action: opts.action ?? null, secondary: opts.secondary ?? null, meta: opts.meta ?? null, image: opts.image ?? null, className: opts.className ?? null,
         progress: opts.progress ?? null, ...(opts.duration !== undefined && { duration: opts.duration }),
       });
       return id;
@@ -102,7 +104,7 @@ export function createToaster() {
     entries.set(id, e);
     setToasts([
       ...state.toasts,
-      { id, type, title, description: opts.description, phase: 'enter', duration: e.remaining, action: opts.action, secondary: opts.secondary, meta: opts.meta, image: opts.image, progress: opts.progress, count: 1 },
+      { id, type, title, description: opts.description, phase: 'enter', duration: e.remaining, action: opts.action, secondary: opts.secondary, meta: opts.meta, image: opts.image, progress: opts.progress, count: 1, className: opts.className },
     ]);
     announce(type, title, opts.description);
     e.phaseTimer = setTimeout(() => {
@@ -130,6 +132,7 @@ export function createToaster() {
       ...(p.secondary !== undefined && { secondary: p.secondary ?? undefined }),
       ...(p.meta !== undefined && { meta: p.meta ?? undefined }),
       ...(p.image !== undefined && { image: p.image ?? undefined }),
+      ...(p.className !== undefined && { className: p.className ?? undefined }),
       ...(p.type !== undefined && { type: p.type }),
     });
     if (p.duration !== undefined) e.remaining = p.duration;
@@ -234,7 +237,13 @@ export function createToaster() {
       labels?: Partial<ToastLabels>;
       sound?: boolean | ((type: ToastType) => void);
       volume?: number;
+      /** Retune the springs. Applies to toasts shown afterwards. */
+      springs?: SpringSettings;
+      /** Replace status icons. Applies to toasts shown afterwards. */
+      icons?: ToastIcons;
     }) {
+      if (c.springs) setSprings(c.springs);
+      if (c.icons) setIcons(c.icons);
       if (c.sound !== undefined) sound = c.sound;
       if (c.volume !== undefined) volume = c.volume;
       state = {

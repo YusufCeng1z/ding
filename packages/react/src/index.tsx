@@ -14,7 +14,7 @@ function Item({ t, i, labels }: { t: ToastItem; i: number; labels: ToastLabels }
   return (
     <div ref={slot} className="tst-slot" tabIndex={-1} style={{ '--tst-i': i } as CSSProperties}>
       <div
-        className="tst"
+        className={t.className ? `tst ${t.className}` : 'tst'}
         data-phase={t.phase}
         data-type={t.type}
         // Announced through the viewport's persistent live regions, not here.

@@ -1,4 +1,4 @@
-import type { ToastType } from './types';
+import type { ToastIcons, ToastType } from './types';
 
 /** 24×24 stroke paths, rendered with pathLength=1 so CSS can draw them. Path 1 is always the ring (loading shows it as an arc, so it can close into a circle in place). */
 const RING = 'M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18';
@@ -9,3 +9,11 @@ export const ICONS: Record<ToastType, string[]> = {
   info: [RING, 'M12 11v5.2', 'M12 7.8h.01'],
   loading: [RING],
 };
+
+/** Replace status icons. Applies to toasts shown afterwards. An empty list is ignored. */
+export function setIcons(icons: ToastIcons): void {
+  for (const type of Object.keys(icons) as ToastType[]) {
+    const paths = icons[type];
+    if (paths?.length) ICONS[type] = [...paths];
+  }
+}

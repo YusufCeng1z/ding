@@ -158,3 +158,33 @@ test('injectStyles sets the CSP nonce on the style element, and only once', () =
   assert.equal(added[0]?.nonce, 'abc123');
   assert.equal('data-toast' in (added[0]?.attrs ?? {}), true);
 });
+
+test('className rides on the toast and can be changed or removed by update()', () => {
+  const t = createToaster();
+  const id = t.success('hi', { className: 'mine' });
+  assert.equal(t.getState().toasts[0]?.className, 'mine');
+  t.update(id, { className: 'other' });
+  assert.equal(t.getState().toasts[0]?.className, 'other');
+  t.update(id, { className: null });
+  assert.equal(t.getState().toasts[0]?.className, undefined);
+  t.dismiss();
+});
+
+test('configure() accepts custom icons', async () => {
+  const { ICONS } = await import('./icons.ts');
+  const before = [...ICONS.info];
+  const t = createToaster();
+  t.configure({ icons: { info: ['M1 1h22', 'M2 2h20'], error: [] } });
+  assert.deepEqual(ICONS.info, ['M1 1h22', 'M2 2h20']);
+  assert.ok(ICONS.error.length > 0, 'empty list is ignored');
+  t.configure({ icons: { info: before } });
+});
+
+test('configure() retunes springs', async () => {
+  const { getSpringConfigs } = await import('./styles.ts');
+  const t = createToaster();
+  const was = { ...getSpringConfigs().enter };
+  t.configure({ springs: { enter: { stiffness: 500, damping: 30 } } });
+  assert.equal(getSpringConfigs().enter.stiffness, 500);
+  t.configure({ springs: { enter: was } });
+});

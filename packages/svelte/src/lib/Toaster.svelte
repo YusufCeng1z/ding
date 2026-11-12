@@ -50,7 +50,7 @@
     <div class="tst-slot" tabindex="-1" style:--tst-i={i} use:bind={t.id}>
       <!-- Announced through the viewport's persistent live regions, not here. -->
       <div
-        class="tst"
+        class={t.className ? `tst ${t.className}` : 'tst'}
         data-phase={t.phase}
         data-type={t.type}
         style:--tst-life="{t.duration}ms"
