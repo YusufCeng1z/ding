@@ -26,6 +26,7 @@
         <nav class="nav" aria-label="Site">
           <a class="navlink" href="/">Demos</a>
           <a class="navlink" href="/docs.html" aria-current="page">Docs</a>
+          <a class="navlink" href="/playground/">Playground</a>
           <a class="navlink" href="/changelog/">What's new</a>
           <a class="gh" href="https://github.com/YusufCeng1z/ding" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>Star on GitHub</a>
         </nav>
@@ -227,6 +228,7 @@ toast.dismiss();    // all</code></pre>
 
           <section id="styling">
             <h2>Styling</h2>
+            <p><a href="/playground/">Open the playground</a> to try these styles on a live toast and copy the CSS.</p>
             <p>Colors and corner radius are CSS variables. Set them in your own stylesheet and they apply to every toast, whatever framework you use.</p>
             <pre><code>.tst-viewport {
   --tst-radius: 8px;
@@ -246,6 +248,25 @@ toast.dismiss();    // all</code></pre>
                 <tr><td><code>--tst-info</code></td><td><code>light-dark(#2f7de1, #60a5fa)</code></td><td>Info icon</td></tr>
               </tbody>
             </table>
+            <h3>Advanced styling</h3>
+            <p>More hooks, for when colors and radius are not enough. The font comes from <code>.tst-viewport</code>, so set <code>font-family</code> and <code>font-size</code> there.</p>
+            <table>
+              <thead><tr><th>Variable</th><th>Default</th><th>Controls</th></tr></thead>
+              <tbody>
+                <tr><td><code>--tst-size</code></td><td><code>44px</code></td><td>Height of the pill and width of the icon circle</td></tr>
+                <tr><td><code>--tst-pad</code></td><td><code>16px</code></td><td>Distance from the screen edge</td></tr>
+                <tr><td><code>--tst-shadow</code></td><td>built in</td><td>Shadow around the toast</td></tr>
+                <tr><td><code>--tst-enter-scale</code></td><td>built in</td><td>How small the toast starts when it arrives</td></tr>
+              </tbody>
+            </table>
+            <p><strong>Filled toasts.</strong> Each toast exposes <code>--fill</code> (surface), <code>--on</code> (text, buttons, close button, focus ring) and <code>--c</code> (icon color) per status. Override them to fill the toast with its status color.</p>
+            <pre><code>.tst-viewport .tst[data-type=error] { --fill: #e5484d; --on: #fff; --c: #fff; }</code></pre>
+            <p><strong>One toast, one style.</strong> Pass <code>className</code> and style it as <code>.tst.your-class</code>. <code>toast.update(id, { className: null })</code> removes it.</p>
+            <pre><code>toast.success('Saved', { className: 'big' });</code></pre>
+            <p><strong>Springs.</strong> Retune the three motions with <code>{ stiffness, damping }</code>. Leave one out to keep its default (enter 320/26, morph 340/27, stack 400/36). Applies to toasts shown afterwards.</p>
+            <pre><code>toast.configure({ springs: { enter: { stiffness: 220, damping: 14 } } });</code></pre>
+            <p><strong>Icons.</strong> Replace a status icon with SVG path strings on a 24×24 grid, drawn as strokes. The first path is the outer ring. Keep three paths for <code>warning</code> and <code>info</code>, since their animations target the second and third.</p>
+            <pre><code>toast.configure({ icons: { success: ['M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18', 'M8 12l3 3 5-6'] } });</code></pre>
             <p>The defaults follow the theme through <code>light-dark()</code>. A single value applies to both themes. To keep them apart, write your own: <code>--tst-bg: light-dark(#fff, #111)</code>.</p>
           </section>
 

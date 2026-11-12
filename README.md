@@ -205,6 +205,44 @@ Colors and corner radius are CSS variables. Set them in your own stylesheet and 
 
 The defaults follow the theme through `light-dark()`. A single value applies to both themes. To keep them apart, write your own: `--tst-bg: light-dark(#fff, #111)`.
 
+### Advanced styling
+
+More hooks, for when colors and radius are not enough:
+
+| Variable | Default | Controls |
+| --- | --- | --- |
+| `--tst-size` | `44px` | Height of the pill, and the width of the icon circle |
+| `--tst-pad` | `16px` | Distance from the screen edge |
+| `--tst-shadow` | built in | Shadow around the toast |
+| `--tst-enter-scale` | built in | How small the toast starts when it arrives |
+
+The font comes from `.tst-viewport`, so set `font-family` and `font-size` there.
+
+**Filled toasts.** Each toast exposes `--fill` (surface), `--on` (text, buttons, close button, focus ring) and `--c` (icon color) per status. Override them to fill the whole toast with its status color:
+
+```css
+.tst-viewport .tst[data-type=error] { --fill: #e5484d; --on: #fff; --c: #fff; }
+.tst-viewport .tst[data-type=success] { --fill: #12a36b; --on: #fff; --c: #fff; }
+```
+
+**One toast, one style.** Pass `className` and style it as `.tst.your-class`. `toast.update(id, { className: null })` removes it.
+
+```ts
+toast.success('Saved', { className: 'big' });
+```
+
+**Springs.** Retune the three motions. Each takes `{ stiffness, damping }`; leave one out to keep its default (enter 320/26, morph 340/27, stack 400/36). Applies to toasts shown afterwards.
+
+```ts
+toast.configure({ springs: { enter: { stiffness: 220, damping: 14 } } });
+```
+
+**Icons.** Replace a status icon with SVG path strings on a 24×24 grid, drawn as strokes. The first path is the outer ring. Keep three paths for `warning` and `info`, since their animations target the second and third.
+
+```ts
+toast.configure({ icons: { success: ['M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18', 'M8 12l3 3 5-6'] } });
+```
+
 ## Sound
 
 Off by default. With `sound: true` each status plays its own soft tone: success rises, error falls, warning double-taps, info is a single note. Loading is silent and progress updates never make a sound. Browsers keep audio locked until a click or key press.

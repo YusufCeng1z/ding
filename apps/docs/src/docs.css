@@ -1,7 +1,5 @@
 .docs .page { max-width: 1000px; padding-block-end: 72px; padding-inline: clamp(16px, 4vw, 44px); }
 
-.docs .nav { flex-wrap: wrap; }
-.docs .navlink[aria-current] { background: var(--soft); color: var(--ink); font-weight: 650; }
 .shell { display: grid; grid-template-columns: 196px minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); align-items: start; }
 .docs main { min-width: 0; gap: 36px; padding-top: 40px; }
 
