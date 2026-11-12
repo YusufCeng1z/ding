@@ -225,6 +225,12 @@ The font comes from `.tst-viewport`, so set `font-family` and `font-size` there.
 .tst-viewport .tst[data-type=success] { --fill: #12a36b; --on: #fff; --c: #fff; }
 ```
 
+**Light and dark.** Ding follows the system by default. If your site has its own theme switch, such as a `.dark` class, pass the current theme: `<Toaster theme={theme} />` or `toast.configure({ theme })`. Give a color two values with `light-dark()`, and it picks the one for the active theme:
+
+```css
+.tst-viewport .tst[data-type=error] { --fill: light-dark(#dc2626, #7f1d1d); --on: #fff; --c: #fff; }
+```
+
 **One toast, one style.** Pass `className` and style it as `.tst.your-class`. `toast.update(id, { className: null })` removes it.
 
 ```ts

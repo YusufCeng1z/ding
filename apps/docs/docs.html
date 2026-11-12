@@ -261,6 +261,8 @@ toast.dismiss();    // all</code></pre>
             </table>
             <p><strong>Filled toasts.</strong> Each toast exposes <code>--fill</code> (surface), <code>--on</code> (text, buttons, close button, focus ring) and <code>--c</code> (icon color) per status. Override them to fill the toast with its status color.</p>
             <pre><code>.tst-viewport .tst[data-type=error] { --fill: #e5484d; --on: #fff; --c: #fff; }</code></pre>
+            <p><strong>Light and dark.</strong> Ding follows the system by default. If your site has its own theme switch, such as a <code>.dark</code> class, pass the current theme with <code>&lt;Toaster theme={theme} /&gt;</code> or <code>toast.configure({ theme })</code>. Give a color two values with <code>light-dark()</code>, and it picks the one for the active theme.</p>
+            <pre><code>.tst-viewport .tst[data-type=error] { --fill: light-dark(#dc2626, #7f1d1d); --on: #fff; --c: #fff; }</code></pre>
             <p><strong>One toast, one style.</strong> Pass <code>className</code> and style it as <code>.tst.your-class</code>. <code>toast.update(id, { className: null })</code> removes it.</p>
             <pre><code>toast.success('Saved', { className: 'big' });</code></pre>
             <p><strong>Springs.</strong> Retune the three motions with <code>{ stiffness, damping }</code>. Leave one out to keep its default (enter 320/26, morph 340/27, stack 400/36). Applies to toasts shown afterwards.</p>
