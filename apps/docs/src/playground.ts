@@ -1,5 +1,6 @@
 import './site.css';
 import './playground.css';
+import { showStars } from './stars';
 import { mountToaster, toast, type ToastType } from '@yusufceng1z/ding';
 import { BASE, COLORS, DEFAULT, FILL, LOOKS, lookCss, lookJs, restyle, type ColorKey, type Look, type Motion } from './looks';
 
@@ -158,3 +159,5 @@ copy.onclick = async () => {
 };
 
 set(clone(DEFAULT));
+
+showStars();

@@ -2,6 +2,7 @@ import { mountToaster, toast } from '@yusufceng1z/ding';
 import { makeSeg } from './site';
 import './site.css';
 import './docs.css';
+import { showStars } from './stars';
 
 // real toasts for the Run buttons
 mountToaster({ theme: 'dark', held: 'replace' });
@@ -121,3 +122,5 @@ addEventListener('scroll', () => {
   requestAnimationFrame(() => ((queued = false), update()));
 }, { passive: true });
 update();
+
+showStars();

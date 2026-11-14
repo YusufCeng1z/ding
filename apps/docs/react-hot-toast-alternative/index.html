@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>react-hot-toast alternative: spring-physics toasts, no dependencies</title>
+    <title>react-hot-toast alternative with spring physics</title>
     <meta name="description" content="Ding is a small React toast library with a similar API to react-hot-toast, but it shows one toast at a time and animates changes with spring physics." />
     <link rel="canonical" href="https://ding.yusufcengiz.dev/react-hot-toast-alternative/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -12,11 +12,14 @@
     <link rel="stylesheet" href="/page.css" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Ding" />
-    <meta property="og:title" content="react-hot-toast alternative: spring-physics toasts, no dependencies" />
+    <meta property="og:title" content="react-hot-toast alternative with spring physics" />
     <meta property="og:description" content="Ding is a small React toast library with a similar API to react-hot-toast, but it shows one toast at a time and animates changes with spring physics." />
     <meta property="og:url" content="https://ding.yusufcengiz.dev/react-hot-toast-alternative/" />
     <meta property="og:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="react-hot-toast alternative with spring physics" />
+    <meta name="twitter:description" content="Ding is a small React toast library with a similar API to react-hot-toast, but it shows one toast at a time and animates changes with spring physics." />
+    <meta name="twitter:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -25,11 +28,53 @@
         "description": "Ding is a small React toast library with a similar API to react-hot-toast, but it shows one toast at a time and animates changes with spring physics.",
         "url": "https://ding.yusufcengiz.dev/react-hot-toast-alternative/",
         "datePublished": "2026-11-06",
-        "dateModified": "2026-11-06",
+        "dateModified": "2026-11-14",
         "author": { "@type": "Person", "name": "Yusuf Cengiz", "url": "https://yusufcengiz.dev" },
         "about": { "@type": "SoftwareSourceCode", "name": "Ding", "codeRepository": "https://github.com/YusufCeng1z/ding" }
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is Ding a drop-in replacement for react-hot-toast?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "For toast.success, toast.error, toast.promise and toast.dismiss the call shape is the same. Other options differ, so test the ones you use."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does Ding need a stylesheet?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Styles are injected from JavaScript."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I restyle the toast?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Colors and corner radius are CSS variables, and the playground generates the CSS for you."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does it work in the Next.js App Router?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. See the Next.js toast guide."
+            }
+          }
+        ]
+      }
+    </script>
+    <script>window.va=window.va||function(){(window.va.q=window.va.q||[]).push(arguments)}</script>
+    <script defer src="/_vercel/insights/script.js"></script>
   </head>
   <body>
     <nav aria-label="Site">
@@ -59,6 +104,44 @@
       <h2>Install</h2>
       <pre><code>npm i @yusufceng1z/ding-react</code></pre>
       <p>Full setup is on the <a href="/react-toast/">React toast page</a>, and a comparison with a stacking alternative is on the <a href="/sonner-alternative/">Sonner page</a>.</p>
+      <h2>The same calls, side by side</h2>
+      <table>
+        <thead><tr><th>Task</th><th>react-hot-toast</th><th>Ding</th></tr></thead>
+        <tbody>
+          <tr><td>Import</td><td><code>react-hot-toast</code></td><td><code>@yusufceng1z/ding-react</code></td></tr>
+          <tr><td>Render once</td><td><code>&lt;Toaster /&gt;</code></td><td><code>&lt;Toaster /&gt;</code></td></tr>
+          <tr><td>Success</td><td><code>toast.success('Saved')</code></td><td><code>toast.success('Saved')</code></td></tr>
+          <tr><td>Promise</td><td><code>toast.promise(p, {...})</code></td><td><code>toast.promise(p, {...})</code></td></tr>
+          <tr><td>Dismiss</td><td><code>toast.dismiss(id)</code></td><td><code>toast.dismiss(id)</code></td></tr>
+        </tbody>
+      </table>
+      <p>For these everyday calls, switching is mostly a change of import. Options and custom rendering differ, so check yours against the <a href="/docs.html">docs</a>.</p>
+      <h2>What you get in return</h2>
+      <ul>
+        <li>Spring-based motion that keeps its momentum when interrupted.</li>
+        <li>A toast that changes in place, from loading to success or error.</li>
+        <li>No stylesheet to import and no dependencies.</li>
+        <li>Svelte 5, Vue 3 and plain JavaScript versions, not only React.</li>
+      </ul>
+      <h2>Frequently asked questions</h2>
+      <h3>Is Ding a drop-in replacement for react-hot-toast?</h3>
+      <p>For <code>toast.success</code>, <code>toast.error</code>, <code>toast.promise</code> and <code>toast.dismiss</code> the call shape is the same. Other options differ, so test the ones you use.</p>
+      <h3>Does Ding need a stylesheet?</h3>
+      <p>No. Styles are injected from JavaScript.</p>
+      <h3>Can I restyle the toast?</h3>
+      <p>Yes. Colors and corner radius are CSS variables, and the <a href="/playground/">playground</a> generates the CSS for you.</p>
+      <h3>Does it work in the Next.js App Router?</h3>
+      <p>Yes. See the <a href="/nextjs-toast/">Next.js toast guide</a>.</p>
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="/sonner-alternative/">Sonner alternative</a>: How Ding compares with Sonner</li>
+        <li><a href="/react-toast/">React toast notifications</a>: Install Ding in a React app</li>
+        <li><a href="/loading-toast/">Loading toast</a>: Show progress, then success or error</li>
+        <li><a href="/undo-toast/">Undo toast</a>: Let users reverse an action</li>
+        <li><a href="/shadcn-toast/">shadcn/ui toast</a>: Add Ding with the shadcn CLI</li>
+        <li><a href="/docs.html">Docs</a>: every option and setting</li>
+        <li><a href="/playground/">Playground</a>: style a toast and copy the CSS</li>
+      </ul>
       <footer>Ding is made by <a href="https://yusufcengiz.dev">Yusuf Cengiz</a>. MIT licensed, <a href="https://github.com/YusufCeng1z/ding">source on GitHub</a>.</footer>
     </main>
     <script type="module" src="/src/page-demo.ts"></script>

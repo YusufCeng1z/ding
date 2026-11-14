@@ -17,6 +17,9 @@
     <meta property="og:url" content="https://ding.yusufcengiz.dev/javascript-toast/" />
     <meta property="og:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Vanilla JavaScript toast notifications with no framework" />
+    <meta name="twitter:description" content="Show toast notifications in plain JavaScript with Ding: mount the toaster once and call toast(). No framework, no dependencies, no CSS file." />
+    <meta name="twitter:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -25,11 +28,53 @@
         "description": "Show toast notifications in plain JavaScript with Ding: mount the toaster once and call toast(). No framework, no dependencies, no CSS file.",
         "url": "https://ding.yusufcengiz.dev/javascript-toast/",
         "datePublished": "2026-11-06",
-        "dateModified": "2026-11-06",
+        "dateModified": "2026-11-14",
         "author": { "@type": "Person", "name": "Yusuf Cengiz", "url": "https://yusufcengiz.dev" },
         "about": { "@type": "SoftwareSourceCode", "name": "Ding", "codeRepository": "https://github.com/YusufCeng1z/ding" }
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Do I need a framework?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. @yusufceng1z/ding is plain DOM code with no dependencies. It ships ESM and CommonJS builds."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is it safe to call during server rendering?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. mountToaster does nothing when there is no document, so it is safe to import and call in code that also runs on the server."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need to import CSS?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Styles are injected as one <style> element. If your Content Security Policy blocks inline styles, pass the page's nonce: mountToaster({ nonce })."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is it accessible?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes: live regions, keyboard dismissal and reduced-motion support are built in. See accessible toast notifications."
+            }
+          }
+        ]
+      }
+    </script>
+    <script>window.va=window.va||function(){(window.va.q=window.va.q||[]).push(arguments)}</script>
+    <script defer src="/_vercel/insights/script.js"></script>
   </head>
   <body>
     <nav aria-label="Site">
@@ -65,6 +110,42 @@
       <h2>Options</h2>
       <p>Position and theme are set on <code>mountToaster</code> or later with <code>toast.configure({ position, theme })</code>. The full list of options is in the <a href="/docs.html">docs</a>.</p>
       <p>If you do use React or Svelte, the framework packages are thin wrappers over this one. See <a href="/react-toast/">React</a> or <a href="/svelte-toast/">Svelte</a>. The code is on <a href="https://github.com/YusufCeng1z/ding">GitHub</a>.</p>
+      <h2>Position, theme and sound</h2>
+      <pre><code>toast.configure({
+  position: 'bottom-right', // top-left, top-center, top-right, bottom-left, bottom-center, bottom-right
+  theme: 'dark',            // system, light, dark
+  sound: true,
+  volume: 0.5,
+});</code></pre>
+      <h2>Restyle it with CSS variables</h2>
+      <pre><code>.tst-viewport {
+  --tst-radius: 8px;
+  --tst-bg: #1e3a8a;
+  --tst-fg: #fff;
+  --tst-success: #16a34a;
+}</code></pre>
+      <p>The <a href="/playground/">playground</a> generates this CSS for you.</p>
+      <h2>Close and clean up</h2>
+      <p><code>mountToaster</code> returns an unmount function. Call it to remove the toaster. <code>toast.dismiss(id)</code> closes one toast and <code>toast.dismiss()</code> closes all of them.</p>
+      <h2>Frequently asked questions</h2>
+      <h3>Do I need a framework?</h3>
+      <p>No. <code>@yusufceng1z/ding</code> is plain DOM code with no dependencies. It ships ESM and CommonJS builds.</p>
+      <h3>Is it safe to call during server rendering?</h3>
+      <p>Yes. <code>mountToaster</code> does nothing when there is no <code>document</code>, so it is safe to import and call in code that also runs on the server.</p>
+      <h3>Do I need to import CSS?</h3>
+      <p>No. Styles are injected as one <code>&lt;style&gt;</code> element. If your Content Security Policy blocks inline styles, pass the page's nonce: <code>mountToaster({ nonce })</code>.</p>
+      <h3>Is it accessible?</h3>
+      <p>Yes: live regions, keyboard dismissal and reduced-motion support are built in. See <a href="/toast-accessibility/">accessible toast notifications</a>.</p>
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="/react-toast/">React toast notifications</a>: Install Ding in a React app</li>
+        <li><a href="/svelte-toast/">Svelte 5 toast notifications</a>: Use Ding in Svelte 5</li>
+        <li><a href="/loading-toast/">Loading toast</a>: Show progress, then success or error</li>
+        <li><a href="/undo-toast/">Undo toast</a>: Let users reverse an action</li>
+        <li><a href="/toast-accessibility/">Accessible toast notifications</a>: Live regions, timing and keyboard</li>
+        <li><a href="/docs.html">Docs</a>: every option and setting</li>
+        <li><a href="/playground/">Playground</a>: style a toast and copy the CSS</li>
+      </ul>
       <footer>Ding is made by <a href="https://yusufcengiz.dev">Yusuf Cengiz</a>. MIT licensed, <a href="https://github.com/YusufCeng1z/ding">source on GitHub</a>.</footer>
     </main>
     <script type="module" src="/src/page-demo.ts"></script>

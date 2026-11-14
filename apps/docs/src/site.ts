@@ -1,4 +1,5 @@
 import './site.css';
+import { showStars } from './stars';
 import { toast, chime } from '@yusufceng1z/ding';
 import { MASCOT } from './mascot';
 import { LOOKS, DEFAULT, restyle, type Look } from './looks';
@@ -297,4 +298,5 @@ export function mountSite(root: HTMLElement, _adapter?: string) {
   groups.splice(groups.length - 1, 0, styles);
   const foot = h('footer', {}, 'Made by ', link('https://yusufcengiz.dev', 'yusufcengiz.dev'));
   root.replaceChildren(h('div', { className: 'page' }, h('a', { className: 'skip', href: '#main', textContent: 'Skip to demos' }), bar, h('main', { id: 'main' }, hero, settings, ...groups), foot));
+  showStars(root);
 }

@@ -17,6 +17,9 @@
     <meta property="og:url" content="https://ding.yusufcengiz.dev/nextjs-toast/" />
     <meta property="og:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Next.js toast notifications in the App Router (Ding)" />
+    <meta name="twitter:description" content="Set up toast notifications in a Next.js App Router project with Ding: the Toaster goes straight into the root layout, toast() is called from client components." />
+    <meta name="twitter:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -30,6 +33,48 @@
         "about": { "@type": "SoftwareSourceCode", "name": "Ding", "codeRepository": "https://github.com/YusufCeng1z/ding" }
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Do I need a client component wrapper?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. The package ships \"use client\", so Toaster can go into app/layout.tsx as it is."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I call toast from a server component or server action?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A toast is shown in the browser, so call toast from client code, for example after a server action resolves. The server actions section above shows the pattern."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does it work with a theme switcher?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Pass the current theme to Toaster or call toast.configure({ theme })."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is there a shadcn/ui version?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. npx shadcn@latest add @ding/ding installs the React package and adds a ding-toaster.tsx wrapper. See the shadcn/ui toast guide."
+            }
+          }
+        ]
+      }
+    </script>
+    <script>window.va=window.va||function(){(window.va.q=window.va.q||[]).push(arguments)}</script>
+    <script defer src="/_vercel/insights/script.js"></script>
   </head>
   <body>
     <nav aria-label="Site">
@@ -79,6 +124,37 @@
         error: 'Could not save',
       });</code></pre>
       <p>With the Pages Router, render <code>&lt;Toaster /&gt;</code> in <code>pages/_app.tsx</code>. If the project uses shadcn/ui, the <a href="/shadcn-toast/">shadcn install</a> also works. For the non-Next parts see <a href="/react-toast/">React toast notifications</a>.</p>
+      <h2>Theme and styling</h2>
+      <p>Ding follows the system theme by default. If your site has its own theme switch, such as a <code>.dark</code> class, pass the current theme to the toaster:</p>
+      <pre><code>&lt;Toaster theme={theme} position="top-center" /&gt;</code></pre>
+      <p>Colors and corner radius are CSS variables, so a global stylesheet is enough to match your design:</p>
+      <pre><code>.tst-viewport {
+  --tst-radius: 8px;
+  --tst-bg: #1e3a8a;
+  --tst-fg: #fff;
+  --tst-success: #16a34a;
+}</code></pre>
+      <h2>Content Security Policy</h2>
+      <p>Styles are injected as one <code>&lt;style&gt;</code> element. If your CSP blocks inline styles, pass the request nonce with <code>&lt;Toaster nonce={nonce} /&gt;</code>. Per-toast values are set through the DOM, so only the stylesheet needs the nonce.</p>
+      <h2>Frequently asked questions</h2>
+      <h3>Do I need a client component wrapper?</h3>
+      <p>No. The package ships <code>"use client"</code>, so <code>Toaster</code> can go into <code>app/layout.tsx</code> as it is.</p>
+      <h3>Can I call toast from a server component or server action?</h3>
+      <p>A toast is shown in the browser, so call <code>toast</code> from client code, for example after a server action resolves. The server actions section above shows the pattern.</p>
+      <h3>Does it work with a theme switcher?</h3>
+      <p>Yes. Pass the current theme to <code>Toaster</code> or call <code>toast.configure({ theme })</code>.</p>
+      <h3>Is there a shadcn/ui version?</h3>
+      <p>Yes. <code>npx shadcn@latest add @ding/ding</code> installs the React package and adds a <code>ding-toaster.tsx</code> wrapper. See the <a href="/shadcn-toast/">shadcn/ui toast guide</a>.</p>
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="/react-toast/">React toast notifications</a>: Install Ding in a React app</li>
+        <li><a href="/shadcn-toast/">shadcn/ui toast</a>: Add Ding with the shadcn CLI</li>
+        <li><a href="/loading-toast/">Loading toast</a>: Show progress, then success or error</li>
+        <li><a href="/toast-accessibility/">Accessible toast notifications</a>: Live regions, timing and keyboard</li>
+        <li><a href="/sonner-alternative/">Sonner alternative</a>: How Ding compares with Sonner</li>
+        <li><a href="/docs.html">Docs</a>: every option and setting</li>
+        <li><a href="/playground/">Playground</a>: style a toast and copy the CSS</li>
+      </ul>
       <footer>Ding is made by <a href="https://yusufcengiz.dev">Yusuf Cengiz</a>. MIT licensed, <a href="https://github.com/YusufCeng1z/ding">source on GitHub</a>.</footer>
     </main>
     <script type="module" src="/src/page-demo.ts"></script>

@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sonner alternative: a toast library that shows one toast at a time</title>
-    <meta name="description" content="Ding is a React and Svelte toast library for people who want one toast on screen that morphs in place, not a stack. When it fits, and when Sonner is the better pick." />
+    <title>Sonner alternative that shows one toast at a time</title>
+    <meta name="description" content="Ding is a React and Svelte toast library that shows one toast on screen and morphs it in place. When it fits, and when Sonner is the better pick." />
     <link rel="canonical" href="https://ding.yusufcengiz.dev/sonner-alternative/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -12,24 +12,69 @@
     <link rel="stylesheet" href="/page.css" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Ding" />
-    <meta property="og:title" content="Sonner alternative: a toast library that shows one toast at a time" />
-    <meta property="og:description" content="Ding is a React and Svelte toast library for people who want one toast on screen that morphs in place, not a stack. When it fits, and when Sonner is the better pick." />
+    <meta property="og:title" content="Sonner alternative that shows one toast at a time" />
+    <meta property="og:description" content="Ding is a React and Svelte toast library that shows one toast on screen and morphs it in place. When it fits, and when Sonner is the better pick." />
     <meta property="og:url" content="https://ding.yusufcengiz.dev/sonner-alternative/" />
     <meta property="og:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sonner alternative that shows one toast at a time" />
+    <meta name="twitter:description" content="Ding is a React and Svelte toast library that shows one toast on screen and morphs it in place. When it fits, and when Sonner is the better pick." />
+    <meta name="twitter:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "A Sonner alternative that shows one toast at a time",
-        "description": "Ding is a React and Svelte toast library for people who want one toast on screen that morphs in place, not a stack. When it fits, and when Sonner is the better pick.",
+        "description": "Ding is a React and Svelte toast library that shows one toast on screen and morphs it in place. When it fits, and when Sonner is the better pick.",
         "url": "https://ding.yusufcengiz.dev/sonner-alternative/",
         "datePublished": "2026-11-06",
-        "dateModified": "2026-11-06",
+        "dateModified": "2026-11-14",
         "author": { "@type": "Person", "name": "Yusuf Cengiz", "url": "https://yusufcengiz.dev" },
         "about": { "@type": "SoftwareSourceCode", "name": "Ding", "codeRepository": "https://github.com/YusufCeng1z/ding" }
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is Ding a drop-in replacement for Sonner?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The common calls look alike, but not every option exists in both libraries. Check the options you use against the docs before swapping."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does Ding work outside React?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. There are packages for Svelte 5 and Vue 3, and a plain JavaScript version. See svelte-sonner alternative and JavaScript toast notifications."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does Ding need a CSS import?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Styles are injected from JavaScript."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I use Ding with shadcn/ui?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, with one command. See the shadcn/ui toast guide."
+            }
+          }
+        ]
+      }
+    </script>
+    <script>window.va=window.va||function(){(window.va.q=window.va.q||[]).push(arguments)}</script>
+    <script defer src="/_vercel/insights/script.js"></script>
   </head>
   <body>
     <nav aria-label="Site">
@@ -61,6 +106,44 @@
       toast.promise(save(), { loading: 'Saving…', success: 'Saved', error: 'Failed' });</code></pre>
       <p>Check the options you use against the <a href="/docs.html">docs</a> before swapping, since not every option exists. Setup details are in <a href="/react-toast/">React toast notifications</a>. If you use Svelte, see the <a href="/svelte-sonner-alternative/">svelte-sonner alternative</a>.</p>
       <p>Ding is open source on <a href="https://github.com/YusufCeng1z/ding">GitHub</a>. A star is the easiest way to say it was useful.</p>
+      <h2>What Ding brings</h2>
+      <ul>
+        <li><strong>Springs, not fades.</strong> Size, shape and text move on a spring solver, so interrupting an animation keeps its momentum.</li>
+        <li><strong>No stylesheet and no dependencies.</strong> Styles are injected from JavaScript.</li>
+        <li><strong>Four renderers.</strong> React, Svelte 5, Vue 3 and plain JavaScript share one core.</li>
+        <li><strong>Rich content.</strong> Description, avatar, buttons, a progress bar, a countdown line and small trailing text.</li>
+        <li><strong>Easy restyling.</strong> Colors and corner radius are CSS variables.</li>
+      </ul>
+      <h2>API at a glance</h2>
+      <table>
+        <thead><tr><th>Task</th><th>Ding</th></tr></thead>
+        <tbody>
+          <tr><td>Render once</td><td><code>&lt;Toaster /&gt;</code></td></tr>
+          <tr><td>Show a message</td><td><code>toast.success('Saved')</code>, <code>error</code>, <code>warning</code>, <code>info</code>, <code>loading</code></td></tr>
+          <tr><td>Wrap a promise</td><td><code>toast.promise(p, { loading, success, error })</code></td></tr>
+          <tr><td>Change a toast</td><td><code>toast.update(id, patch)</code></td></tr>
+          <tr><td>Close</td><td><code>toast.dismiss(id)</code> or <code>toast.dismiss()</code></td></tr>
+        </tbody>
+      </table>
+      <h2>Frequently asked questions</h2>
+      <h3>Is Ding a drop-in replacement for Sonner?</h3>
+      <p>The common calls look alike, but not every option exists in both libraries. Check the options you use against the <a href="/docs.html">docs</a> before swapping.</p>
+      <h3>Does Ding work outside React?</h3>
+      <p>Yes. There are packages for Svelte 5 and Vue 3, and a plain JavaScript version. See <a href="/svelte-sonner-alternative/">svelte-sonner alternative</a> and <a href="/javascript-toast/">JavaScript toast notifications</a>.</p>
+      <h3>Does Ding need a CSS import?</h3>
+      <p>No. Styles are injected from JavaScript.</p>
+      <h3>Can I use Ding with shadcn/ui?</h3>
+      <p>Yes, with one command. See the <a href="/shadcn-toast/">shadcn/ui toast guide</a>.</p>
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="/react-hot-toast-alternative/">react-hot-toast alternative</a>: Moving from react-hot-toast</li>
+        <li><a href="/svelte-sonner-alternative/">svelte-sonner alternative</a>: Moving from svelte-sonner</li>
+        <li><a href="/react-toast/">React toast notifications</a>: Install Ding in a React app</li>
+        <li><a href="/shadcn-toast/">shadcn/ui toast</a>: Add Ding with the shadcn CLI</li>
+        <li><a href="/toast-notification-ux/">Toast notification UX</a>: When to use a toast</li>
+        <li><a href="/docs.html">Docs</a>: every option and setting</li>
+        <li><a href="/playground/">Playground</a>: style a toast and copy the CSS</li>
+      </ul>
       <footer>Ding is made by <a href="https://yusufcengiz.dev">Yusuf Cengiz</a>. MIT licensed, <a href="https://github.com/YusufCeng1z/ding">source on GitHub</a>.</footer>
     </main>
     <script type="module" src="/src/page-demo.ts"></script>

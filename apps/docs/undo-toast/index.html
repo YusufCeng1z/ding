@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Undo toast: let users reverse an action instead of confirming</title>
+    <title>Undo toast: let users reverse actions instead of confirming</title>
     <meta name="description" content="Replace Are you sure? dialogs with an undo toast. Code for React, Svelte and plain JavaScript, plus how to make the undo trustworthy." />
     <link rel="canonical" href="https://ding.yusufcengiz.dev/undo-toast/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -12,11 +12,14 @@
     <link rel="stylesheet" href="/page.css" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Ding" />
-    <meta property="og:title" content="Undo toast: let users reverse an action instead of confirming" />
+    <meta property="og:title" content="Undo toast: let users reverse actions instead of confirming" />
     <meta property="og:description" content="Replace Are you sure? dialogs with an undo toast. Code for React, Svelte and plain JavaScript, plus how to make the undo trustworthy." />
     <meta property="og:url" content="https://ding.yusufcengiz.dev/undo-toast/" />
     <meta property="og:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Undo toast: let users reverse actions instead of confirming" />
+    <meta name="twitter:description" content="Replace Are you sure? dialogs with an undo toast. Code for React, Svelte and plain JavaScript, plus how to make the undo trustworthy." />
+    <meta name="twitter:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -25,11 +28,53 @@
         "description": "Replace Are you sure? dialogs with an undo toast. Code for React, Svelte and plain JavaScript, plus how to make the undo trustworthy.",
         "url": "https://ding.yusufcengiz.dev/undo-toast/",
         "datePublished": "2026-11-06",
-        "dateModified": "2026-11-06",
+        "dateModified": "2026-11-14",
         "author": { "@type": "Person", "name": "Yusuf Cengiz", "url": "https://yusufcengiz.dev" },
         "about": { "@type": "SoftwareSourceCode", "name": "Ding", "codeRepository": "https://github.com/YusufCeng1z/ding" }
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Why use undo instead of a confirmation dialog?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "People confirm out of habit. Doing the action at once and offering undo is faster, and a mistake is still easy to reverse."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long should the undo window be?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Long enough to notice and react, often several seconds. Set it with duration. Hover and keyboard focus pause the timer."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can the toast change after the user clicks Undo?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Return a patch from onClick, for example { type: 'info', title: 'Restored' }."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "When is undo not enough?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "For actions that cannot be reversed or that affect other people, ask first. See toast notification UX."
+            }
+          }
+        ]
+      }
+    </script>
+    <script>window.va=window.va||function(){(window.va.q=window.va.q||[]).push(arguments)}</script>
+    <script defer src="/_vercel/insights/script.js"></script>
   </head>
   <body>
     <nav aria-label="Site">
@@ -62,6 +107,42 @@
       <p>Do not delete for good when the button is shown. Mark the item as deleted first, and remove it only after the undo window has passed, or never, if you keep a trash. Otherwise Undo is a promise you cannot keep when the request has already finished.</p>
       <p>A toast with a button stays until dismissed in Ding, so nobody is racing a timer. Still, keep a second way back, such as a trash view. A toast is easy to miss, and for some people it is hard to reach, see <a href="/toast-accessibility/">toast accessibility</a>.</p>
       <p>More on when toasts are the right tool: <a href="/toast-notification-ux/">toast notification UX</a>.</p>
+      <h2>Morph the toast after Undo</h2>
+      <p>An <code>onClick</code> can return a patch. The toast then changes in place instead of closing, so the user sees that the undo worked:</p>
+      <pre><code>toast.success('Message deleted', {
+  action: {
+    label: 'Undo',
+    onClick: () =&gt; {
+      restore();
+      return { type: 'info', title: 'Restored' };
+    },
+  },
+});</code></pre>
+      <h2>Give the undo a time limit</h2>
+      <p>A toast with a button stays until dismissed. Set <code>duration</code> to close it after a time limit, and a thin countdown line shows how long is left:</p>
+      <pre><code>toast.success('Message deleted', {
+  duration: 8000,
+  action: { label: 'Undo', onClick: restore },
+});</code></pre>
+      <h2>Frequently asked questions</h2>
+      <h3>Why use undo instead of a confirmation dialog?</h3>
+      <p>People confirm out of habit. Doing the action at once and offering undo is faster, and a mistake is still easy to reverse.</p>
+      <h3>How long should the undo window be?</h3>
+      <p>Long enough to notice and react, often several seconds. Set it with <code>duration</code>. Hover and keyboard focus pause the timer.</p>
+      <h3>Can the toast change after the user clicks Undo?</h3>
+      <p>Yes. Return a patch from <code>onClick</code>, for example <code>{ type: 'info', title: 'Restored' }</code>.</p>
+      <h3>When is undo not enough?</h3>
+      <p>For actions that cannot be reversed or that affect other people, ask first. See <a href="/toast-notification-ux/">toast notification UX</a>.</p>
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="/loading-toast/">Loading toast</a>: Show progress, then success or error</li>
+        <li><a href="/toast-notification-ux/">Toast notification UX</a>: When to use a toast</li>
+        <li><a href="/toast-accessibility/">Accessible toast notifications</a>: Live regions, timing and keyboard</li>
+        <li><a href="/react-toast/">React toast notifications</a>: Install Ding in a React app</li>
+        <li><a href="/svelte-toast/">Svelte 5 toast notifications</a>: Use Ding in Svelte 5</li>
+        <li><a href="/docs.html">Docs</a>: every option and setting</li>
+        <li><a href="/playground/">Playground</a>: style a toast and copy the CSS</li>
+      </ul>
       <footer>Ding is made by <a href="https://yusufcengiz.dev">Yusuf Cengiz</a>. MIT licensed, <a href="https://github.com/YusufCeng1z/ding">source on GitHub</a>.</footer>
     </main>
     <script type="module" src="/src/page-demo.ts"></script>

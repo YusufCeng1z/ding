@@ -22,3 +22,10 @@ footer { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--lin
 .try button:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { .try button { transition: none; } .try button:active { scale: none; } }
 @media (max-width: 480px) { h1 { font-size: 1.75rem; } }
+h3 { font-size: 1.05rem; margin: 1.6rem 0 0.25rem; letter-spacing: -0.005em; }
+table { border-collapse: collapse; width: 100%; max-width: 40rem; margin: 1rem 0; font-size: 15px; }
+th, td { text-align: start; vertical-align: top; padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 600; }
+kbd { font: 0.88em ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--code); border: 1px solid var(--line); border-radius: 4px; padding: 0.05em 0.4em; }
+ul { padding-inline-start: 1.25rem; }
+@media (max-width: 480px) { table { display: block; overflow-x: auto; } }

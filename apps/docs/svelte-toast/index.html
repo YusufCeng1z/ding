@@ -17,6 +17,9 @@
     <meta property="og:url" content="https://ding.yusufcengiz.dev/svelte-toast/" />
     <meta property="og:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Svelte 5 toast notifications: install and use Ding" />
+    <meta name="twitter:description" content="Add toast notifications to a Svelte 5 or SvelteKit app with Ding. Mount one Toaster in the root layout, call toast() from any component or module." />
+    <meta name="twitter:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -25,11 +28,61 @@
         "description": "Add toast notifications to a Svelte 5 or SvelteKit app with Ding. Mount one Toaster in the root layout, call toast() from any component or module.",
         "url": "https://ding.yusufcengiz.dev/svelte-toast/",
         "datePublished": "2026-11-06",
-        "dateModified": "2026-11-06",
+        "dateModified": "2026-11-14",
         "author": { "@type": "Person", "name": "Yusuf Cengiz", "url": "https://yusufcengiz.dev" },
         "about": { "@type": "SoftwareSourceCode", "name": "Ding", "codeRepository": "https://github.com/YusufCeng1z/ding" }
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Does Ding support Svelte 4?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. @yusufceng1z/ding-svelte targets Svelte 5. For other setups the plain JavaScript package @yusufceng1z/ding works without a framework."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need to import a stylesheet?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Ding injects its styles from JavaScript. If your Content Security Policy blocks inline styles, pass the page's nonce to Toaster."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I dismiss a toast from code?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "toast.dismiss(id) closes one toast and toast.dismiss() closes all of them. Pressing Esc also dismisses."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is it accessible?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Messages go through persistent live regions (errors are assertive, the rest polite), Alt + T moves focus into the toast, and motion respects prefers-reduced-motion. See accessible toast notifications."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I migrate from svelte-sonner?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, the calls look alike. The svelte-sonner alternative guide lists what to check first."
+            }
+          }
+        ]
+      }
+    </script>
+    <script>window.va=window.va||function(){(window.va.q=window.va.q||[]).push(arguments)}</script>
+    <script defer src="/_vercel/insights/script.js"></script>
   </head>
   <body>
     <nav aria-label="Site">
@@ -69,6 +122,41 @@
       <h2>Behavior to know about</h2>
       <p>There is only ever one toast on screen. A new call changes the visible toast into the new message with a spring animation instead of adding a second one. That is the main difference from stacking libraries such as svelte-sonner, which I compare on the <a href="/svelte-sonner-alternative/">svelte-sonner alternative</a> page.</p>
       <p>Errors, loading toasts and toasts that have a button stay until dismissed. Everything else closes after five seconds. For loading states see <a href="/loading-toast/">loading toast</a>, and for undo buttons see <a href="/undo-toast/">undo toast</a>.</p>
+      <h2>Position, theme and sound</h2>
+      <p>Set them as props on <code>Toaster</code>, or call <code>toast.configure</code> from anywhere:</p>
+      <pre><code>&lt;Toaster position="bottom-right" theme="dark" /&gt;
+
+toast.configure({ sound: true, volume: 0.5 });</code></pre>
+      <h2>Restyle it with CSS variables</h2>
+      <p>Colors and corner radius are CSS variables, so they work the same in Svelte as in any other framework:</p>
+      <pre><code>.tst-viewport {
+  --tst-radius: 8px;
+  --tst-bg: #1e3a8a;
+  --tst-fg: #fff;
+  --tst-success: #16a34a;
+}</code></pre>
+      <p>The <a href="/playground/">playground</a> lets you try the options and copy the CSS.</p>
+      <h2>Frequently asked questions</h2>
+      <h3>Does Ding support Svelte 4?</h3>
+      <p>No. <code>@yusufceng1z/ding-svelte</code> targets Svelte 5. For other setups the plain JavaScript package <code>@yusufceng1z/ding</code> works without a framework.</p>
+      <h3>Do I need to import a stylesheet?</h3>
+      <p>No. Ding injects its styles from JavaScript. If your Content Security Policy blocks inline styles, pass the page's nonce to <code>Toaster</code>.</p>
+      <h3>How do I dismiss a toast from code?</h3>
+      <p><code>toast.dismiss(id)</code> closes one toast and <code>toast.dismiss()</code> closes all of them. Pressing <kbd>Esc</kbd> also dismisses.</p>
+      <h3>Is it accessible?</h3>
+      <p>Messages go through persistent live regions (errors are assertive, the rest polite), <kbd>Alt</kbd> + <kbd>T</kbd> moves focus into the toast, and motion respects <code>prefers-reduced-motion</code>. See <a href="/toast-accessibility/">accessible toast notifications</a>.</p>
+      <h3>Can I migrate from svelte-sonner?</h3>
+      <p>Yes, the calls look alike. The <a href="/svelte-sonner-alternative/">svelte-sonner alternative</a> guide lists what to check first.</p>
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="/svelte-sonner-alternative/">svelte-sonner alternative</a>: Moving from svelte-sonner</li>
+        <li><a href="/loading-toast/">Loading toast</a>: Show progress, then success or error</li>
+        <li><a href="/undo-toast/">Undo toast</a>: Let users reverse an action</li>
+        <li><a href="/toast-accessibility/">Accessible toast notifications</a>: Live regions, timing and keyboard</li>
+        <li><a href="/javascript-toast/">JavaScript toast notifications</a>: Toasts without a framework</li>
+        <li><a href="/docs.html">Docs</a>: every option and setting</li>
+        <li><a href="/playground/">Playground</a>: style a toast and copy the CSS</li>
+      </ul>
       <footer>Ding is made by <a href="https://yusufcengiz.dev">Yusuf Cengiz</a>. MIT licensed, <a href="https://github.com/YusufCeng1z/ding">source on GitHub</a>.</footer>
     </main>
     <script type="module" src="/src/page-demo.ts"></script>
