@@ -70,7 +70,7 @@ export default function App() {
 }
 ```
 
-Works in the Next.js App Router as is: the package ships `"use client"`, so `Toaster` can go straight into `app/layout.tsx`. See the [Next.js guide](https://ding.yusufcengiz.dev/nextjs-toast/).
+Works in the Next.js App Router as is: the package ships `"use client"`, so `Toaster` can go straight into `app/layout.tsx`. Call `toast.configure` from a client component, in an effect. See the [Next.js guide](https://ding.yusufcengiz.dev/nextjs-toast/).
 
 **Svelte 5**
 

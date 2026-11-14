@@ -64,6 +64,14 @@
           },
           {
             "@type": "Question",
+            "name": "Where do I call toast.configure?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "In an effect inside a client component, not in layout.tsx and not in a component body. A server component gets toast.configure is not a function, and calling it during render gives a React warning about updating Toaster while rendering."
+            }
+          },
+          {
+            "@type": "Question",
             "name": "Is there a shadcn/ui version?",
             "acceptedAnswer": {
               "@type": "Answer",
@@ -85,7 +93,7 @@
     </nav>
     <main>
       <h1>Next.js toast notifications</h1>
-      <p class="lead">The package is marked <code>"use client"</code>, so the Toaster goes straight into your root layout. The one rule: call <code>toast</code> from client code. Everything else is the same as plain React.</p>
+      <p class="lead">The package is marked <code>"use client"</code>, so the Toaster goes straight into your root layout. The one rule: call <code>toast</code> and <code>toast.configure</code> from client code. Everything else is the same as plain React.</p>
       <div class="try" role="group" aria-label="Try the toast">
         <span>Try it:</span>
         <button type="button" data-demo="success">Success</button>
@@ -108,6 +116,20 @@
           &lt;/html&gt;
         );
       }</code></pre>
+      <h2 id="configure-sound-and-other-options">Configure sound and other options</h2>
+      <p><code>toast.configure</code> is client code too. It cannot run in <code>layout.tsx</code>, and it should not run while a component renders. Put it in an effect inside a small client component that also renders the Toaster:</p>
+      <pre><code>"use client";
+
+      import { useEffect } from 'react';
+      import { Toaster, toast } from '@yusufceng1z/ding-react';
+
+      export function AppToaster() {
+        useEffect(() => {
+          toast.configure({ sound: true, volume: 0.5 });
+        }, []);
+        return &lt;Toaster position="top-center" /&gt;;
+      }</code></pre>
+      <p>Render <code>&lt;AppToaster /&gt;</code> in <code>app/layout.tsx</code> instead of <code>&lt;Toaster /&gt;</code>. Options that <code>Toaster</code> takes as props, such as <code>position</code>, <code>theme</code>, <code>labels</code> and <code>nonce</code>, need no wrapper.</p>
       <h2>Call toast from client code</h2>
       <pre><code>"use client";
 
@@ -143,6 +165,8 @@
       <p>A toast is shown in the browser, so call <code>toast</code> from client code, for example after a server action resolves. The server actions section above shows the pattern.</p>
       <h3>Does it work with a theme switcher?</h3>
       <p>Yes. Pass the current theme to <code>Toaster</code> or call <code>toast.configure({ theme })</code>.</p>
+      <h3>Where do I call toast.configure?</h3>
+      <p>In an effect inside a client component, not in <code>layout.tsx</code> and not in a component body. A server component gets <code>toast.configure is not a function</code>, and calling it during render gives a React warning about updating <code>Toaster</code> while rendering. See <a href="#configure-sound-and-other-options">the example above</a>.</p>
       <h3>Is there a shadcn/ui version?</h3>
       <p>Yes. <code>npx shadcn@latest add @ding/ding</code> installs the React package and adds a <code>ding-toaster.tsx</code> wrapper. See the <a href="/shadcn-toast/">shadcn/ui toast guide</a>.</p>
       <h2>Related guides</h2>
