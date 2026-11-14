@@ -17,6 +17,9 @@
     <meta property="og:url" content="https://ding.yusufcengiz.dev/loading-toast/" />
     <meta property="og:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Loading toast: show progress, then success or error" />
+    <meta name="twitter:description" content="Show a loading toast that turns into a success or error toast when the work finishes. Promise and manual progress examples with Ding." />
+    <meta name="twitter:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -25,11 +28,53 @@
         "description": "Show a loading toast that turns into a success or error toast when the work finishes. Promise and manual progress examples with Ding.",
         "url": "https://ding.yusufcengiz.dev/loading-toast/",
         "datePublished": "2026-11-06",
-        "dateModified": "2026-11-06",
+        "dateModified": "2026-11-14",
         "author": { "@type": "Person", "name": "Yusuf Cengiz", "url": "https://yusufcengiz.dev" },
         "about": { "@type": "SoftwareSourceCode", "name": "Ding", "codeRepository": "https://github.com/YusufCeng1z/ding" }
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I show a loading toast for a promise?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Use toast.promise(p, { loading, success, error }). The toast changes to success or error when the promise settles."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does a loading toast close by itself?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Loading toasts stay until you update or dismiss them."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I show progress?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Pass progress between 0 and 1 and update it with toast.update."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What if the request fails?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Update the toast to an error, ideally with a Retry button. See undo toast for how an action button can change the toast in place."
+            }
+          }
+        ]
+      }
+    </script>
+    <script>window.va=window.va||function(){(window.va.q=window.va.q||[]).push(arguments)}</script>
+    <script defer src="/_vercel/insights/script.js"></script>
   </head>
   <body>
     <nav aria-label="Site">
@@ -63,6 +108,32 @@
       <h2>Good to know</h2>
       <p>A loading toast stays until you update or dismiss it, so make sure every code path ends in one of those. Only the newest caller can update the shared toast. If a slow request finishes after you have shown something newer, its update is ignored instead of overwriting the newer message.</p>
       <p>For work that takes minutes, also show progress on the page itself. A toast is a poor place for long-running status. See <a href="/toast-notification-ux/">toast notification UX</a> for when to use which.</p>
+      <h2>Show real progress</h2>
+      <p>Pass <code>progress</code> from <code>0</code> to <code>1</code> to draw a thin bar at the bottom of the toast, then update it as work advances:</p>
+      <pre><code>const id = toast.loading('Uploading photo…', { progress: 0 });
+toast.update(id, { progress: 0.6 });
+toast.update(id, { type: 'success', title: 'Photo uploaded', progress: null });</code></pre>
+      <h2>Why late responses do not overwrite newer messages</h2>
+      <p>Only the newest caller can update the shared toast, so a slow request that finishes late cannot replace a newer message.</p>
+      <h2>Frequently asked questions</h2>
+      <h3>How do I show a loading toast for a promise?</h3>
+      <p>Use <code>toast.promise(p, { loading, success, error })</code>. The toast changes to success or error when the promise settles.</p>
+      <h3>Does a loading toast close by itself?</h3>
+      <p>No. Loading toasts stay until you update or dismiss them.</p>
+      <h3>Can I show progress?</h3>
+      <p>Yes. Pass <code>progress</code> between 0 and 1 and update it with <code>toast.update</code>.</p>
+      <h3>What if the request fails?</h3>
+      <p>Update the toast to an error, ideally with a Retry button. See <a href="/undo-toast/">undo toast</a> for how an action button can change the toast in place.</p>
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="/undo-toast/">Undo toast</a>: Let users reverse an action</li>
+        <li><a href="/react-toast/">React toast notifications</a>: Install Ding in a React app</li>
+        <li><a href="/svelte-toast/">Svelte 5 toast notifications</a>: Use Ding in Svelte 5</li>
+        <li><a href="/toast-notification-ux/">Toast notification UX</a>: When to use a toast</li>
+        <li><a href="/toast-accessibility/">Accessible toast notifications</a>: Live regions, timing and keyboard</li>
+        <li><a href="/docs.html">Docs</a>: every option and setting</li>
+        <li><a href="/playground/">Playground</a>: style a toast and copy the CSS</li>
+      </ul>
       <footer>Ding is made by <a href="https://yusufcengiz.dev">Yusuf Cengiz</a>. MIT licensed, <a href="https://github.com/YusufCeng1z/ding">source on GitHub</a>.</footer>
     </main>
     <script type="module" src="/src/page-demo.ts"></script>

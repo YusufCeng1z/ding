@@ -1,4 +1,5 @@
 import './site.css';
+import { showStars } from './stars';
 import { toast, chime } from '@yusufceng1z/ding';
 import { MASCOT } from './mascot';
 import { LOOKS, DEFAULT, restyle, type Look } from './looks';
@@ -152,7 +153,7 @@ const link = (href: string, text: string, cls = '') => h('a', { href, className:
 
 export function mountSite(root: HTMLElement, _adapter?: string) {
   (window as unknown as { toast: typeof toast }).toast = toast; // for console experiments
-  toast.configure({ theme: 'dark', sound: true });
+  toast.configure({ theme: 'dark', sound: true, held: 'replace' });
 
   // top bar
   const gh = link(GITHUB, '', 'gh');
@@ -297,4 +298,5 @@ export function mountSite(root: HTMLElement, _adapter?: string) {
   groups.splice(groups.length - 1, 0, styles);
   const foot = h('footer', {}, 'Made by ', link('https://yusufcengiz.dev', 'yusufcengiz.dev'));
   root.replaceChildren(h('div', { className: 'page' }, h('a', { className: 'skip', href: '#main', textContent: 'Skip to demos' }), bar, h('main', { id: 'main' }, hero, settings, ...groups), foot));
+  showStars(root);
 }

@@ -17,6 +17,17 @@ main{display:grid;gap:40px;padding-top:56px;flex:1}
 .navlink[aria-current]{color:var(--ink)}
 .gh{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--line);border-radius:var(--r);color:var(--ink);font-size:13px;text-decoration:none;transition:background-color .15s ease-out,scale .15s ease-out}
 .gh:active{scale:.96}
+.gh{position:relative;overflow:hidden;white-space:nowrap}
+.gh-n{display:inline-flex;align-items:center;gap:4px;padding-inline-start:8px;border-inline-start:1px solid var(--line);font-variant-numeric:tabular-nums}
+.gh-n svg{width:12px;height:12px;color:#fca020;fill:currentColor;transition:rotate .35s var(--ease),scale .35s var(--ease)}
+@media (hover:hover){.gh:hover .gh-n svg{rotate:72deg;scale:1.25}}
+@media (prefers-reduced-motion:no-preference){
+.gh::after{content:'';position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgb(252 160 32/.3) 50%,transparent 70%);translate:-120% 0;pointer-events:none}
+.gh[data-nudge]::after{animation:gh-shine .9s var(--ease) 1}
+.gh[data-nudge] .gh-n svg{animation:gh-pop .6s var(--ease) .3s 1}
+@keyframes gh-shine{to{translate:120% 0}}
+@keyframes gh-pop{40%{scale:1.5;rotate:36deg}}
+}
 .hero{position:relative;display:grid;gap:16px;justify-items:start}
 .mascot{width:132px;height:114px;padding:0;border:0;background:transparent;border-radius:24px}
 .mchar{display:block;width:100%;height:100%;overflow:visible;pointer-events:none}
@@ -108,4 +119,4 @@ footer a{color:var(--ink);text-underline-offset:3px}
 @keyframes m-dust{0%{opacity:0;scale:.4}40%{opacity:1;scale:1.2}100%{opacity:1;scale:1}}
 .group .row button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
 .row{align-items:center}
-@media (max-width:520px){.nav{gap:2px}.navlink{padding:8px}.gh{padding:8px 10px}.gh span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
+@media (max-width:520px){.bar{justify-content:flex-start}.nav{gap:2px;flex-wrap:wrap;width:100%}.navlink{padding:8px}.bar .nav .gh{flex:1 0 100%;justify-content:center;margin-top:8px;padding:9px 16px;min-height:40px}}

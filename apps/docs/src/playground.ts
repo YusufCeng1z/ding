@@ -1,5 +1,6 @@
 import './site.css';
 import './playground.css';
+import { showStars } from './stars';
 import { mountToaster, toast, type ToastType } from '@yusufceng1z/ding';
 import { BASE, COLORS, DEFAULT, FILL, LOOKS, lookCss, lookJs, restyle, type ColorKey, type Look, type Motion } from './looks';
 
@@ -23,7 +24,7 @@ let look = clone(DEFAULT);
 let current = 0;
 
 // the real toaster, moved into the stage so the preview is the actual component
-mountToaster({ theme: look.theme, position: 'top-center', labels: { region: 'Toast preview' } });
+mountToaster({ theme: look.theme, position: 'top-center', labels: { region: 'Toast preview' }, held: 'replace' });
 const viewport = $<HTMLElement>('.tst-viewport');
 const stage = $('#stage');
 stage.prepend(viewport);
@@ -158,3 +159,5 @@ copy.onclick = async () => {
 };
 
 set(clone(DEFAULT));
+
+showStars();

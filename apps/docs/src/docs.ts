@@ -2,9 +2,10 @@ import { mountToaster, toast } from '@yusufceng1z/ding';
 import { makeSeg } from './site';
 import './site.css';
 import './docs.css';
+import { showStars } from './stars';
 
 // real toasts for the Run buttons
-mountToaster({ theme: 'dark' });
+mountToaster({ theme: 'dark', held: 'replace' });
 // pending steps of the last example are cancelled when another one starts, so they never fight over the toast
 const timers: ReturnType<typeof setTimeout>[] = [];
 const later = (f: () => void, ms: number) => void timers.push(setTimeout(f, ms));
@@ -121,3 +122,5 @@ addEventListener('scroll', () => {
   requestAnimationFrame(() => ((queued = false), update()));
 }, { passive: true });
 update();
+
+showStars();

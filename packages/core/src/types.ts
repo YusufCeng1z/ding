@@ -97,3 +97,6 @@ export interface PromiseMessages<T> {
   success: string | ((value: T) => string);
   error: string | ((error: unknown) => string);
 }
+
+/** What happens to a toast that stays until closed when another toast is shown. */
+export type HeldMode = 'list' | 'queue' | 'replace';

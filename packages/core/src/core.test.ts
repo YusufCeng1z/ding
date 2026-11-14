@@ -70,9 +70,9 @@ test('errors and actions stay until dismissed; announcements go to the right reg
   mock.timers.tick(TIMING.openDelay + 60_000);
   assert.deepEqual(t.getState().toasts.map((x) => x.phase), ['open']);
   assert.match(t.getState().alert, /^Payment failed\. Card declined/);
-  t.success('Deleted', { action: { label: 'Undo', onClick() {} } }); // morphs the live toast
+  t.success('Deleted', { action: { label: 'Undo', onClick() {} } }); // the error is held, so this one gets its own slot
   mock.timers.tick(60_000);
-  assert.deepEqual(t.getState().toasts.map((x) => x.phase), ['open']);
+  assert.deepEqual(t.getState().toasts.map((x) => x.phase), ['open', 'open']);
   assert.match(t.getState().status, /^Deleted/);
   mock.timers.reset();
 });
@@ -187,4 +187,84 @@ test('configure() retunes springs', async () => {
   t.configure({ springs: { enter: { stiffness: 500, damping: 30 } } });
   assert.equal(getSpringConfigs().enter.stiffness, 500);
   t.configure({ springs: { enter: was } });
+});
+
+test('a held toast keeps its slot: a quick toast opens beside it, the next quick one morphs that one', () => {
+  mock.timers.enable({ apis: ['setTimeout', 'Date'] });
+  const t = createToaster();
+  t.error('Could not save', { action: { label: 'Retry', onClick: () => undefined } });
+  t.success('Saved');
+  assert.deepEqual(t.getState().toasts.map((x) => x.title), ['Could not save', 'Saved'], 'the error is not buried');
+  t.info('Synced');
+  assert.deepEqual(t.getState().toasts.map((x) => x.title), ['Could not save', 'Synced'], 'quick toasts share one slot');
+  t.error('Upload failed', { action: { label: 'Fix', onClick: () => undefined } });
+  assert.deepEqual(t.getState().toasts.map((x) => x.title), ['Could not save', 'Upload failed'], 'a second error takes the quick slot, the first error stays');
+  t.success('Saved');
+  assert.deepEqual(t.getState().toasts.map((x) => x.title), ['Could not save', 'Upload failed', 'Saved'], 'both errors stay, the quick toast opens a third slot');
+  mock.timers.tick(TIMING.openDelay);
+  mock.timers.tick(TIMING.duration);
+  mock.timers.tick(TIMING.closing);
+  mock.timers.tick(TIMING.exit);
+  assert.deepEqual(t.getState().toasts.map((x) => x.title), ['Could not save', 'Upload failed'], 'the quick toast leaves on its own, the errors stay');
+  mock.timers.reset();
+});
+
+test('without a held toast one toast still morphs; a loading toast is not held', () => {
+  const t = createToaster();
+  t.success('a');
+  t.error('b');
+  assert.equal(t.getState().toasts.length, 1);
+  const u = createToaster();
+  u.loading('Working');
+  u.error('Failed');
+  assert.equal(u.getState().toasts.length, 1, 'loading is replaced as before');
+});
+
+test("held: 'replace' lets a new toast take over a held one, as before", () => {
+  const t = createToaster();
+  t.configure({ held: 'replace' });
+  t.error('Could not save', { action: { label: 'Retry', onClick: () => undefined } });
+  t.success('Saved');
+  assert.deepEqual(t.getState().toasts.map((x) => x.title), ['Saved']);
+});
+
+test("held: 'queue' makes new toasts wait in line, and shows them one after another", () => {
+  mock.timers.enable({ apis: ['setTimeout', 'Date'] });
+  const t = createToaster();
+  t.configure({ held: 'queue' });
+  const err = t.error('Could not save', { action: { label: 'Retry', onClick: () => undefined } });
+  t.success('Saved 1');
+  t.success('Saved 2');
+  t.error('Upload failed');
+  assert.deepEqual(t.getState().toasts.map((x) => x.title), ['Could not save'], 'one toast on screen');
+  const leave = () => {
+    mock.timers.tick(TIMING.openDelay);
+    mock.timers.tick(TIMING.duration);
+    mock.timers.tick(TIMING.closing);
+    mock.timers.tick(TIMING.exit);
+  };
+  t.dismiss(err);
+  mock.timers.tick(TIMING.closing);
+  mock.timers.tick(TIMING.exit);
+  assert.deepEqual(t.getState().toasts.map((x) => x.title), ['Saved 1'], 'first in line');
+  leave();
+  assert.deepEqual(t.getState().toasts.map((x) => x.title), ['Saved 2'], 'then the next');
+  leave();
+  assert.deepEqual(t.getState().toasts.map((x) => x.title), ['Upload failed'], 'then the last, which stays');
+  mock.timers.reset();
+});
+
+test("held: 'queue' passes updates to a toast that is still waiting", () => {
+  mock.timers.enable({ apis: ['setTimeout', 'Date'] });
+  const t = createToaster();
+  t.configure({ held: 'queue' });
+  const err = t.error('Could not save');
+  const wait = t.loading('Uploading');
+  t.update(wait, { type: 'success', title: 'Uploaded' });
+  t.dismiss(err);
+  mock.timers.tick(TIMING.closing);
+  mock.timers.tick(TIMING.exit);
+  assert.equal(t.getState().toasts[0]?.title, 'Uploaded');
+  assert.equal(t.getState().toasts[0]?.type, 'success');
+  mock.timers.reset();
 });

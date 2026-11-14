@@ -6,6 +6,39 @@ const reduced = () => typeof matchMedia === 'function' && matchMedia('(prefers-r
 
 const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 /**
+ * A held toast (an error, a button) stays while quick toasts come and go, so several can be on screen at once.
+ * They sit in one column, the newest next to the screen edge (older ones are pushed away), as --tst-ey on each slot. Computed once per frame.
+ */
+let layoutQueued = false;
+function scheduleLayout(vp: Element | null) {
+  if (!vp || layoutQueued) return;
+  layoutQueued = true;
+  requestAnimationFrame(() => {
+    layoutQueued = false;
+    const gap = parseFloat(getComputedStyle(vp).getPropertyValue('--tst-gap')) || 8;
+    const slots = [...vp.querySelectorAll<HTMLElement>('.tst-slot')]
+      .map((s) => [Number(s.style.getPropertyValue('--tst-i')) || 0, s] as const)
+      .sort((a, b) => a[0] - b[0]);
+    const phaseOf = (s: HTMLElement) => s.firstElementChild?.getAttribute('data-phase');
+    const open = slots.filter(([, s]) => phaseOf(s) === 'enter' || phaseOf(s) === 'open').length;
+    if (open > 1) vp.setAttribute('data-list', '');
+    else if (slots.length <= 1) vp.removeAttribute('data-list');
+    let acc = 0;
+    for (const [, s] of slots) {
+      const v = `${acc}px`;
+      if (!s.style.getPropertyValue('--tst-ey')) {
+        // first placement: no glide from the top, the toast appears where it belongs
+        s.setAttribute('data-new', '');
+        requestAnimationFrame(() => requestAnimationFrame(() => s.removeAttribute('data-new')));
+      }
+      if (s.style.getPropertyValue('--tst-ey') !== v) s.style.setProperty('--tst-ey', v);
+      // a toast that is closing no longer takes room, so the ones below glide up while it leaves
+      if (phaseOf(s) !== 'closing' && phaseOf(s) !== 'exit') acc += s.offsetHeight + gap;
+    }
+  });
+}
+
+/**
  * Drives the pill. Width, height and entrance position are springs; text and action
  * reveal are *derived* from the live width (--tp, --ap), so box and content stay locked together.
  */
@@ -95,6 +128,9 @@ function watchMotion(slot: HTMLElement, id: string, t: Toaster): () => void {
     if (phase === 'open') (aim(), kick());
   };
 
+  const lro = new ResizeObserver(() => scheduleLayout(slot.parentElement));
+  lro.observe(slot);
+  scheduleLayout(slot.parentElement);
   const ro = new ResizeObserver(measure);
   if (body) ro.observe(body);
   measure();
@@ -112,6 +148,7 @@ function watchMotion(slot: HTMLElement, id: string, t: Toaster): () => void {
   let lastType = t.getState().toasts.find((e) => e.id === id)?.type;
   let count = t.getState().toasts.find((x) => x.id === id)?.count ?? 1;
   const unsub = t.subscribe(() => {
+    scheduleLayout(slot.parentElement);
     const it = t.getState().toasts.find((x) => x.id === id);
     if (!it) return;
     if (it.count > count && phase === 'open') {
@@ -226,6 +263,7 @@ function watchMotion(slot: HTMLElement, id: string, t: Toaster): () => void {
     tmo.disconnect();
     spin?.cancel();
     ro.disconnect();
+    lro.disconnect();
     mo.disconnect();
     unsub();
     ghost?.remove();

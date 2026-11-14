@@ -2,11 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ding.yusufcengiz.dev/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://ding.yusufcengiz.dev/docs.html</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://ding.yusufcengiz.dev/playground/</loc>
@@ -15,6 +15,10 @@
   <url>
     <loc>https://ding.yusufcengiz.dev/changelog/</loc>
     <lastmod>2026-11-12</lastmod>
+  </url>
+  <url>
+    <loc>https://ding.yusufcengiz.dev/changelog/0-0-5/</loc>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://ding.yusufcengiz.dev/changelog/0-0-4/</loc>
@@ -26,54 +30,54 @@
   </url>
   <url>
     <loc>https://ding.yusufcengiz.dev/react-toast/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://ding.yusufcengiz.dev/svelte-toast/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://ding.yusufcengiz.dev/nextjs-toast/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://ding.yusufcengiz.dev/shadcn-toast/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://ding.yusufcengiz.dev/sonner-alternative/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://ding.yusufcengiz.dev/react-hot-toast-alternative/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://ding.yusufcengiz.dev/javascript-toast/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://ding.yusufcengiz.dev/toast-notification-ux/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://ding.yusufcengiz.dev/toast-vs-snackbar/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://ding.yusufcengiz.dev/undo-toast/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://ding.yusufcengiz.dev/loading-toast/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://ding.yusufcengiz.dev/svelte-sonner-alternative/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://ding.yusufcengiz.dev/toast-accessibility/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-14</lastmod>
   </url>
 </urlset>

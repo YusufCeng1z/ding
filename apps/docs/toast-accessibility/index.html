@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Accessible toast notifications: live regions, timing, keyboard</title>
+    <title>Accessible toast notifications: live regions, keyboard</title>
     <meta name="description" content="How to build accessible toasts: announce them with live regions, give people enough time, make buttons reachable by keyboard and respect reduced motion." />
     <link rel="canonical" href="https://ding.yusufcengiz.dev/toast-accessibility/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -12,11 +12,14 @@
     <link rel="stylesheet" href="/page.css" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Ding" />
-    <meta property="og:title" content="Accessible toast notifications: live regions, timing, keyboard" />
+    <meta property="og:title" content="Accessible toast notifications: live regions, keyboard" />
     <meta property="og:description" content="How to build accessible toasts: announce them with live regions, give people enough time, make buttons reachable by keyboard and respect reduced motion." />
     <meta property="og:url" content="https://ding.yusufcengiz.dev/toast-accessibility/" />
     <meta property="og:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Accessible toast notifications: live regions, keyboard" />
+    <meta name="twitter:description" content="How to build accessible toasts: announce them with live regions, give people enough time, make buttons reachable by keyboard and respect reduced motion." />
+    <meta name="twitter:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -25,11 +28,53 @@
         "description": "How to build accessible toasts: announce them with live regions, give people enough time, make buttons reachable by keyboard and respect reduced motion.",
         "url": "https://ding.yusufcengiz.dev/toast-accessibility/",
         "datePublished": "2026-11-06",
-        "dateModified": "2026-11-06",
+        "dateModified": "2026-11-14",
         "author": { "@type": "Person", "name": "Yusuf Cengiz", "url": "https://yusufcengiz.dev" },
         "about": { "@type": "SoftwareSourceCode", "name": "Ding", "codeRepository": "https://github.com/YusufCeng1z/ding" }
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Should a toast take keyboard focus?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Usually not, because it would interrupt what the user is doing. Announce it through a live region and offer a shortcut, such as Alt + T in Ding, to reach it."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is role=alert right for every toast?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. alert is assertive and interrupts the screen reader. Use it for errors and a polite status region for everything else."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long should a toast stay?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Long enough to read it, and anything with a button should wait for the user. See toast notification UX."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I translate the labels?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Pass labels to toast.configure or to Toaster: region and dismiss keep their English defaults unless you set them."
+            }
+          }
+        ]
+      }
+    </script>
+    <script>window.va=window.va||function(){(window.va.q=window.va.q||[]).push(arguments)}</script>
+    <script defer src="/_vercel/insights/script.js"></script>
   </head>
   <body>
     <nav aria-label="Site">
@@ -51,6 +96,41 @@
       <p>Spring animation looks good and some people turn motion off. Ding follows <code>prefers-reduced-motion</code>.</p>
       <h2>What a library cannot do for you</h2>
       <p>Do not let a toast be the only place a critical message or an Undo lives. Keep the text short and plain. See <a href="/toast-notification-ux/">toast notification UX</a> for when a toast is the right choice, and <a href="/undo-toast/">undo toast</a> for a pattern that needs a second way back.</p>
+      <h2>Which WCAG criteria apply</h2>
+      <ul>
+        <li><strong>4.1.3 Status Messages (AA):</strong> a message must be announced without taking focus, which is what a live region does.</li>
+        <li><strong>2.2.1 Timing Adjustable (A):</strong> if content disappears on a timer, people need a way to extend or stop it.</li>
+        <li><strong>2.2.2 Pause, Stop, Hide (A):</strong> anything that moves or updates on its own for more than five seconds needs a way to pause it.</li>
+        <li><strong>1.4.1 Use of Color (A):</strong> status needs a second cue, such as an icon or text.</li>
+      </ul>
+      <h2>What Ding does for you</h2>
+      <ul>
+        <li>Messages go through persistent live regions: errors are assertive, everything else is polite.</li>
+        <li><kbd>Esc</kbd> dismisses. It does nothing while a dialog, menu or text field has focus, so it does not steal the key.</li>
+        <li><kbd>Alt</kbd> + <kbd>T</kbd> moves focus into the toast.</li>
+        <li>Hover and keyboard focus pause the timer. Errors, loading toasts and toasts with a button stay until dismissed.</li>
+        <li>Motion respects <code>prefers-reduced-motion</code>, and the toaster mirrors on right-to-left pages.</li>
+        <li>The region and close button names can be localized with the <code>labels</code> option.</li>
+      </ul>
+      <h2>Frequently asked questions</h2>
+      <h3>Should a toast take keyboard focus?</h3>
+      <p>Usually not, because it would interrupt what the user is doing. Announce it through a live region and offer a shortcut, such as <kbd>Alt</kbd> + <kbd>T</kbd> in Ding, to reach it.</p>
+      <h3>Is role=alert right for every toast?</h3>
+      <p>No. <code>alert</code> is assertive and interrupts the screen reader. Use it for errors and a polite <code>status</code> region for everything else.</p>
+      <h3>How long should a toast stay?</h3>
+      <p>Long enough to read it, and anything with a button should wait for the user. See <a href="/toast-notification-ux/">toast notification UX</a>.</p>
+      <h3>Can I translate the labels?</h3>
+      <p>Yes. Pass <code>labels</code> to <code>toast.configure</code> or to <code>Toaster</code>: <code>region</code> and <code>dismiss</code> keep their English defaults unless you set them.</p>
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="/toast-notification-ux/">Toast notification UX</a>: When to use a toast</li>
+        <li><a href="/undo-toast/">Undo toast</a>: Let users reverse an action</li>
+        <li><a href="/loading-toast/">Loading toast</a>: Show progress, then success or error</li>
+        <li><a href="/react-toast/">React toast notifications</a>: Install Ding in a React app</li>
+        <li><a href="/toast-vs-snackbar/">Toast vs snackbar</a>: Is there a difference?</li>
+        <li><a href="/docs.html">Docs</a>: every option and setting</li>
+        <li><a href="/playground/">Playground</a>: style a toast and copy the CSS</li>
+      </ul>
       <footer>Ding is made by <a href="https://yusufcengiz.dev">Yusuf Cengiz</a>. MIT licensed, <a href="https://github.com/YusufCeng1z/ding">source on GitHub</a>.</footer>
     </main>
   </body>

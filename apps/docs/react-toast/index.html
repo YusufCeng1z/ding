@@ -17,6 +17,9 @@
     <meta property="og:url" content="https://ding.yusufcengiz.dev/react-toast/" />
     <meta property="og:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="React toast notifications: install and use Ding" />
+    <meta name="twitter:description" content="How to add toast notifications to a React app with Ding: install, render one Toaster, call toast() anywhere. No dependencies and no CSS import." />
+    <meta name="twitter:image" content="https://ding.yusufcengiz.dev/social-preview.png" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -25,11 +28,61 @@
         "description": "How to add toast notifications to a React app with Ding: install, render one Toaster, call toast() anywhere. No dependencies and no CSS import.",
         "url": "https://ding.yusufcengiz.dev/react-toast/",
         "datePublished": "2026-11-06",
-        "dateModified": "2026-11-06",
+        "dateModified": "2026-11-14",
         "author": { "@type": "Person", "name": "Yusuf Cengiz", "url": "https://yusufcengiz.dev" },
         "about": { "@type": "SoftwareSourceCode", "name": "Ding", "codeRepository": "https://github.com/YusufCeng1z/ding" }
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Do I need to import a CSS file?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Ding injects its styles from JavaScript, so there is nothing to import. If your Content Security Policy blocks inline styles, pass the page's nonce with <Toaster nonce={nonce} />."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which React versions does Ding support?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "React 18 and newer, through @yusufceng1z/ding-react."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does Ding work with the Next.js App Router?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. The package ships \"use client\", so Toaster can go straight into app/layout.tsx. See the Next.js toast guide."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does Ding have dependencies?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No third-party dependencies. The React package renders on top of the small Ding core."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I update a toast instead of showing a new one?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Keep the id that toast.loading returns and call toast.update(id, { type: 'success', title: 'Saved' }), or wrap a promise with toast.promise."
+            }
+          }
+        ]
+      }
+    </script>
+    <script>window.va=window.va||function(){(window.va.q=window.va.q||[]).push(arguments)}</script>
+    <script defer src="/_vercel/insights/script.js"></script>
   </head>
   <body>
     <nav aria-label="Site">
@@ -83,6 +136,43 @@
       <h2>Timing</h2>
       <p>Plain toasts close after 5 seconds. Errors, loading toasts and toasts with a button stay until the user dismisses them, because those are the ones people must not miss. Hovering or focusing a toast pauses the timer.</p>
       <p>I wrote Ding because I wanted a toast that does not pile up. If that sounds like what you need, a star on <a href="https://github.com/YusufCeng1z/ding">GitHub</a> helps others find it.</p>
+      <h2>Position, theme and sound</h2>
+      <p>The toaster takes its settings as props, and the same settings work from anywhere with <code>toast.configure</code>:</p>
+      <pre><code>&lt;Toaster position="bottom-right" theme="dark" /&gt;
+
+toast.configure({ sound: true, volume: 0.5 });</code></pre>
+      <p>There are six positions (top and bottom, each left, center or right) and three themes: <code>system</code>, <code>light</code> and <code>dark</code>. The toaster mirrors itself on right-to-left pages.</p>
+      <h2>Restyle it with CSS variables</h2>
+      <p>Colors and corner radius are CSS variables, so you can match your design system without touching the library:</p>
+      <pre><code>.tst-viewport {
+  --tst-radius: 8px;
+  --tst-bg: #1e3a8a;
+  --tst-fg: #fff;
+  --tst-success: #16a34a;
+}</code></pre>
+      <p>Try the options live in the <a href="/playground/">playground</a>, which also gives you the CSS to copy.</p>
+      <h2>Frequently asked questions</h2>
+      <h3>Do I need to import a CSS file?</h3>
+      <p>No. Ding injects its styles from JavaScript, so there is nothing to import. If your Content Security Policy blocks inline styles, pass the page's nonce with <code>&lt;Toaster nonce={nonce} /&gt;</code>.</p>
+      <h3>Which React versions does Ding support?</h3>
+      <p>React 18 and newer, through <code>@yusufceng1z/ding-react</code>.</p>
+      <h3>Does Ding work with the Next.js App Router?</h3>
+      <p>Yes. The package ships <code>"use client"</code>, so <code>Toaster</code> can go straight into <code>app/layout.tsx</code>. See the <a href="/nextjs-toast/">Next.js toast guide</a>.</p>
+      <h3>Does Ding have dependencies?</h3>
+      <p>No third-party dependencies. The React package renders on top of the small Ding core.</p>
+      <h3>How do I update a toast instead of showing a new one?</h3>
+      <p>Keep the id that <code>toast.loading</code> returns and call <code>toast.update(id, { type: 'success', title: 'Saved' })</code>, or wrap a promise with <code>toast.promise</code>.</p>
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="/nextjs-toast/">Next.js toast notifications</a>: Add toasts to the App Router</li>
+        <li><a href="/shadcn-toast/">shadcn/ui toast</a>: Add Ding with the shadcn CLI</li>
+        <li><a href="/loading-toast/">Loading toast</a>: Show progress, then success or error</li>
+        <li><a href="/undo-toast/">Undo toast</a>: Let users reverse an action</li>
+        <li><a href="/toast-accessibility/">Accessible toast notifications</a>: Live regions, timing and keyboard</li>
+        <li><a href="/react-hot-toast-alternative/">react-hot-toast alternative</a>: Moving from react-hot-toast</li>
+        <li><a href="/docs.html">Docs</a>: every option and setting</li>
+        <li><a href="/playground/">Playground</a>: style a toast and copy the CSS</li>
+      </ul>
       <footer>Ding is made by <a href="https://yusufcengiz.dev">Yusuf Cengiz</a>. MIT licensed, <a href="https://github.com/YusufCeng1z/ding">source on GitHub</a>.</footer>
     </main>
     <script type="module" src="/src/page-demo.ts"></script>

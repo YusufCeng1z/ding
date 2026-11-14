@@ -2,7 +2,7 @@ import { toast } from './store';
 import { injectStyles } from './styles';
 import { bindToast } from './bind';
 import { ICONS } from './icons';
-import type { Position, Theme, ToastItem, ToastLabels } from './types';
+import type { HeldMode, Position, Theme, ToastItem, ToastLabels } from './types';
 
 // Escape belongs to what the user is working in: a dialog, menu or text field closes or clears itself first.
 const BUSY = 'dialog,[role=dialog],[aria-modal=true],[role=menu],[role=listbox],input,textarea,select,[contenteditable]';
@@ -44,7 +44,7 @@ const svg = (cls: string, paths: readonly string[], size: number) => {
 
 /** Framework-free renderer. Returns an unmount function. */
 export function mountToaster(
-  opts: { position?: Position; theme?: Theme; labels?: Partial<ToastLabels>; nonce?: string } = {},
+  opts: { position?: Position; theme?: Theme; labels?: Partial<ToastLabels>; nonce?: string; held?: HeldMode } = {},
 ): () => void {
   if (typeof document === 'undefined') return () => {}; // server render: nothing to mount
   const { nonce, ...config } = opts;

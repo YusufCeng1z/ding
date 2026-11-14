@@ -180,6 +180,22 @@ toast.dismiss(id); // one toast
 toast.dismiss();   // all
 ```
 
+### Held toasts
+
+A toast is held when it stays until dismissed: an error, a toast with a button, or one with `duration: 0`. A loading toast is not held, because it is about to turn into its result. `held` decides what happens when another toast arrives while a held toast is on screen:
+
+| Value | Behavior |
+| --- | --- |
+| `'list'` (default) | The held toast keeps its place. Quick toasts appear next to it, and a new held toast takes over the quick one. |
+| `'queue'` | New toasts wait in order and show one after another once the held toast is gone. |
+| `'replace'` | A new toast morphs the one on screen, held or not. This is how 0.0.5 behaved. |
+
+```ts
+toast.configure({ held: 'replace' }); // always one toast
+```
+
+Set it with `toast.configure`, or pass `held` to `mountToaster` in plain DOM.
+
 ## Styling
 
 Colors and corner radius are CSS variables. Set them in your own stylesheet and they apply to every toast, in any framework:

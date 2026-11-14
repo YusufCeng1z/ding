@@ -2,7 +2,7 @@ import { mountToaster, toast } from '@yusufceng1z/ding';
 
 // Live demos for the What's new page. "Before" switches the old click area and the old Esc rule back on
 // so the difference can be felt. It is a simulation: the shipped library only has the new behaviour.
-mountToaster({ position: 'top-center', theme: 'system' });
+mountToaster({ position: 'top-center', theme: 'system', held: 'replace' });
 
 const $ = <T extends HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
 const count = () => document.querySelectorAll('.tst-slot').length;
