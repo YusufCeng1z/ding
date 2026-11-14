@@ -19,6 +19,7 @@ afterEach(() => {
     position: 'top-center',
     theme: 'system',
     labels: { region: 'Notifications', dismiss: 'Dismiss notification' },
+    held: 'list',
   });
   document.querySelector('style[data-toast]')?.remove();
 });
@@ -27,6 +28,22 @@ const mountToaster = (props: Record<string, unknown> = {}) => (wrapper = mount(T
 const viewport = () => document.querySelector<HTMLElement>('.tst-viewport')!;
 
 describe('Vue Toaster', () => {
+  it('keeps a held toast and shows a quick one in its own slot, in every held mode', async () => {
+    mountToaster();
+    toast.error('Payment failed', { action: { label: 'Retry', onClick() {} } });
+    toast.success('Saved');
+    await nextTick();
+    expect(document.querySelectorAll('.tst-slot')).toHaveLength(2);
+    expect(document.querySelector('.tst-title')?.textContent).toBe('Payment failed');
+    toast.configure({ held: 'replace' });
+    toast.dismiss();
+    vi.advanceTimersByTime(1000);
+    toast.error('Payment failed', { action: { label: 'Retry', onClick() {} } });
+    toast.success('Saved');
+    await nextTick();
+    expect(document.querySelectorAll('.tst-slot')).toHaveLength(1);
+  });
+
   it('renders the viewport as a labelled region with its live regions', () => {
     mountToaster();
     expect(viewport().getAttribute('role')).toBe('region');

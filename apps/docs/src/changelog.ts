@@ -1,7 +1,7 @@
 import { mountToaster, toast } from '@yusufceng1z/ding';
 
 // Live demos for the What's new page. They run the shipped library as it is.
-mountToaster({ position: 'top-center', theme: 'system' });
+mountToaster({ position: 'top-center', theme: 'system', held: 'replace' });
 
 const $ = <T extends HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
 const later = (fn: () => void, ms = 400) => setTimeout(fn, ms);

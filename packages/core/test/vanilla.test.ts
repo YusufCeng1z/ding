@@ -16,6 +16,7 @@ afterEach(() => {
     position: 'top-center',
     theme: 'system',
     labels: { region: 'Notifications', dismiss: 'Dismiss notification' },
+    held: 'list',
   });
   document.querySelector('style[data-toast]')?.remove();
 });
@@ -63,8 +64,15 @@ describe('mountToaster', () => {
     expect(toast.getState().toasts.find((t) => t.id === id)?.phase).toBe('closing');
   });
 
-  it('keeps the close button last when a sticky toast morphs into one with an action', () => {
+  it('lists a held toast and a quick one together, each in its own slot', () => {
     mount();
+    toast.error('Payment failed', { action: { label: 'Retry', onClick() {} } });
+    toast.success('Saved');
+    expect(document.querySelectorAll('.tst-slot')).toHaveLength(2);
+    expect(document.querySelector('.tst-title')?.textContent).toBe('Payment failed');
+  });
+  it('keeps the close button last when a sticky toast morphs into one with an action', () => {
+    mount({ held: 'replace' }); // a held toast is only morphed in this mode
     toast.error('Payment failed', { description: 'Card declined' }); // sticky: gets a close button first
     toast.success('Message deleted', { action: { label: 'Undo', onClick: () => ({ type: 'info', title: 'Restored' }) } });
     const body = document.querySelector('.tst-body')!;
@@ -73,7 +81,7 @@ describe('mountToaster', () => {
   });
 
   it('puts the secondary button before the action, also when morphing from a sticky toast', () => {
-    mount();
+    mount({ held: 'replace' });
     toast.error('Boom'); // leaves a close button behind while the new buttons are added
     toast.info('Update ready', { action: { label: 'Reload', onClick() {} }, secondary: { label: 'Later', onClick() {} } });
     const kinds = [...document.querySelectorAll('.tst-body button')].map((b) => b.textContent || 'close');

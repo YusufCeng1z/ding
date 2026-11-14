@@ -4,7 +4,7 @@ import './site.css';
 import './docs.css';
 
 // real toasts for the Run buttons
-mountToaster({ theme: 'dark' });
+mountToaster({ theme: 'dark', held: 'replace' });
 // pending steps of the last example are cancelled when another one starts, so they never fight over the toast
 const timers: ReturnType<typeof setTimeout>[] = [];
 const later = (f: () => void, ms: number) => void timers.push(setTimeout(f, ms));

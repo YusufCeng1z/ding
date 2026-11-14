@@ -51,6 +51,9 @@ position:fixed;inset:0;z-index:2147483647;pointer-events:none;font:500 14px/1.3 
 transform:translate(calc(var(--tx) + var(--dx,0px)),calc(var(--y) + var(--dy,0px))) scale(var(--s));
 transform-origin:var(--tst-ox) var(--tst-oy);z-index:calc(100 - var(--tst-i));
 transition-property:transform,opacity;transition-duration:var(--tst-stack-dur),.25s;transition-timing-function:var(--tst-stack),ease-out}
+/* a held toast and quick toasts on screen together: one column, the newest by the screen edge, older ones are pushed away */
+.tst-viewport[data-list] .tst-slot{--y:calc(var(--tst-dir)*-1*var(--tst-ey,0px));--s:1}
+.tst-slot[data-new]{transition:none}
 .tst-slot::after{content:'';position:absolute;z-index:-1;left:0;right:0;top:calc(var(--tst-gap)/-2);bottom:calc(var(--tst-gap)/-2)}
 .tst-slot[data-dragging]{transition:none;cursor:grabbing}
 .tst-slot[data-flung]{transition:transform .38s cubic-bezier(.2,.8,.3,1),opacity .25s ease-out;opacity:0;pointer-events:none}
