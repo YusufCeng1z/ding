@@ -74,7 +74,7 @@ export function mountToaster(
   function render() {
     const s = toast.getState();
     vp.dataset.position = s.position;
-    vp.dataset.theme = s.theme;
+    vp.dataset.tstTheme = s.theme;
     vp.setAttribute('aria-label', s.labels.region);
     status.textContent = s.status;
     alert.textContent = s.alert;

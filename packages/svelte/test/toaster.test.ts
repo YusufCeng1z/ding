@@ -52,7 +52,7 @@ describe('Svelte Toaster', () => {
     const { container } = render(Toaster, { position: 'bottom-right', theme: 'dark' });
     expect(toast.getState().position).toBe('bottom-right');
     expect(viewport(container).dataset.position).toBe('bottom-right');
-    expect(viewport(container).dataset.theme).toBe('dark');
+    expect(viewport(container).dataset.tstTheme).toBe('dark');
   });
 
   it('uses the labels prop for the region and the close button', () => {

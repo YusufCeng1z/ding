@@ -104,7 +104,7 @@ export function Toaster({
       role="region"
       aria-label={state.labels.region}
       data-position={state.position}
-      data-theme={state.theme}
+      data-tst-theme={state.theme}
       onPointerEnter={() => toast.pause()}
       onPointerLeave={() => toast.resume()}
       onFocus={(e) => e.target.matches(':focus-visible') && toast.pause()}

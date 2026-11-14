@@ -37,7 +37,7 @@ describe('mountToaster', () => {
     mount({ position: 'bottom-right', theme: 'dark' });
     expect(toast.getState().position).toBe('bottom-right');
     expect(viewport().dataset.position).toBe('bottom-right');
-    expect(viewport().dataset.theme).toBe('dark');
+    expect(viewport().dataset.tstTheme).toBe('dark');
   });
 
   it('uses the labels option for the region and the close button', () => {

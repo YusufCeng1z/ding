@@ -56,14 +56,14 @@ describe('Vue Toaster', () => {
     mountToaster({ position: 'bottom-right', theme: 'dark' });
     expect(toast.getState().position).toBe('bottom-right');
     expect(viewport().dataset.position).toBe('bottom-right');
-    expect(viewport().dataset.theme).toBe('dark');
+    expect(viewport().dataset.tstTheme).toBe('dark');
   });
 
   it('follows prop changes after mount', async () => {
     mountToaster({ position: 'top-center', theme: 'light' });
     await wrapper!.setProps({ position: 'bottom-left', theme: 'dark', labels: { region: 'Alertes' } });
     expect(viewport().dataset.position).toBe('bottom-left');
-    expect(viewport().dataset.theme).toBe('dark');
+    expect(viewport().dataset.tstTheme).toBe('dark');
     expect(viewport().getAttribute('aria-label')).toBe('Alertes');
   });
 
