@@ -1,0 +1,2 @@
+# Keep the static site pages out of the GitHub language bar.
+*.html linguist-detectable=false
