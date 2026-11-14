@@ -24,7 +24,7 @@
 
 ## Why Ding
 
-- **One toast at a time.** A new call morphs the toast on screen instead of stacking a second one.
+- **One toast at a time.** A new call morphs the toast on screen instead of stacking a second one. A toast that waits for the user, such as an error with a button, keeps its place (`held: 'list'`, the default). Use `held: 'replace'` to always show one toast.
 - **Real springs.** Size, shape and text move on a spring solver, so interrupting an animation keeps its momentum.
 - **No stylesheet.** Styles are injected from JavaScript. Nothing to import.
 - **Light, dark and system themes**, six positions, right-to-left support.
@@ -179,6 +179,22 @@ toast.configure({
 toast.dismiss(id); // one toast
 toast.dismiss();   // all
 ```
+
+### Held toasts
+
+A toast is held when it stays until dismissed: an error, a toast with a button, or one with `duration: 0`. A loading toast is not held, because it is about to turn into its result. `held` decides what happens when another toast arrives while a held toast is on screen:
+
+| Value | Behavior |
+| --- | --- |
+| `'list'` (default) | The held toast keeps its place. Quick toasts appear next to it, and a new held toast takes over the quick one. |
+| `'queue'` | New toasts wait in order and show one after another once the held toast is gone. |
+| `'replace'` | A new toast morphs the one on screen, held or not. This is how 0.0.5 behaved. |
+
+```ts
+toast.configure({ held: 'replace' }); // always one toast
+```
+
+Set it with `toast.configure`, or pass `held` to `mountToaster` in plain DOM.
 
 ## Styling
 
