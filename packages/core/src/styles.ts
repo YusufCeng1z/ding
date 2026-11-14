@@ -35,8 +35,8 @@ export function buildCss(): string {
 --tst-success:light-dark(#12a36b,#4ade80);--tst-error:light-dark(#e5484d,#f87171);--tst-warning:light-dark(#c77d00,#fbbf24);--tst-info:light-dark(#2f7de1,#60a5fa);
 --tst-size:44px;--tst-radius:22px;--tst-gap:8px;--tst-pad:16px;--tst-stack-offset:10px;--tst-stack-scale:.05;
 position:fixed;inset:0;z-index:2147483647;pointer-events:none;font:500 14px/1.3 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
-.tst-viewport[data-theme=light]{color-scheme:light}
-.tst-viewport[data-theme=dark]{color-scheme:dark}
+.tst-viewport[data-tst-theme=light]{color-scheme:light}
+.tst-viewport[data-tst-theme=dark]{color-scheme:dark}
 .tst-viewport:dir(rtl){--tst-flip:-1}
 .tst-viewport:dir(rtl) .tst-progress::after{transform-origin:right}
 .tst-viewport[data-position^=top]{--tst-dir:-1}

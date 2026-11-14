@@ -37,7 +37,7 @@
   role="region"
   aria-label={state.labels.region}
   data-position={state.position}
-  data-theme={state.theme}
+  data-tst-theme={state.theme}
   onpointerenter={() => toast.pause()}
   onpointerleave={() => toast.resume()}
   onfocusin={(e) => (e.target as Element).matches(':focus-visible') && toast.pause()}
