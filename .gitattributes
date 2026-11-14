@@ -1,2 +1,3 @@
-# Keep the static site pages out of the GitHub language bar.
+# The docs site is documentation, so keep it out of the GitHub language bar.
+apps/docs/** linguist-documentation
 *.html linguist-detectable=false
