@@ -24,7 +24,7 @@
 
 ## Why Ding
 
-- **One toast at a time.** A new call morphs the toast on screen instead of stacking a second one. A toast that waits for the user, such as an error with a button, keeps its place (`held: 'list'`, the default). Use `held: 'replace'` to always show one toast.
+- **One toast at a time.** A new call morphs the toast on screen instead of stacking a second one.
 - **Real springs.** Size, shape and text move on a spring solver, so interrupting an animation keeps its momentum.
 - **No stylesheet.** Styles are injected from JavaScript. Nothing to import.
 - **Light, dark and system themes**, six positions, right-to-left support.

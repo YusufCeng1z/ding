@@ -51,8 +51,8 @@ To use another sound library, pass a function: `toast.configure({ sound: (type) 
 
 ## Behavior
 
-- A new call morphs the live toast instead of stacking. Only the newest caller can update it, so a late result from an older call is ignored.
-- A held toast (an error, a toast with an action, or `duration: 0`; not a loading toast) keeps its place when another toast arrives. `toast.configure({ held })` chooses: `'list'` (default) shows quick toasts next to the held one, `'queue'` shows new toasts one after another once it is gone, `'replace'` always morphs the single toast on screen.
+- One toast is shown at a time. A new call morphs the live toast instead of stacking. Only the newest caller can update it, so a late result from an older call is ignored.
+- Exception: a held toast (an error, a toast with an action, or `duration: 0`; not a loading toast) keeps its place when another toast arrives. `toast.configure({ held })` chooses: `'list'` (default) shows quick toasts next to the held one, `'queue'` shows new toasts one after another once it is gone, `'replace'` always morphs the single toast on screen.
 - Repeating an identical toast adds a counter (×2) instead of a new toast.
 - Errors, loading and toasts with an action stay until dismissed. Other toasts close after 5 seconds. Hover and keyboard focus pause the timer.
 - Escape dismisses. Alt+T moves focus into the toast.
