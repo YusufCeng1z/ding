@@ -180,6 +180,8 @@ toast.dismiss(id); // one toast
 toast.dismiss();   // all
 ```
 
+`dismiss(id)` takes the id a call returned. Once a newer call has taken the toast over, dismissing the older id does nothing, so cleanup code for a finished request cannot close a newer message. A custom renderer should call `toast.close(toast.id)` from its close button instead.
+
 ### Held toasts
 
 A toast is held when it stays until dismissed: an error, a toast with a button, or one with `duration: 0`. A loading toast is not held, because it is about to turn into its result. `held` decides what happens when another toast arrives while a held toast is on screen:

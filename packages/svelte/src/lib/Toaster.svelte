@@ -91,7 +91,7 @@
             </button>
           {/if}
           {#if t.duration === 0 && t.type !== 'loading' && !t.secondary}
-            <button type="button" class="tst-close" aria-label={state.labels.dismiss} tabindex={t.phase === 'open' ? 0 : -1} onclick={() => toast.dismiss(t.id)}>
+            <button type="button" class="tst-close" aria-label={state.labels.dismiss} tabindex={t.phase === 'open' ? 0 : -1} onclick={() => toast.close(t.id)}>
               <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
             </button>
           {/if}

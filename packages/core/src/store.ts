@@ -79,7 +79,7 @@ export function createToaster() {
     e.lifeTimer = undefined;
     if (find(id)?.phase !== 'open' || e.paused || e.remaining <= 0) return;
     e.startedAt = Date.now();
-    e.lifeTimer = setTimeout(() => dismiss(id), e.remaining);
+    e.lifeTimer = setTimeout(() => close(id), e.remaining);
   }
 
   function show(type: ToastType, title: string, opts: ToastOptions = {}): string {
@@ -193,7 +193,7 @@ export function createToaster() {
   function act(id: string, which: 'action' | 'secondary' = 'action') {
     const result = find(id)?.[which]?.onClick();
     if (result && typeof result === 'object') apply(id, { action: null, secondary: null, ...result });
-    else dismiss(id);
+    else close(id);
   }
 
   function bump(id: string) {
@@ -205,12 +205,24 @@ export function createToaster() {
     startLife(id);
   }
 
-  /** immediate: skip the text-erase/shrink step (used after a drag-away) */
+  /**
+   * Dismiss by the id a call returned. If a newer call has since taken the toast over, the older caller only
+   * lets go: it must not close the newer message (same rule as `update`).
+   */
   function dismiss(id?: string, opts: { immediate?: boolean } = {}) {
-    if (id === undefined) return (pending.length = 0, state.toasts.forEach((t) => dismiss(t.id, opts)));
+    if (id === undefined) return (pending.length = 0, state.toasts.forEach((t) => close(t.id, opts)));
     const waiting = pending.findIndex((x) => x.id === id);
     if (waiting >= 0) return void pending.splice(waiting, 1);
-    id = live.get(id) ?? id;
+    const target = live.get(id) ?? id;
+    if (owner.has(target) && owner.get(target) !== id) return void live.delete(id);
+    close(target, opts);
+  }
+
+  /**
+   * Close a toast by its own id (`ToastItem.id`), whoever called it last. For renderers: the close button,
+   * drag-away and Escape. immediate: skip the text-erase/shrink step (used after a drag-away).
+   */
+  function close(id: string, opts: { immediate?: boolean } = {}) {
     const t = find(id);
     const e = entries.get(id);
     if (!t || !e || t.phase === 'exit' || (t.phase === 'closing' && !opts.immediate)) return;
@@ -272,6 +284,7 @@ export function createToaster() {
     update,
     act,
     dismiss,
+    close,
     pause,
     resume,
     configure(c: {

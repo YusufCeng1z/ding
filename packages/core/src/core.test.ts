@@ -268,3 +268,29 @@ test("held: 'queue' passes updates to a toast that is still waiting", () => {
   assert.equal(t.getState().toasts[0]?.type, 'success');
   mock.timers.reset();
 });
+
+test('dismissing an older caller id does not close the toast a newer call took over', () => {
+  mock.timers.enable({ apis: ['setTimeout', 'Date'] });
+  const t = createToaster();
+  const upload = t.loading('Uploading');
+  mock.timers.tick(TIMING.openDelay);
+  const saved = t.success('Profile saved');
+  t.dismiss(upload); // e.g. cleanup in a finally block
+  assert.equal(t.getState().toasts[0]?.title, 'Profile saved');
+  assert.equal(t.getState().toasts[0]?.phase, 'open');
+  t.dismiss(saved); // the newest caller still can
+  assert.equal(t.getState().toasts[0]?.phase, 'closing');
+  mock.timers.reset();
+});
+
+test('close() closes a toast by its own id, whoever owns it', () => {
+  mock.timers.enable({ apis: ['setTimeout', 'Date'] });
+  const t = createToaster();
+  t.loading('Uploading');
+  mock.timers.tick(TIMING.openDelay);
+  t.success('Profile saved');
+  const [item] = t.getState().toasts;
+  t.close(item!.id); // the close button
+  assert.equal(t.getState().toasts[0]?.phase, 'closing');
+  mock.timers.reset();
+});

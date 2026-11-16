@@ -242,6 +242,7 @@ toast.update(id, { type: 'success', title: 'Photo uploaded', progress: null });<
 
 toast.dismiss(id);  // one toast
 toast.dismiss();    // all</code></pre>
+            <p><code>toast.dismiss(id)</code> takes the id a call returned. Once a newer call has taken the toast over, dismissing the older id does nothing, so cleanup code for a finished request cannot close a newer message. A custom renderer should call <code>toast.close(toast.id)</code> from its close button instead.</p>
             <p>Position, theme and labels can also be set as props on the toaster. The toast follows reading direction, so right-to-left pages mirror automatically.</p>
             <p><code>labels</code> sets the names screen readers announce for the notifications region (<code>region</code>) and the close button (<code>dismiss</code>). Keys you leave out keep their English default, so a non-English page only needs to translate what it uses.</p>
             <h3 id="held">Held toasts</h3>

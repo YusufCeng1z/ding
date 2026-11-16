@@ -62,7 +62,7 @@ function Item({ t, i, labels }: { t: ToastItem; i: number; labels: ToastLabels }
             </button>
           )}
           {sticky && (
-            <button type="button" className="tst-close" aria-label={labels.dismiss} tabIndex={t.phase === 'open' ? 0 : -1} onClick={() => toast.dismiss(t.id)}>
+            <button type="button" className="tst-close" aria-label={labels.dismiss} tabIndex={t.phase === 'open' ? 0 : -1} onClick={() => toast.close(t.id)}>
               <svg viewBox="0 0 24 24" width={12} height={12} aria-hidden="true">
                 <path d="M6 6l12 12M18 6L6 18" />
               </svg>

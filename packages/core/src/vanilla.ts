@@ -159,7 +159,7 @@ export function mountToaster(
           close = el('button', 'tst-close', body);
           close.type = 'button';
           close.append(svg('', ['M6 6l12 12M18 6L6 18'], 12));
-          close.onclick = () => toast.dismiss(t.id);
+          close.onclick = () => toast.close(t.id);
         }
         close.setAttribute('aria-label', s.labels.dismiss);
         close.tabIndex = t.phase === 'open' ? 0 : -1;

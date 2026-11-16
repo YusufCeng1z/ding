@@ -305,7 +305,7 @@ function watchDrag(slot: HTMLElement, id: string, t: Toaster): () => void {
       slot.setAttribute('data-flung', '');
       slot.style.setProperty('--dx', `${(dx / len) * reach}px`);
       slot.style.setProperty('--dy', `${(rawDy / len) * reach}px`);
-      t.dismiss(id, { immediate: true });
+      t.close(id, { immediate: true });
     }
     else (slot.style.removeProperty('--dx'), slot.style.removeProperty('--dy'));
   };
