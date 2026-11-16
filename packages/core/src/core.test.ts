@@ -294,3 +294,16 @@ test('close() closes a toast by its own id, whoever owns it', () => {
   assert.equal(t.getState().toasts[0]?.phase, 'closing');
   mock.timers.reset();
 });
+
+test('a repeat after a takeover returns an id that can still dismiss the toast', () => {
+  mock.timers.enable({ apis: ['setTimeout', 'Date'] });
+  const t = createToaster();
+  t.loading('Preparing');
+  mock.timers.tick(TIMING.openDelay);
+  t.loading('Saving', { description: 'draft' }); // takes the toast over
+  const id = t.loading('Saving', { description: 'draft' }); // a repeat of the newest message
+  assert.equal(t.getState().toasts[0]?.count, 2);
+  t.dismiss(id);
+  assert.equal(t.getState().toasts[0]?.phase, 'closing');
+  mock.timers.reset();
+});

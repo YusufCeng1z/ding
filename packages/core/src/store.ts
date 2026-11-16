@@ -88,7 +88,8 @@ export function createToaster() {
       const dup = state.toasts.at(-1);
       if (dup && dup.type === type && dup.title === title && dup.description === opts.description && (dup.phase === 'enter' || dup.phase === 'open')) {
         bump(dup.id);
-        return dup.id;
+        // the newest caller owns this toast; hand that id out so update/dismiss with it still work
+        return owner.get(dup.id) ?? dup.id;
       }
     }
     const id = opts.id ?? `toast-${++counter}`;
