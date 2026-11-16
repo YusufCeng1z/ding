@@ -39,6 +39,10 @@ function tick(now: number) {
   for (const t of tasks) if (!t(dt)) tasks.delete(t);
   raf = tasks.size ? requestAnimationFrame(tick) : 0;
 }
+/** Stop a task added with `run`, for an element that is going away. */
+export function stop(task: (dt: number) => boolean): void {
+  tasks.delete(task);
+}
 /** Run `task(dt)` each frame until it returns false. Re-adding the same function is a no-op. */
 export function run(task: (dt: number) => boolean): void {
   tasks.add(task);

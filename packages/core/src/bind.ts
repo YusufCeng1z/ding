@@ -1,5 +1,5 @@
 import { toast, type Toaster } from './store';
-import { Spring, run } from './motion';
+import { Spring, run, stop } from './motion';
 import { getSpringConfigs, getSprings } from './styles';
 
 const reduced = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -9,12 +9,13 @@ const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
  * A held toast (an error, a button) stays while quick toasts come and go, so several can be on screen at once.
  * They sit in one column, the newest next to the screen edge (older ones are pushed away), as --tst-ey on each slot. Computed once per frame.
  */
-let layoutQueued = false;
+// per viewport: with two toasters, one being queued must not skip the other's layout
+const layoutQueued = new WeakSet<Element>();
 function scheduleLayout(vp: Element | null) {
-  if (!vp || layoutQueued) return;
-  layoutQueued = true;
+  if (!vp || layoutQueued.has(vp)) return;
+  layoutQueued.add(vp);
   requestAnimationFrame(() => {
-    layoutQueued = false;
+    layoutQueued.delete(vp);
     const gap = parseFloat(getComputedStyle(vp).getPropertyValue('--tst-gap')) || 8;
     const slots = [...vp.querySelectorAll<HTMLElement>('.tst-slot')]
       .map((s) => [Number(s.style.getPropertyValue('--tst-i')) || 0, s] as const)
@@ -146,6 +147,7 @@ function watchMotion(slot: HTMLElement, id: string, t: Toaster): () => void {
     kick();
   };
   let lastType = t.getState().toasts.find((e) => e.id === id)?.type;
+  let reactTimer: ReturnType<typeof setTimeout> | undefined;
   let count = t.getState().toasts.find((x) => x.id === id)?.count ?? 1;
   const unsub = t.subscribe(() => {
     scheduleLayout(slot.parentElement);
@@ -172,7 +174,8 @@ function watchMotion(slot: HTMLElement, id: string, t: Toaster): () => void {
       h.tune(cfg.morph);
       if (phase === 'open') {
         w.v = -260; // anticipation: the dot squeezes in, then springs open
-        setTimeout(() => lastType && react(lastType), 200);
+        clearTimeout(reactTimer);
+        reactTimer = setTimeout(() => lastType && react(lastType), 200);
       }
     }
     if (phase !== 'exit') (aim(), kick());
@@ -258,6 +261,9 @@ function watchMotion(slot: HTMLElement, id: string, t: Toaster): () => void {
   tmo.observe(pill, { attributes: true, attributeFilter: ['data-type'] });
 
   return () => {
+    // the shared frame loop would keep writing to this pill until its springs settle
+    stop(task);
+    clearTimeout(reactTimer);
     clearTimeout(ready);
     imo.disconnect();
     tmo.disconnect();
@@ -310,15 +316,24 @@ function watchDrag(slot: HTMLElement, id: string, t: Toaster): () => void {
     else (slot.style.removeProperty('--dx'), slot.style.removeProperty('--dy'));
   };
 
+  // The browser or OS took the pointer (a system gesture, a lost capture): that is not a throw, so spring back.
+  const cancel = () => {
+    if (!active) return;
+    active = false;
+    slot.removeAttribute('data-dragging');
+    slot.style.removeProperty('--dx');
+    slot.style.removeProperty('--dy');
+  };
+
   slot.addEventListener('pointerdown', down);
   slot.addEventListener('pointermove', move);
   slot.addEventListener('pointerup', up);
-  slot.addEventListener('pointercancel', up);
+  slot.addEventListener('pointercancel', cancel);
   return () => {
     slot.removeEventListener('pointerdown', down);
     slot.removeEventListener('pointermove', move);
     slot.removeEventListener('pointerup', up);
-    slot.removeEventListener('pointercancel', up);
+    slot.removeEventListener('pointercancel', cancel);
   };
 }
 
