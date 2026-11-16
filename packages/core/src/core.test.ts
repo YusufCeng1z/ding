@@ -301,3 +301,17 @@ test("held: 'replace': an action that shows another message keeps that message o
   assert.equal(toasts[0]?.title, 'Restored');
   assert.notEqual(toasts[0]?.phase, 'closing');
 });
+
+test('an action that updates its own toast still gets its returned patch, or closes it', () => {
+  const t = createToaster();
+  const a = t.error('Save failed', {
+    action: { label: 'Retry', onClick: () => (t.update(a, { action: null }), { type: 'success' as const, title: 'Saved' }) },
+  });
+  t.act(t.getState().toasts[0]!.id);
+  assert.equal(t.getState().toasts[0]?.title, 'Saved');
+
+  const b = t.error('Upload failed', { action: { label: 'Hide', onClick: () => void t.update(b, { action: null }) } });
+  const item = t.getState().toasts.find((x) => x.title === 'Upload failed')!;
+  t.act(item.id);
+  assert.equal(t.getState().toasts.find((x) => x.id === item.id)?.phase, 'closing');
+});

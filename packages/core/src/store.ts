@@ -193,13 +193,14 @@ export function createToaster() {
 
   /**
    * Run a toast's action. A returned patch morphs the toast in place; anything else, a promise included, closes it.
-   * If the handler already showed another message in this toast, that message stays.
+   * If the handler showed another message that took this toast over, that message stays.
    */
   function act(id: string, which: 'action' | 'secondary' = 'action') {
     const button = find(id)?.[which];
     if (!button) return;
+    const caller = owner.get(id);
     const result = button.onClick();
-    if (find(id)?.[which] !== button) return;
+    if (owner.get(id) !== caller) return; // a newer call took the toast over (update() does not)
     if (result && typeof result === 'object' && !isThenable(result)) apply(id, { action: null, secondary: null, ...result });
     else dismiss(id);
   }
