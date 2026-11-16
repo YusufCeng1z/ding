@@ -33,7 +33,7 @@ All calls return the toast id. Import `toast` from the package.
 
 Options: `description`, `action { label, onClick }`, `secondary { label, onClick }`, `image` (avatar URL), `meta` (small trailing text), `progress` (0 to 1), `duration` (ms, 0 stays until dismissed), `id`.
 
-`onClick` may return a patch. The toast then morphs in place instead of closing. A returned patch removes the buttons unless it names them again.
+`onClick` may return a patch. The toast then morphs in place instead of closing. A returned patch removes the buttons unless it names them again. An async `onClick` closes the toast right away; call `toast` from inside it to show the result.
 
 Positions: top-left, top-center, top-right, bottom-left, bottom-center, bottom-right. Themes: system, light, dark.
 

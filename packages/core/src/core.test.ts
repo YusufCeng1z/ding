@@ -268,3 +268,36 @@ test("held: 'queue' passes updates to a toast that is still waiting", () => {
   assert.equal(t.getState().toasts[0]?.type, 'success');
   mock.timers.reset();
 });
+
+test('an async action closes the toast instead of leaving it without buttons', () => {
+  mock.timers.enable({ apis: ['setTimeout', 'Date'] });
+  const t = createToaster();
+  t.error('Message deleted', { action: { label: 'Undo', onClick: async () => {} } });
+  mock.timers.tick(TIMING.openDelay);
+  t.act(t.getState().toasts[0]!.id);
+  assert.equal(t.getState().toasts[0]?.phase, 'closing');
+  mock.timers.reset();
+});
+
+test('an async action can show its result with a new toast once it finishes', async () => {
+  const t = createToaster();
+  let done!: () => void;
+  const finished = new Promise<void>((r) => (done = r));
+  t.success('Message deleted', {
+    action: { label: 'Undo', onClick: async () => { await Promise.resolve(); t.info('Restored'); done(); } },
+  });
+  t.act(t.getState().toasts[0]!.id);
+  await finished;
+  assert.ok(t.getState().toasts.some((x) => x.title === 'Restored' && (x.phase === 'enter' || x.phase === 'open')));
+});
+
+test("held: 'replace': an action that shows another message keeps that message on screen", () => {
+  const t = createToaster();
+  t.configure({ held: 'replace' });
+  t.success('Deleted', { action: { label: 'Undo', onClick: () => void t.info('Restored') } });
+  t.act(t.getState().toasts[0]!.id);
+  const toasts = t.getState().toasts;
+  assert.equal(toasts.length, 1);
+  assert.equal(toasts[0]?.title, 'Restored');
+  assert.notEqual(toasts[0]?.phase, 'closing');
+});

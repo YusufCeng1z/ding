@@ -202,7 +202,7 @@ toast.update(id, { type: 'success', title: 'Photo uploaded', progress: null });<
 
           <section id="actions">
             <h2>Actions</h2>
-            <p>An <code>onClick</code> may return a patch. The toast then morphs in place instead of closing. A returned patch removes the buttons unless it names them again.</p>
+            <p>An <code>onClick</code> may return a patch. The toast then morphs in place instead of closing. A returned patch removes the buttons unless it names them again. An async <code>onClick</code> closes the toast right away; call <code>toast</code> from inside it to show the result.</p>
             <pre data-run="undo"><code>toast.success('Message deleted', {
   action: {
     label: 'Undo',

@@ -30,6 +30,8 @@ interface Entry {
   paused: boolean;
 }
 
+const isThenable = (v: object): v is PromiseLike<unknown> => typeof (v as PromiseLike<unknown>).then === 'function';
+
 const DEFAULT_LABELS: ToastLabels = { region: 'Notifications', dismiss: 'Dismiss notification' };
 
 const definedOnly = <T extends object>(o: T): Partial<T> =>
@@ -189,10 +191,16 @@ export function createToaster() {
     }
   }
 
-  /** Run a toast's action. A returned patch morphs the toast in place; otherwise it closes. */
+  /**
+   * Run a toast's action. A returned patch morphs the toast in place; anything else, a promise included, closes it.
+   * If the handler already showed another message in this toast, that message stays.
+   */
   function act(id: string, which: 'action' | 'secondary' = 'action') {
-    const result = find(id)?.[which]?.onClick();
-    if (result && typeof result === 'object') apply(id, { action: null, secondary: null, ...result });
+    const button = find(id)?.[which];
+    if (!button) return;
+    const result = button.onClick();
+    if (find(id)?.[which] !== button) return;
+    if (result && typeof result === 'object' && !isThenable(result)) apply(id, { action: null, secondary: null, ...result });
     else dismiss(id);
   }
 

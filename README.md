@@ -151,6 +151,8 @@ toast.success('Message deleted', {
 });
 ```
 
+An async `onClick` closes the toast as soon as it is clicked. To show how it went, call `toast` from inside it, for example `toast.success('Restored')` after the `await`.
+
 ## Options
 
 | Option | Description |
